@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3 uid="uid://d2q5r6l3neluo"]
+
+[ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://character_controller.cs" id="1_wpm43"]
+[ext_resource type="Texture2D" uid="uid://dpbw5hetug58m" path="res://the_man.png" id="2_rbxnt"]
+[ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://the_man_sheet.png" id="3_niex8"]
+[ext_resource type="Script" uid="uid://bfio358rmjcyy" path="res://animated_sprite_2d.gd" id="4_niex8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ggkag"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxwqw"]
+atlas = ExtResource("3_niex8")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3xs5"]
+atlas = ExtResource("3_niex8")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4vxyf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxwqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3xs5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="SubViewportContainer" type="SubViewportContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(640, 360)
+size_2d_override = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="SubViewport"]
+script = ExtResource("1_wpm43")
+speed = 100.0
+acceleration = 200.0
+air_acceleration = 100.0
+friction = 100.0
+air_friction = 100.0
+jump_speed = 100.0
+gravity = 100.0
+slow_fall_mult = 0.75
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SubViewport/CharacterBody2D"]
+position = Vector2(64.75, 132)
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_ggkag")
+autoplay = "default"
+
+[node name="JumpTimer" type="Timer" parent="SubViewport/CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="SubViewport"]
+position = Vector2(104, 201)
+texture = ExtResource("2_rbxnt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SubViewport"]
+position = Vector2(60, 271)
+sprite_frames = SubResource("SpriteFrames_4vxyf")
+autoplay = "default"
+script = ExtResource("4_niex8")
+speed = 120.0
