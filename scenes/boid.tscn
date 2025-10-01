@@ -1,9 +1,17 @@
 [gd_scene load_steps=2 format=3 uid="uid://nbgp1heoqfxd"]
 
-[ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/boid.cs" id="1_n4whh"]
+[ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/Boid.cs" id="1_n4whh"]
 
 [node name="Boid" type="CharacterBody2D"]
 script = ExtResource("1_n4whh")
+Speed = 200.0
+IdealDistance = 100.0
+SeparationRadius = 75.0
+VisualRadius = 200.0
+SeparationTurnAmount = 1.0
+AlignmentTurnAmount = 0.8
+CohesionTurnAmount = 0.6
+GoalSeekingTurnAmount = 1.2
 
 [node name="BoidShape" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(10, 2.5, 0, 5, 0, 0)
