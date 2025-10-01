@@ -1,0 +1,99 @@
+[gd_scene load_steps=13 format=3 uid="uid://cty42wukfwuy"]
+
+[ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/character_controller.cs" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/the_man_sheet.png" id="2_i3pqv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8mn5r"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sja3u"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg3fu"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ygwg"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qoj7t"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dfln"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4g0l"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hqtel"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdcf7")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8mn5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sja3u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kg3fu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ygwg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qoj7t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dfln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4g0l")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
+height = 50.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_onrkg")
+
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_hqtel")
+animation = &"walk"
+autoplay = "walk"
+
+[node name="JumpTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_sweqy")
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 15.0
+
+[node name="WalkTimer" type="Timer" parent="."]

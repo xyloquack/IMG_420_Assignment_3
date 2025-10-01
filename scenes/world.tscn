@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://vmvoolsh6ded"]
+
+[ext_resource type="Script" uid="uid://cq2d25cbootlp" path="res://scripts/platform.gd" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://cty42wukfwuy" path="res://scenes/player.tscn" id="1_rwgxs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rwgxs"]
+size = Vector2(2000, 20)
+
+[node name="World" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_rwgxs")]
+speed = 200.0
+acceleration = 4000.0
+air_acceleration_mult = 1.0
+friction = 2000.0
+air_friction_mult = 1.0
+jump_speed = 250.0
+burst_jump_speed = 1200.0
+gravity = 1200.0
+slow_fall_mult = 0.6
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 251)
+shape = SubResource("RectangleShape2D_rwgxs")
+script = ExtResource("1_nnsk1")
