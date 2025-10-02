@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class BoidTest : Node2D
 {
@@ -9,7 +10,7 @@ public partial class BoidTest : Node2D
 	public PackedScene BoidScene { get; set; }
 	
 	public float time_passed;
-	public Godot.Collections.Array boids;
+	public List<Boid> boids;
 	
 	override public void _Ready()
 	{
@@ -17,7 +18,7 @@ public partial class BoidTest : Node2D
 		boids = [];
 		for (int i = 0; i < numBoids; i++)
 		{
-			CharacterBody2D newBoid = BoidScene.Instantiate<CharacterBody2D>();
+			Boid newBoid = BoidScene.Instantiate<Boid>();
 			Vector2 newPosition;
 			newPosition.X = (float)GD.Randf() * 20;
 			newPosition.Y = (float)GD.Randf() * 20;
@@ -26,16 +27,20 @@ public partial class BoidTest : Node2D
 			boids.Add(newBoid);
 			AddChild(newBoid);
 		}
+		foreach (Boid currentBoid in boids)
+		{
+			currentBoid.Boids = boids;
+		}
 	}
 	
 	override public void _PhysicsProcess(double delta)
 	{
 		time_passed += (float)delta;
-		if (time_passed >= 3)
+		if (time_passed >= 1f)
 		{
-			time_passed -= 3;
+			time_passed -= 1f;
 			Vector2 newGoal;
-			newGoal.X = (float)GD.Randf() * 200 - 100;
+			newGoal.X = (float)GD.Randf() * 500 - 250;
 			newGoal.Y = (float)GD.Randf() * 500 - 250;
 			GetNode<CollisionShape2D>("GoalLocation").Position = newGoal;
 			foreach (Boid boid in boids)

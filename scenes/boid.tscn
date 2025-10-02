@@ -1,17 +1,49 @@
-[gd_scene load_steps=2 format=3 uid="uid://nbgp1heoqfxd"]
+[gd_scene load_steps=5 format=3 uid="uid://nbgp1heoqfxd"]
 
 [ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/Boid.cs" id="1_n4whh"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_i32he"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n4whh"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vrn0v"]
+radius = 50.0
+
 [node name="Boid" type="CharacterBody2D"]
+collision_mask = 0
 script = ExtResource("1_n4whh")
-Speed = 200.0
-IdealDistance = 100.0
-SeparationRadius = 75.0
-VisualRadius = 200.0
-SeparationTurnAmount = 1.0
+Speed = 500.0
+RotationStrength = 4.0
+MaxSteeringForce = 20.0
+IdealDistance = 50.0
+SeparationTurnAmount = 2.0
 AlignmentTurnAmount = 0.8
 CohesionTurnAmount = 0.6
-GoalSeekingTurnAmount = 1.2
+GoalSeekingTurnAmount = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i32he")
+debug_color = Color(0, 0.6, 0.701961, 0.0392157)
 
 [node name="BoidShape" type="Polygon2D" parent="."]
+position = Vector2(-5, -2.5)
 polygon = PackedVector2Array(10, 2.5, 0, 5, 0, 0)
+
+[node name="SeparationArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SeparationArea"]
+shape = SubResource("CircleShape2D_n4whh")
+debug_color = Color(0, 0.6, 0.701961, 0.0392157)
+
+[node name="VisualArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualArea"]
+shape = SubResource("CircleShape2D_vrn0v")
+debug_color = Color(0, 0.6, 0.701961, 0.0392157)
+
+[connection signal="body_entered" from="SeparationArea" to="." method="OnSeparationAdd"]
+[connection signal="body_exited" from="SeparationArea" to="." method="OnSeparationRemove"]
+[connection signal="body_entered" from="VisualArea" to="." method="OnLocalAdd"]
+[connection signal="body_exited" from="VisualArea" to="." method="OnLocalRemove"]

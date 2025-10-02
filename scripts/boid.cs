@@ -1,16 +1,17 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Boid : CharacterBody2D
 {
 	[Export]
 	public float Speed;
 	[Export]
+	public float RotationStrength;
+	[Export]
+	public float MaxSteeringForce;
+	[Export]
 	public float IdealDistance;
-	[Export]
-	public float SeparationRadius;
-	[Export]
-	public float VisualRadius;
 	[Export]
 	public float SeparationTurnAmount;
 	[Export]
@@ -20,127 +21,116 @@ public partial class Boid : CharacterBody2D
 	[Export]
 	public float GoalSeekingTurnAmount;
 	
-	public Godot.Collections.Array Boids;
+	public List<Boid> Boids;
 	public Vector2 Goal;
+	Godot.Collections.Array SeparatingBoids = [];
+	Godot.Collections.Array LocalBoids = [];
 	
 	override public void _Ready() 
 	{
-		Boids = [];
 		Goal = new Vector2((float)0.0, (float)0.0);
 	}
 	
 	override public void _PhysicsProcess(double delta) 
 	{
-		Godot.Collections.Array separatingBoids = [];
-		Godot.Collections.Array localBoids = [];
-		float rotationAdjustment = 0;
-		CategorizeLocalBoids(separatingBoids, localBoids);
-		rotationAdjustment += Separation(separatingBoids, delta);
-		rotationAdjustment += Alignment(localBoids, delta);
-		rotationAdjustment += Cohesion(localBoids, delta);
-		rotationAdjustment += GoalSeeking(delta);
-		Rotation = (float)Mathf.Lerp(Rotation, Rotation + rotationAdjustment, 0.2);
+		Vector2 steeringVector = Vector2.Zero;
+		steeringVector += Separation();
+		steeringVector += Alignment();
+		steeringVector += Cohesion();
+		steeringVector += GoalSeeking();
+		if (steeringVector.Length() > MaxSteeringForce)
+		{
+			steeringVector = steeringVector.Normalized() * MaxSteeringForce;
+		}
+		Vector2 currentHeading = Vector2.FromAngle(Rotation);
+		float angleToSteering = currentHeading.AngleTo(steeringVector);
+		Rotation = (float)Mathf.Wrap(Rotation + angleToSteering * RotationStrength * delta, -Mathf.Pi, Mathf.Pi);
 		Vector2 newVelocity = Vector2.FromAngle(Rotation);
-		float speedMult = ((Goal - Position).Length() / IdealDistance);
-		if (speedMult > 1)
-		{
-			speedMult = 1;
-		}
-		else if (speedMult < 0.7)
-		{
-			speedMult = (float)0.7;
-		}
-		newVelocity *= Speed * speedMult;
+		
+		newVelocity *= Speed;
 		Velocity = newVelocity;
 		MoveAndSlide();
 	}
 	
-	private void CategorizeLocalBoids(Godot.Collections.Array separatingBoids, Godot.Collections.Array localBoids) 
+	private Vector2 Separation() 
 	{
-		foreach (CharacterBody2D currentBoid in Boids) 
+		if (SeparatingBoids.Count == 0)
 		{
-			if (currentBoid != this) 
-			{
-				if (currentBoid.Position.DistanceTo(Position) <= SeparationRadius) 
-				{
-					separatingBoids.Add(currentBoid);
-				}
-				if (currentBoid.Position.DistanceTo(Position) <= VisualRadius) 
-				{
-					localBoids.Add(currentBoid);
-				}
-			}
+			return Vector2.Zero;
 		}
-	}
-	
-	private float Separation(Godot.Collections.Array separatingBoids, double delta) 
-	{
 		Vector2 repulseVector = new Vector2((float)0.0, (float)0.0);
-		float numBoidsScalar = (float)(1.0 / separatingBoids.Count);
-		foreach (CharacterBody2D currentBoid in separatingBoids) 
+		foreach (Boid currentBoid in SeparatingBoids) 
 		{
-			repulseVector += (Position - currentBoid.Position) * (float)(1.0 / (Math.Pow((currentBoid.Position - Position).Length(), 2) + 0.0001));
+			repulseVector += (Position - currentBoid.Position) * (float)(1.0 / ((currentBoid.Position - Position).LengthSquared() + 0.0001));
 		}
-		int direction = 0;
-		Vector2 headingDirection = Vector2.FromAngle(Rotation);
-		if (headingDirection.Cross(repulseVector) > 0) 
-		{
-			direction = 1;
-		}
-		else 
-		{
-			direction = -1;
-		}
-		return (float)(direction * SeparationTurnAmount * Math.Abs(headingDirection.Cross(repulseVector)) * delta);
+		return SeparationTurnAmount * repulseVector;
 	}
 	
-	private float Alignment(Godot.Collections.Array localBoids, double delta) 
+	private Vector2 Alignment() 
 	{
-		float averageRotation = 0;
-		float numBoidsScalar = (float)(1.0 / localBoids.Count);
-		foreach (CharacterBody2D currentBoid in localBoids) 
+		if (LocalBoids.Count == 0)
 		{
-			averageRotation += currentBoid.Rotation * numBoidsScalar;
+			return Vector2.Zero;
 		}
-		int direction = (Mathf.Wrap(averageRotation - Rotation, -2 * Math.PI, 2 * Math.PI) > 0) ? 1 : -1;
-		return (float)(direction * AlignmentTurnAmount * (Math.Abs(averageRotation - Rotation) / (2 * Math.PI)) * delta);
+		Vector2 averageVelocity = Vector2.Zero;
+		foreach (Boid currentBoid in LocalBoids) 
+		{
+			averageVelocity += currentBoid.Velocity.Normalized();
+		}
+		return AlignmentTurnAmount * averageVelocity.Normalized();
 	}
 	
-	private float Cohesion(Godot.Collections.Array localBoids, double delta) 
+	private Vector2 Cohesion() 
 	{
+		if (LocalBoids.Count == 0)
+		{
+			return Vector2.Zero;
+		}
 		Vector2 averagePosition = new Vector2((float)0.0, (float)0.0);
-		float numBoidsScalar = (float)(1.0 / localBoids.Count);
-		foreach (CharacterBody2D currentBoid in localBoids) 
+		foreach (Boid currentBoid in LocalBoids) 
 		{
-			averagePosition += currentBoid.Position * numBoidsScalar;
+			averagePosition += currentBoid.Position;
 		}
-		int direction = 0;
-		Vector2 headingDirection = Vector2.FromAngle(Rotation);
-		Vector2 neededDirection = averagePosition - Position;
-		if (headingDirection.Cross(neededDirection) > 0) 
-		{
-			direction = 1;
-		}
-		else 
-		{
-			direction = -1;
-		}
-		return (float)(direction * CohesionTurnAmount * Math.Abs(headingDirection.Cross(neededDirection)) * delta);
+		Vector2 neededDirection = (averagePosition - Position).Normalized();
+		return CohesionTurnAmount * neededDirection;
 	}
 	
-	private float GoalSeeking(double delta) 
+	private Vector2 GoalSeeking() 
 	{
-		int direction = 0;
-		Vector2 headingDirection = Vector2.FromAngle(Rotation);
-		Vector2 neededDirection = Goal - Position;
-		if (headingDirection.Cross(neededDirection) > 0) 
+		Vector2 neededDirection = (Goal - Position).Normalized();
+		return GoalSeekingTurnAmount * neededDirection;
+	}
+	
+	public void OnSeparationAdd(Node2D body)
+	{
+		if (body is Boid boid)
 		{
-			direction = 1;
+			SeparatingBoids.Add(boid);
 		}
-		else 
+	}
+	
+	public void OnSeparationRemove(Node2D body)
+	{
+		if (body is Boid boid)
 		{
-			direction = -1;
+			SeparatingBoids.Remove(boid);
 		}
-		return (float)(direction * GoalSeekingTurnAmount * Math.Abs(headingDirection.Cross(neededDirection)) * delta);
+	}
+	
+	public void OnLocalAdd(Node2D body)
+	{
+		if (body is Boid boid)
+		{
+			LocalBoids.Add(boid);
+		}
+		
+	}
+	
+	public void OnLocalRemove(Node2D body)
+	{
+		if (body is Boid boid)
+		{
+			LocalBoids.Remove(boid);
+		}
 	}
 }
