@@ -1,19 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://jvam4jbx4b2h"]
+[gd_scene load_steps=3 format=3 uid="uid://jvam4jbx4b2h"]
 
 [ext_resource type="Script" uid="uid://by4267c3xhspp" path="res://scripts/BoidTest.cs" id="1_jncdm"]
 [ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_87mto"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h7wq1"]
-
 [node name="BoidTest" type="Node2D"]
 script = ExtResource("1_jncdm")
-numBoids = 100
+numBoids = 5
 BoidScene = ExtResource("2_87mto")
 
-[node name="GoalLocation" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_h7wq1")
-disabled = true
+[node name="GoalLocation" type="Polygon2D" parent="."]
+color = Color(0, 1, 0, 0.372549)
+polygon = PackedVector2Array(10, -10, -10, -10, -10, 10, 10, 10)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 process_callback = 0

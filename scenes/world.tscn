@@ -14,6 +14,6 @@ position = Vector2(0, -4)
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, 251)
+position = Vector2(0, 43)
 shape = SubResource("RectangleShape2D_rwgxs")
 script = ExtResource("1_nnsk1")

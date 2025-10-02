@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=14 format=3 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/the_man_sheet.png" id="2_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
 atlas = ExtResource("2_i3pqv")
@@ -86,15 +87,13 @@ JumpSpeed = 250.0
 BurstJumpSpeed = 1200.0
 Gravity = 1200.0
 SlowFallMult = 0.6
+BoidScene = ExtResource("2_qhqgy")
+MaxBoids = 10
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hqtel")
 animation = &"walk"
 autoplay = "walk"
-
-[node name="JumpTimer" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_sweqy")
@@ -105,4 +104,12 @@ process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
 
+[node name="JumpTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
 [node name="WalkTimer" type="Timer" parent="."]
+
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

@@ -20,8 +20,8 @@ public partial class BoidTest : Node2D
 		{
 			Boid newBoid = BoidScene.Instantiate<Boid>();
 			Vector2 newPosition;
-			newPosition.X = (float)GD.Randf() * 20;
-			newPosition.Y = (float)GD.Randf() * 20;
+			newPosition.X = (float)GD.Randf() * 200 - 100;
+			newPosition.Y = (float)GD.Randf() * 200 - 100;
 			newBoid.Position = newPosition;
 			newBoid.Rotation = (float)(GD.Randf() * 2 * Math.PI);
 			boids.Add(newBoid);
@@ -42,7 +42,7 @@ public partial class BoidTest : Node2D
 			Vector2 newGoal;
 			newGoal.X = (float)GD.Randf() * 500 - 250;
 			newGoal.Y = (float)GD.Randf() * 500 - 250;
-			GetNode<CollisionShape2D>("GoalLocation").Position = newGoal;
+			GetNode<Polygon2D>("GoalLocation").Position = newGoal;
 			foreach (Boid boid in boids)
 			{
 				boid.Goal = newGoal;

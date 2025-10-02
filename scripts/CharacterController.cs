@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class CharacterController : CharacterBody2D
 {
@@ -21,22 +22,38 @@ public partial class CharacterController : CharacterBody2D
 	public float Gravity;
 	[Export]
 	public float SlowFallMult;
+	[Export]
+	public PackedScene BoidScene { get; set; }
+	[Export]
+	public int MaxBoids;
 	
 	public double TimePassed;
+	public double TimeSinceLastAttack;
+	public List<Boid> Boids = [];
+	public int NumBoids;
 	public bool SlowFalling;
 	public bool Jumping;
 	
 	public override void _Ready() 
 	{
 		TimePassed = 0.0;
+		TimeSinceLastAttack = 0.0;
+		NumBoids = 0;
 		SlowFalling = false;
 	}
 	
 	public override void _PhysicsProcess(double delta) 
 	{
 		TimePassed += delta;
+		TimeSinceLastAttack += delta;
 		UpdateVelocity(delta);
 		UpdateSprite();
+		AttemptBoidSpawn();
+		UpdateIdleBoidGoal();
+		if (Input.IsActionPressed("attack"))
+		{
+			Attack();
+		}
 		MoveAndSlide();
 	}
 	
@@ -164,6 +181,51 @@ public partial class CharacterController : CharacterBody2D
 		if (Velocity.X > 0) 
 		{
 			playerSprite.FlipH = false;
+		}
+	}
+	
+	private void AttemptBoidSpawn() 
+	{
+		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(2, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
+		{
+			Boid newBoid = BoidScene.Instantiate<Boid>();
+			Vector2 newPosition;
+			newPosition.X = (float)(GD.Randf() * 10 - 5);
+			newPosition.Y = (float)(GD.Randf() * 10 - 55);
+			newBoid.GlobalPosition = newPosition;
+			newBoid.Speed = 100;
+			Boids.Add(newBoid);
+			AddChild(newBoid);
+			NumBoids++;
+		}
+	}
+	
+	private void UpdateIdleBoidGoal()
+	{
+		foreach (Boid boid in Boids)
+		{
+			boid.Goal = GlobalPosition + new Vector2((float)(GD.Randf() * 10 - 5), (float)(GD.Randf() * 10 - 55));
+		}
+	}
+	
+	private void Attack() 
+	{
+		if (GetNode<Timer>("AttackCooldown").IsStopped())
+		{
+			GD.Print("Attack!");
+			NumBoids = 0;
+			TimeSinceLastAttack = 0;
+			Vector2 mousePosition = GetGlobalMousePosition();
+			foreach (Boid boid in Boids)
+			{
+				GD.Print(boid);
+				boid.GetNode<Timer>("Lifetime").Start();
+				boid.Goal = mousePosition;
+				boid.Speed = 800;
+				boid.Rotation = (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5);
+			}
+			Boids = [];
+			GetNode<Timer>("AttackCooldown").Start();
 		}
 	}
 }

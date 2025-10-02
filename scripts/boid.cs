@@ -20,15 +20,17 @@ public partial class Boid : CharacterBody2D
 	public float CohesionTurnAmount;
 	[Export]
 	public float GoalSeekingTurnAmount;
+	[Export]
+	public float DamageAmount;
 	
 	public List<Boid> Boids;
 	public Vector2 Goal;
-	Godot.Collections.Array SeparatingBoids = [];
-	Godot.Collections.Array LocalBoids = [];
+	List<Boid> SeparatingBoids = [];
+	List<Boid> LocalBoids = [];
 	
 	override public void _Ready() 
 	{
-		Goal = new Vector2((float)0.0, (float)0.0);
+		GetNode<HitBox>("HitBox").DamageAmount = DamageAmount;
 	}
 	
 	override public void _PhysicsProcess(double delta) 
@@ -49,7 +51,7 @@ public partial class Boid : CharacterBody2D
 		
 		newVelocity *= Speed;
 		Velocity = newVelocity;
-		MoveAndSlide();
+		Position += Velocity * (float)delta;
 	}
 	
 	private Vector2 Separation() 
@@ -61,7 +63,7 @@ public partial class Boid : CharacterBody2D
 		Vector2 repulseVector = new Vector2((float)0.0, (float)0.0);
 		foreach (Boid currentBoid in SeparatingBoids) 
 		{
-			repulseVector += (Position - currentBoid.Position) * (float)(1.0 / ((currentBoid.Position - Position).LengthSquared() + 0.0001));
+			repulseVector += (GlobalPosition - currentBoid.GlobalPosition) * (float)(1.0 / ((currentBoid.GlobalPosition - GlobalPosition).LengthSquared() + 0.0001));
 		}
 		return SeparationTurnAmount * repulseVector;
 	}
@@ -89,15 +91,15 @@ public partial class Boid : CharacterBody2D
 		Vector2 averagePosition = new Vector2((float)0.0, (float)0.0);
 		foreach (Boid currentBoid in LocalBoids) 
 		{
-			averagePosition += currentBoid.Position;
+			averagePosition += currentBoid.GlobalPosition;
 		}
-		Vector2 neededDirection = (averagePosition - Position).Normalized();
+		Vector2 neededDirection = (averagePosition - GlobalPosition).Normalized();
 		return CohesionTurnAmount * neededDirection;
 	}
 	
 	private Vector2 GoalSeeking() 
 	{
-		Vector2 neededDirection = (Goal - Position).Normalized();
+		Vector2 neededDirection = (Goal - GlobalPosition).Normalized();
 		return GoalSeekingTurnAmount * neededDirection;
 	}
 	
@@ -132,5 +134,11 @@ public partial class Boid : CharacterBody2D
 		{
 			LocalBoids.Remove(boid);
 		}
+	}
+	
+	public void OnTimeout()
+	{
+		// Emit some particles? Feather particles?
+		QueueFree();
 	}
 }
