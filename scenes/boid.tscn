@@ -17,7 +17,7 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_0n3de")
 Speed = 750.0
-RotationStrength = 10.0
+RotationStrength = 15.0
 MaxSteeringForce = 20.0
 IdealDistance = 50.0
 SeparationTurnAmount = 1.0
@@ -32,6 +32,7 @@ texture = ExtResource("2_5r8tn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i32he")
+disabled = true
 debug_color = Color(0, 0.6, 0.701961, 0.0392157)
 
 [node name="HitBox" type="Area2D" parent="."]

@@ -88,7 +88,7 @@ BurstJumpSpeed = 1000.0
 Gravity = 1200.0
 SlowFallMult = 0.6
 BoidScene = ExtResource("2_qhqgy")
-MaxBoids = 10
+MaxBoids = 15
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hqtel")

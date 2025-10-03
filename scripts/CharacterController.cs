@@ -33,7 +33,7 @@ public partial class CharacterController : CharacterBody2D
 	public int NumBoids;
 	public bool SlowFalling;
 	public bool Jumping;
-	public bool Flipped = false;
+	private AnimatedSprite2D _playerSprite;
 	
 	public override void _Ready() 
 	{
@@ -41,6 +41,7 @@ public partial class CharacterController : CharacterBody2D
 		TimeSinceLastAttack = 0.0;
 		NumBoids = 0;
 		SlowFalling = false;
+		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
 	}
 	
 	public override void _PhysicsProcess(double delta) 
@@ -160,30 +161,27 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void UpdateSprite() 
 	{
-		AnimatedSprite2D playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
 		Vector2 newOffset;
 		newOffset.X = 0;
 		newOffset.Y = (float)(4 * Math.Sin(TimePassed * 2.5) - 4);
-		playerSprite.Offset = newOffset;
+		_playerSprite.Offset = newOffset;
 		
-		playerSprite.Stop();
-		int numFrames = playerSprite.GetSpriteFrames().GetFrameCount("walk");
+		_playerSprite.Stop();
+		int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount("walk");
 		int newFrame = (int)Math.Floor(numFrames * (Math.Abs(Velocity.X) / Speed));
 		if (newFrame >= numFrames) 
 		{
 			newFrame = numFrames - 1;
 		}
-		playerSprite.SetFrame(newFrame);
+		_playerSprite.SetFrame(newFrame);
 		
 		if (Velocity.X < 0) 
 		{
-			playerSprite.FlipH = true;
-			Flipped = true;
+			_playerSprite.FlipH = true;
 		}
 		if (Velocity.X > 0) 
 		{
-			playerSprite.FlipH = false;
-			Flipped = false;
+			_playerSprite.FlipH = false;
 		}
 	}
 	
@@ -209,7 +207,7 @@ public partial class CharacterController : CharacterBody2D
 		foreach (Boid boid in Boids)
 		{
 			Vector2 goalPosition = GlobalPosition + new Vector2(0, -25);
-			if (Flipped)
+			if (_playerSprite.FlipH)
 			{
 				goalPosition.X += 40;
 			}
