@@ -223,7 +223,7 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void Attack() 
 	{
-		if (GetNode<Timer>("AttackCooldown").IsStopped())
+		if (GetNode<Timer>("AttackCooldown").IsStopped() && NumBoids > 0)
 		{
 			NumBoids = 0;
 			TimeSinceLastAttack = 0;
