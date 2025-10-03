@@ -33,6 +33,7 @@ public partial class CharacterController : CharacterBody2D
 	public int NumBoids;
 	public bool SlowFalling;
 	public bool Jumping;
+	public bool Flipped = false;
 	
 	public override void _Ready() 
 	{
@@ -177,23 +178,26 @@ public partial class CharacterController : CharacterBody2D
 		if (Velocity.X < 0) 
 		{
 			playerSprite.FlipH = true;
+			Flipped = true;
 		}
 		if (Velocity.X > 0) 
 		{
 			playerSprite.FlipH = false;
+			Flipped = false;
 		}
 	}
 	
 	private void AttemptBoidSpawn() 
 	{
-		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(2, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
+		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
 		{
 			Boid newBoid = BoidScene.Instantiate<Boid>();
 			Vector2 newPosition;
-			newPosition.X = (float)(GD.Randf() * 10 - 5);
-			newPosition.Y = (float)(GD.Randf() * 10 - 55);
+			newPosition.X = 0f;
+			newPosition.Y = (float)(GD.Randf() * 10 - 15);
 			newBoid.GlobalPosition = newPosition;
-			newBoid.Speed = 100;
+			newBoid.Speed = 200;
+			newBoid.GoalSeekingTurnAmount = 0.5f;
 			Boids.Add(newBoid);
 			AddChild(newBoid);
 			NumBoids++;
@@ -204,7 +208,16 @@ public partial class CharacterController : CharacterBody2D
 	{
 		foreach (Boid boid in Boids)
 		{
-			boid.Goal = GlobalPosition + new Vector2((float)(GD.Randf() * 10 - 5), (float)(GD.Randf() * 10 - 55));
+			Vector2 goalPosition = GlobalPosition + new Vector2(0, -25);
+			if (Flipped)
+			{
+				goalPosition.X += 40;
+			}
+			else
+			{
+				goalPosition.X -= 40;
+			}
+			boid.Goal = goalPosition;
 		}
 	}
 	
@@ -212,17 +225,18 @@ public partial class CharacterController : CharacterBody2D
 	{
 		if (GetNode<Timer>("AttackCooldown").IsStopped())
 		{
-			GD.Print("Attack!");
 			NumBoids = 0;
 			TimeSinceLastAttack = 0;
 			Vector2 mousePosition = GetGlobalMousePosition();
 			foreach (Boid boid in Boids)
 			{
-				GD.Print(boid);
+				boid.GetNode<Timer>("Lifetime").WaitTime += GD.Randf() * 0.2;
 				boid.GetNode<Timer>("Lifetime").Start();
 				boid.Goal = mousePosition;
-				boid.Speed = 800;
+				boid.Speed = 1000;
 				boid.Rotation = (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5);
+				boid.GoalSeekingTurnAmount = 3f;
+				boid.Active = true;
 			}
 			Boids = [];
 			GetNode<Timer>("AttackCooldown").Start();

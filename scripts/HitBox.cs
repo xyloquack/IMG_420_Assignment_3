@@ -10,11 +10,15 @@ public partial class HitBox : Area2D
 	
 	override public void _PhysicsProcess(double delta)
 	{
-		foreach (Node2D body in GetOverlappingBodies()) 
+		if (GetParent<Boid>().Active)
 		{
-			if (body.IsInGroup(EnemyGroup))
+			foreach (Node2D body in GetOverlappingBodies()) 
 			{
-				body.EmitSignal("Damage", DamageAmount);
+				if (body.IsInGroup(EnemyGroup))
+				{
+					body.EmitSignal("Damage", DamageAmount);
+					GetParent<Boid>().EmitSignal("Kill");
+				}
 			}
 		}
 	}

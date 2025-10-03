@@ -22,11 +22,15 @@ public partial class Boid : CharacterBody2D
 	public float GoalSeekingTurnAmount;
 	[Export]
 	public float DamageAmount;
+	[Export]
+	public PackedScene DeathParticles;
 	
 	public List<Boid> Boids;
 	public Vector2 Goal;
 	List<Boid> SeparatingBoids = [];
 	List<Boid> LocalBoids = [];
+	
+	public bool Active = false;
 	
 	override public void _Ready() 
 	{
@@ -138,7 +142,18 @@ public partial class Boid : CharacterBody2D
 	
 	public void OnTimeout()
 	{
-		// Emit some particles? Feather particles?
+		Kill();
+	}
+	
+	public void Kill()
+	{
+		// Emit some feather particles maybe?
+		CpuParticles2D deathParticles = DeathParticles.Instantiate<CpuParticles2D>();
+		deathParticles.Emitting = true;
+		deathParticles.Restart();
+		deathParticles.GlobalPosition = GlobalPosition;
+		deathParticles.ZIndex = ZIndex;
+		GetTree().Root.AddChild(deathParticles);
 		QueueFree();
 	}
 }

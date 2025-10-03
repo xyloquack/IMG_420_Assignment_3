@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://nbgp1heoqfxd"]
+[gd_scene load_steps=9 format=3 uid="uid://nbgp1heoqfxd"]
 
 [ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/Boid.cs" id="1_n4whh"]
 [ext_resource type="Texture2D" uid="uid://cktcyar0qedtq" path="res://assets/boid.png" id="2_5r8tn"]
 [ext_resource type="Script" uid="uid://bfahr6pxlr4jq" path="res://scripts/HitBox.cs" id="2_vrn0v"]
+[ext_resource type="PackedScene" uid="uid://cbutm3ronp617" path="res://scenes/boid_death_particles.tscn" id="4_0n3de"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i32he"]
 radius = 6.0
@@ -17,6 +18,7 @@ radius = 50.0
 radius = 6.0
 
 [node name="Boid" type="CharacterBody2D"]
+z_index = -1
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_n4whh")
@@ -29,6 +31,7 @@ AlignmentTurnAmount = 0.2
 CohesionTurnAmount = 0.3
 GoalSeekingTurnAmount = 2.0
 DamageAmount = 5.0
+DeathParticles = ExtResource("4_0n3de")
 
 [node name="BoidSprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_5r8tn")
@@ -63,7 +66,7 @@ shape = SubResource("CircleShape2D_5r8tn")
 debug_color = Color(0.992157, 0, 0.25098, 0.403922)
 
 [node name="Lifetime" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 0.65
 
 [connection signal="body_entered" from="SeparationArea" to="." method="OnSeparationAdd"]
 [connection signal="body_exited" from="SeparationArea" to="." method="OnSeparationRemove"]

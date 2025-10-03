@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbutm3ronp617"]
+
+[ext_resource type="Texture2D" uid="uid://cba42hw0ylmbn" path="res://assets/feather.png" id="1_usfkx"]
+[ext_resource type="Script" uid="uid://coxuuyqwsnj1i" path="res://scenes/BoidDeathParticles.cs" id="2_jjm7u"]
+
+[node name="BoidDeathParticles" type="CPUParticles2D"]
+emitting = false
+amount = 6
+texture = ExtResource("1_usfkx")
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.8
+randomness = 0.2
+lifetime_randomness = 0.7
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+angular_velocity_min = 220.0
+angular_velocity_max = 300.0
+damping_min = 500.0
+damping_max = 700.0
+angle_max = 360.0
+scale_amount_min = 0.7
+scale_amount_max = 1.2
+script = ExtResource("2_jjm7u")
+
+[connection signal="finished" from="." to="." method="OnFinished"]
