@@ -15,6 +15,10 @@ run/main_scene="uid://vmvoolsh6ded"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+BoidManager="*res://scripts/BoidManager.cs"
+
 [display]
 
 window/size/viewport_width=1920

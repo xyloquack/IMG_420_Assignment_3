@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbutm3ronp617"]
 
 [ext_resource type="Texture2D" uid="uid://cba42hw0ylmbn" path="res://assets/feather.png" id="1_usfkx"]
-[ext_resource type="Script" uid="uid://coxuuyqwsnj1i" path="res://scenes/BoidDeathParticles.cs" id="2_jjm7u"]
+[ext_resource type="Script" uid="uid://coxuuyqwsnj1i" path="res://scripts/BoidDeathParticles.cs" id="2_jjm7u"]
 
 [node name="BoidDeathParticles" type="CPUParticles2D"]
 emitting = false

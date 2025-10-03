@@ -138,13 +138,13 @@ public partial class CharacterController : CharacterBody2D
 				Jumping = false;
 				if (!(GetNode<Timer>("JumpTimer").IsStopped())) 
 				{
-					newVelocity.Y /= 2;
+					newVelocity.Y /= 3;
 				}
 				GetNode<Timer>("JumpTimer").Stop();
 			}
 			else 
 			{
-				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.25);
+				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.35);
 			}
 		}
 		else if (!IsOnFloor())

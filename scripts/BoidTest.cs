@@ -27,10 +27,6 @@ public partial class BoidTest : Node2D
 			boids.Add(newBoid);
 			AddChild(newBoid);
 		}
-		foreach (Boid currentBoid in boids)
-		{
-			currentBoid.Boids = boids;
-		}
 	}
 	
 	override public void _PhysicsProcess(double delta)
