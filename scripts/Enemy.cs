@@ -7,7 +7,7 @@ public partial class Enemy : CharacterBody2D
 	public float Health;
 	
 	private void OnDamage(float damage)
-	{a
+	{
 		Health -= damage;
 		CheckHealth();
 	}
