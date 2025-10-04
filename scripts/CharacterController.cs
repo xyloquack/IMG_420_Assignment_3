@@ -7,6 +7,8 @@ public partial class CharacterController : CharacterBody2D
 	[Export]
 	public float Speed;
 	[Export]
+	public float DashSpeed;
+	[Export]
 	public float Acceleration;
 	[Export]
 	public float AirAccelerationMult;
@@ -31,8 +33,9 @@ public partial class CharacterController : CharacterBody2D
 	public double TimeSinceLastAttack;
 	public List<Boid> Boids = [];
 	public int NumBoids;
-	public bool SlowFalling;
-	public bool Jumping;
+	private bool _slowFalling;
+	private bool _jumping;
+	private bool _dashing;
 	private AnimatedSprite2D _playerSprite;
 	
 	public override void _Ready() 
@@ -40,7 +43,8 @@ public partial class CharacterController : CharacterBody2D
 		TimePassed = 0.0;
 		TimeSinceLastAttack = 0.0;
 		NumBoids = 0;
-		SlowFalling = false;
+		_slowFalling = false;
+		_dashing = false;
 		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
 	}
 	
@@ -61,6 +65,41 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void UpdateVelocity(double delta) 
 	{
+		if (Input.IsActionPressed("dash") && GetNode<Timer>("DashTimer").IsStopped() && GetNode<Timer>("DashCooldown").IsStopped())
+		{
+			_dashing = true;
+			int direction = 0;
+			if (Input.IsActionPressed("left")) 
+			{
+				direction -= 1;
+			}
+			if (Input.IsActionPressed("right")) 
+			{
+				direction += 1;
+			}
+			if (direction == 0)
+			{
+				if (_playerSprite.FlipH)
+				{
+					direction = -1;
+				}
+				else
+				{
+					direction = 1;
+				}
+			}
+			Vector2 newVelocity = new Vector2(DashSpeed * direction, 0);
+			Velocity = newVelocity;
+			GetNode<Timer>("DashTimer").Start();
+		}
+		if (!_dashing)
+		{
+			Velocity = WalkingVelocity(delta);
+		}
+	}
+	
+	private Vector2 WalkingVelocity(double delta)
+	{
 		Vector2 newVelocity = Velocity;
 		int direction = 0;
 		if (Input.IsActionPressed("left")) 
@@ -78,6 +117,7 @@ public partial class CharacterController : CharacterBody2D
 		if (Math.Abs(newVelocity.X) > Speed) 
 		{
 			currentFriction = (Math.Abs(newVelocity.X) / (Speed)) * (Acceleration - Friction) + Friction;
+			GD.Print("currentFriction: ", currentFriction);
 		}
 		else 
 		{
@@ -85,61 +125,53 @@ public partial class CharacterController : CharacterBody2D
 		}
 		
 		float frictionAdjustedAcceleration = currentAcceleration - currentFriction;
-		currentAcceleration = (float)(frictionAdjustedAcceleration * (1 - (Math.Pow((Math.Abs(Velocity.X) / Speed), 3))) + currentFriction);
+		GD.Print("frictionAdjustedAcceleration: ", frictionAdjustedAcceleration);
+		if (Math.Abs(Velocity.X) <= Speed)
+		{
+			currentAcceleration = (float)(frictionAdjustedAcceleration * (1 - (Math.Pow((Math.Abs(Velocity.X) / Speed), 3))) + currentFriction);
+		}
+		else
+		{
+			currentAcceleration = (float)(frictionAdjustedAcceleration * (Math.Abs(Velocity.X) / Speed) + currentFriction);
+		}
+		GD.Print("currentAcceleration: ", currentAcceleration);
 		
 		if (!IsOnFloor()) 
 		{
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
 		}
-			
 		newVelocity.X += direction * currentAcceleration * (float)delta;
-		int currentMovingDirection;
-		if (newVelocity.X > 0.0) 
-		{
-			currentMovingDirection = 1;
-		}
-		else 
-		{
-			currentMovingDirection = -1;
-		}
+		int currentMovingDirection = Math.Sign(newVelocity.X);
 		newVelocity.X -= currentMovingDirection * currentFriction * (float)delta;
-		int newMovingDirection;
-		if (newVelocity.X > 0) 
-		{
-			newMovingDirection = 1;
-		}
-		else 
-		{
-			newMovingDirection = -1;
-		}
+		int newMovingDirection = Math.Sign(newVelocity.X);
 		if (currentMovingDirection != newMovingDirection) 
 		{
 			newVelocity.X = 0;
 		}
 		if (IsOnFloor() && Input.IsActionPressed("jump")) 
 		{
-			SlowFalling = true;
-			Jumping = true;
+			_slowFalling = true;
+			_jumping = true;
 			GetNode<Timer>("JumpTimer").Start();
 			newVelocity.Y = -BurstJumpSpeed;
 		}
-		if (SlowFalling && !(Input.IsActionPressed("jump")) || IsOnFloor()) 
+		if (_slowFalling && !(Input.IsActionPressed("jump")) || IsOnFloor()) 
 		{
-			SlowFalling = false;
+			_slowFalling = false;
 		}
-		if (SlowFalling) 
+		if (_slowFalling) 
 		{
 			currentGravity *= SlowFallMult;
 		}
-		if (Jumping) 
+		if (_jumping) 
 		{
 			if (!(Input.IsActionPressed("jump")) || GetNode<Timer>("JumpTimer").IsStopped()) 
 			{
-				Jumping = false;
+				_jumping = false;
 				if (!(GetNode<Timer>("JumpTimer").IsStopped())) 
 				{
-					newVelocity.Y /= 3;
+					newVelocity.Y /= 4;
 				}
 				GetNode<Timer>("JumpTimer").Stop();
 			}
@@ -156,7 +188,13 @@ public partial class CharacterController : CharacterBody2D
 		{
 			newVelocity.Y = 0;
 		}
-		Velocity = newVelocity;
+		return newVelocity;
+	}
+	
+	private void OnDashTimeout()
+	{
+		_dashing = false;
+		GetNode<Timer>("DashCooldown").Start();
 	}
 	
 	private void UpdateSprite() 
