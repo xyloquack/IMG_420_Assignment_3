@@ -35,6 +35,7 @@ public partial class BoidTest : Node2D
 		if (time_passed >= 1f)
 		{
 			time_passed -= 1f;
+			GD.Print(Engine.GetFramesPerSecond());
 			Vector2 newGoal;
 			newGoal.X = (float)GD.Randf() * 500 - 250;
 			newGoal.Y = (float)GD.Randf() * 500 - 250;

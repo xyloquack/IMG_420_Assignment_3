@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public partial class Boid : CharacterBody2D
 {
+	[Signal]
+	private delegate void KillEventHandler();
+	
 	[Export]
 	public float Speed;
 	[Export]
@@ -37,10 +40,10 @@ public partial class Boid : CharacterBody2D
 	
 	public void OnTimeout()
 	{
-		Kill();
+		EmitSignal("Kill");
 	}
 	
-	public void Kill()
+	public void OnKill()
 	{
 		CpuParticles2D deathParticles = DeathParticles.Instantiate<CpuParticles2D>();
 		deathParticles.Emitting = true;

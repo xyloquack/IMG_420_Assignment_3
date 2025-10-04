@@ -5,7 +5,7 @@
 
 [node name="BoidTest" type="Node2D"]
 script = ExtResource("1_jncdm")
-numBoids = 5
+numBoids = 175
 BoidScene = ExtResource("2_87mto")
 
 [node name="GoalLocation" type="Polygon2D" parent="."]
