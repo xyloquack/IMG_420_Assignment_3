@@ -12,11 +12,11 @@ public partial class HitBox : Area2D
 	{
 		if (GetParent<Boid>().Active)
 		{
-			foreach (Node2D body in GetOverlappingBodies()) 
+			foreach (Node2D area in GetOverlappingAreas()) 
 			{
-				if (body.IsInGroup(EnemyGroup))
+				if (area.IsInGroup(EnemyGroup))
 				{
-					body.EmitSignal("Damage", DamageAmount);
+					area.EmitSignal("Damage", DamageAmount);
 					GetParent<Boid>().EmitSignal("Kill");
 				}
 			}
