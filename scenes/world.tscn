@@ -1,10 +1,31 @@
-[gd_scene load_steps=49 format=3 uid="uid://vmvoolsh6ded"]
+[gd_scene load_steps=51 format=4 uid="uid://vmvoolsh6ded"]
 
 [ext_resource type="Script" uid="uid://cq0iyf7oowf1x" path="res://scripts/World.cs" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://cty42wukfwuy" path="res://scenes/player.tscn" id="1_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://debfi2qm5ug76" path="res://scenes/enemy.tscn" id="4_k0juu"]
 [ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/mountains.png" id="4_qfnet"]
 [ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/clouds.png" id="5_71j4m"]
+[ext_resource type="Texture2D" uid="uid://bder1jlr450qe" path="res://assets/platform.png" id="5_qfnet"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qfnet"]
+texture = ExtResource("5_qfnet")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 0.0286541, -10.0576, 0.0286541, -10.0003, -16)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, -0.0286541, -16, 0.0286541, -16, -16)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(10.0003, -16, 9.94303, 0.0286541, -16, -0.0286541, -16, -16)
+0:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_i7141"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_qfnet")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x2olw"]
 atlas = ExtResource("4_qfnet")
@@ -174,15 +195,17 @@ region = Rect2(70, 23, 55, 26)
 atlas = ExtResource("5_71j4m")
 region = Rect2(265, 15, 50, 41)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rwgxs"]
-size = Vector2(2000, 20)
-
 [node name="World" type="Node2D"]
 script = ExtResource("1_4wyf3")
 
 [node name="Player" parent="." instance=ExtResource("1_rwgxs")]
 z_index = 1
 position = Vector2(0, -4)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+rotation = -2.28054e-05
+tile_map_data = PackedByteArray("AADl/wEAAAACAAEAAADm/wEAAAACAAEAAADn/wEAAAACAAEAAADo/wEAAAACAAEAAADp/wEAAAACAAEAAADq/wEAAAACAAEAAADr/wEAAAACAAEAAADs/wEAAAACAAEAAADt/wEAAAACAAEAAADu/wEAAAACAAEAAADv/wEAAAACAAEAAADw/wEAAAACAAEAAADx/wEAAAACAAEAAADy/wEAAAACAAEAAADz/wEAAAACAAEAAAD0/wEAAAACAAEAAAD1/wEAAAACAAEAAAD2/wEAAAACAAEAAAD3/wEAAAACAAEAAAD4/wEAAAACAAEAAAD5/wEAAAACAAEAAAD6/wEAAAACAAEAAAD7/wEAAAACAAEAAAD8/wEAAAACAAEAAAD9/wEAAAACAAEAAAD+/wEAAAACAAEAAAD//wEAAAACAAEAAAAAAAEAAAACAAEAAAABAAEAAAACAAEAAAACAAEAAAACAAEAAAADAAEAAAACAAEAAAAEAAEAAAACAAEAAAAFAAEAAAACAAEAAAAGAAEAAAACAAEAAAAHAAEAAAACAAEAAAAIAAEAAAACAAEAAAAJAAEAAAACAAEAAAAKAAEAAAACAAEAAAALAAEAAAACAAEAAAAMAAEAAAACAAEAAAANAAEAAAACAAEAAAAOAAEAAAACAAEAAAAPAAEAAAACAAEAAAAQAAEAAAACAAEAAAARAAEAAAACAAEAAAASAAEAAAACAAEAAAATAAEAAAACAAEAAAAUAAEAAAACAAEAAAAVAAEAAAACAAEAAAAWAAEAAAACAAEAAAAXAAEAAAACAAEAAAAYAAEAAAACAAEAAAAZAAEAAAACAAEAAAAaAAEAAAABAAEAAADk/wAAAAACAAAAAADn/wAAAAABAAAAAADq/wAAAAABAAAAAADt/wAAAAABAAAAAADw/wAAAAABAAAAAADz/wAAAAABAAAAAAD2/wAAAAABAAAAAAD5/wAAAAABAAAAAAD8/wAAAAABAAAAAAD//wAAAAABAAAAAAACAAAAAAABAAAAAAAFAAAAAAABAAAAAAAIAAAAAAABAAAAAAALAAAAAAABAAAAAAAOAAAAAAABAAAAAAARAAAAAAABAAAAAAAUAAAAAAABAAAAAAAXAAAAAAABAAAAAAAaAAAAAAADAAAAAAAYAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAATAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7/wAAAAAAAAAAAAD4/wAAAAAAAAAAAAD0/wAAAAAAAAAAAADy/wAAAAAAAAAAAADv/wAAAAAAAAAAAADs/wAAAAAAAAAAAADr/wAAAAAAAAAAAADl/wAAAAAAAAAAAADo/wAAAAAAAAAAAADm/wAAAAAAAAEAAADp/wAAAAAAAAEAAADu/wAAAAAAAAEAAADx/wAAAAAAAAEAAAD1/wAAAAAAAAEAAAD3/wAAAAAAAAEAAAD6/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAD+/wAAAAAAAAEAAAABAAAAAAAAAAEAAAAEAAAAAAAAAAEAAAAGAAAAAAAAAAEAAAAJAAAAAAAAAAEAAAAMAAAAAAAAAAEAAAAQAAAAAAAAAAEAAAAVAAAAAAAAAAEAAAAZAAAAAAAAAAEAAADk/wEAAAACAAEAAADj/wEAAAACAAEAAADi/wEAAAACAAEAAADh/wEAAAADAAEAAADj/wAAAAAAAAAAAADi/wAAAAAAAAEAAADh/wAAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_i7141")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -493,13 +516,6 @@ texture = SubResource("AtlasTexture_7t5mc")
 [node name="Cloud42" type="Sprite2D" parent="ParallaxBackground/Front"]
 position = Vector2(-873, 73)
 texture = SubResource("AtlasTexture_lakw3")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, 43)
-shape = SubResource("RectangleShape2D_rwgxs")
-metadata/_edit_lock_ = true
 
 [node name="Enemy" parent="." instance=ExtResource("4_k0juu")]
 position = Vector2(133, -58)

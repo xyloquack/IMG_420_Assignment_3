@@ -116,24 +116,9 @@ public partial class CharacterController : CharacterBody2D
 		
 		if (Math.Abs(newVelocity.X) > Speed) 
 		{
-			currentFriction = (Math.Abs(newVelocity.X) / (Speed)) * (Acceleration - Friction) + Friction;
-			GD.Print("currentFriction: ", currentFriction);
+			currentAcceleration = 0;
 		}
-		else 
-		{
-			currentFriction = Friction;
-		}
-		
-		float frictionAdjustedAcceleration = currentAcceleration - currentFriction;
-		GD.Print("frictionAdjustedAcceleration: ", frictionAdjustedAcceleration);
-		if (Math.Abs(Velocity.X) <= Speed)
-		{
-			currentAcceleration = (float)(frictionAdjustedAcceleration * (1 - (Math.Pow((Math.Abs(Velocity.X) / Speed), 3))) + currentFriction);
-		}
-		else
-		{
-			currentAcceleration = (float)(frictionAdjustedAcceleration * (Math.Abs(Velocity.X) / Speed) + currentFriction);
-		}
+		GD.Print("currentFriction: ", currentFriction);
 		GD.Print("currentAcceleration: ", currentAcceleration);
 		
 		if (!IsOnFloor()) 
@@ -141,7 +126,7 @@ public partial class CharacterController : CharacterBody2D
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
 		}
-		newVelocity.X += direction * currentAcceleration * (float)delta;
+		newVelocity.X += (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta;
 		int currentMovingDirection = Math.Sign(newVelocity.X);
 		newVelocity.X -= currentMovingDirection * currentFriction * (float)delta;
 		int newMovingDirection = Math.Sign(newVelocity.X);
