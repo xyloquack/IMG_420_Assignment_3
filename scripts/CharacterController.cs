@@ -204,15 +204,21 @@ public partial class CharacterController : CharacterBody2D
 		newOffset.Y = (float)(4 * Math.Sin(TimePassed * 2.5) - 4);
 		_playerSprite.Offset = newOffset;
 		
-		_playerSprite.Stop();
-		int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount("walk");
-		int newFrame = (int)Math.Floor(numFrames * (Math.Abs(Velocity.X) / Speed));
-		if (newFrame >= numFrames) 
+		if (_dashing)
 		{
-			newFrame = numFrames - 1;
+			_playerSprite.SetFrame(_playerSprite.GetSpriteFrames().GetFrameCount("walk") - 1);
 		}
-		_playerSprite.SetFrame(newFrame);
-		
+		else
+		{
+			_playerSprite.Stop();
+			int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount("walk") - 1;
+			int newFrame = (int)Math.Floor(numFrames * (Math.Abs(Velocity.X) / Speed));
+			if (newFrame >= numFrames) 
+			{
+				newFrame = numFrames - 1;
+			}
+			_playerSprite.SetFrame(newFrame);
+		}
 		if (Velocity.X < 0) 
 		{
 			_playerSprite.FlipH = true;
@@ -221,6 +227,7 @@ public partial class CharacterController : CharacterBody2D
 		{
 			_playerSprite.FlipH = false;
 		}
+		
 	}
 	
 	private void AttemptBoidSpawn() 

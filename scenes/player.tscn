@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=15 format=3 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/the_man_sheet.png" id="2_i3pqv"]
@@ -36,6 +36,10 @@ region = Rect2(64, 64, 64, 64)
 atlas = ExtResource("2_i3pqv")
 region = Rect2(128, 64, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
+atlas = ExtResource("2_i3pqv")
+region = Rect2(192, 64, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_hqtel"]
 animations = [{
 "frames": [{
@@ -67,6 +71,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_smehm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur7pv")
 }],
 "loop": true,
 "name": &"walk",
@@ -79,7 +86,7 @@ height = 50.0
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
 Speed = 300.0
-DashSpeed = 800.0
+DashSpeed = 1000.0
 Acceleration = 4000.0
 AirAccelerationMult = 1.0
 Friction = 2000.0
@@ -116,7 +123,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="DashTimer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.25
 one_shot = true
 
 [node name="DashCooldown" type="Timer" parent="."]
