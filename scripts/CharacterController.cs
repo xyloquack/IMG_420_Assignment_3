@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public partial class CharacterController : CharacterBody2D
 {
+	
 	[Export]
 	public int MaxHealth;
 	[Export]
@@ -36,6 +37,7 @@ public partial class CharacterController : CharacterBody2D
 	public List<Boid> Boids = [];
 	public int NumBoids;
 	public int Health;
+	private Vector2 _bufferSpeed;
 	private bool _slowFalling;
 	private bool _jumping;
 	private bool _dashing;
@@ -51,6 +53,7 @@ public partial class CharacterController : CharacterBody2D
 		TimePassed = 0.0;
 		TimeSinceLastAttack = 0.0;
 		NumBoids = 0;
+		_bufferSpeed = Vector2.Zero;
 		_slowFalling = false;
 		_dashing = false; 
 		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
@@ -106,7 +109,22 @@ public partial class CharacterController : CharacterBody2D
 			Velocity = newVelocity;
 			_dashTimer.Start();
 		}
-		if (!_dashing)
+		if (_dashing)
+		{
+			if (!IsOnFloor())
+			{
+				Vector2 newVelocity = Velocity;
+				newVelocity.Y += Gravity / 2 * (float)delta;
+				Velocity = newVelocity;
+			}
+			else
+			{
+				Vector2 newVelocity = Velocity;
+				newVelocity.Y = 0;
+				Velocity = newVelocity;
+			}
+		}
+		else
 		{
 			Velocity = WalkingVelocity(delta);
 		}
@@ -192,6 +210,13 @@ public partial class CharacterController : CharacterBody2D
 	{
 		_dashing = false;
 		_dashCooldown.Start();
+		if (_bufferSpeed != Vector2.Zero)
+		{
+			Vector2 newVelocity = Velocity;
+			newVelocity += _bufferSpeed;
+			Velocity = newVelocity;
+			_bufferSpeed = Vector2.Zero;
+		}
 	}
 	
 	private void UpdateSprite() 
@@ -281,8 +306,15 @@ public partial class CharacterController : CharacterBody2D
 			velocityChange -= (mousePosition - GlobalPosition).Normalized();
 			velocityChange.X *= 1100 * (NumBoids / MaxBoids);
 			velocityChange.Y *= 600 * (NumBoids / MaxBoids);
-			Vector2 newVelocity = Velocity + velocityChange;
-			Velocity = newVelocity;
+			if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
+			{
+				_bufferSpeed = velocityChange;
+			}
+			else
+			{
+				Vector2 newVelocity = Velocity + velocityChange;
+				Velocity = newVelocity;
+			}
 			NumBoids = 0;
 			Boids = [];
 			_attackCooldown.Start();
