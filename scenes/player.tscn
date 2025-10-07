@@ -118,7 +118,7 @@ process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
 
-[node name="HurtBox" type="Area2D" parent="."]
+[node name="HurtBox" type="Area2D" parent="." groups=["player"]]
 script = ExtResource("4_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
@@ -142,4 +142,9 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="timeout" from="DashTimer" to="." method="OnDashTimeout"]

@@ -59,7 +59,6 @@ public partial class Enemy : CharacterBody2D
 		{
 			Idle(delta);
 		}
-		GD.Print(Velocity);
 		MoveAndSlide();
 	}
 	

@@ -40,6 +40,11 @@ public partial class CharacterController : CharacterBody2D
 	private bool _jumping;
 	private bool _dashing;
 	private AnimatedSprite2D _playerSprite;
+	private Timer _invulnerabilityTimer;
+	private Timer _dashTimer;
+	private Timer _dashCooldown;
+	private Timer _jumpTimer;
+	private Timer _attackCooldown;
 	
 	public override void _Ready() 
 	{
@@ -47,8 +52,13 @@ public partial class CharacterController : CharacterBody2D
 		TimeSinceLastAttack = 0.0;
 		NumBoids = 0;
 		_slowFalling = false;
-		_dashing = false;
+		_dashing = false; 
 		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+		_invulnerabilityTimer = GetNode<Timer>("InvulnerabilityTimer");
+		_dashTimer = GetNode<Timer>("DashTimer");
+		_dashCooldown = GetNode<Timer>("DashCooldown");
+		_jumpTimer = GetNode<Timer>("JumpTimer");
+		_attackCooldown = GetNode<Timer>("AttackCooldown");
 		Health = MaxHealth;
 	}
 	
@@ -69,7 +79,7 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void UpdateVelocity(double delta) 
 	{
-		if (Input.IsActionPressed("dash") && GetNode<Timer>("DashTimer").IsStopped() && GetNode<Timer>("DashCooldown").IsStopped())
+		if (Input.IsActionPressed("dash") && _dashTimer.IsStopped() && _dashCooldown.IsStopped())
 		{
 			_dashing = true;
 			int direction = 0;
@@ -94,7 +104,7 @@ public partial class CharacterController : CharacterBody2D
 			}
 			Vector2 newVelocity = new Vector2(DashSpeed * direction, 0);
 			Velocity = newVelocity;
-			GetNode<Timer>("DashTimer").Start();
+			_dashTimer.Start();
 		}
 		if (!_dashing)
 		{
@@ -140,7 +150,7 @@ public partial class CharacterController : CharacterBody2D
 		{
 			_slowFalling = true;
 			_jumping = true;
-			GetNode<Timer>("JumpTimer").Start();
+			_jumpTimer.Start();
 			newVelocity.Y = -BurstJumpSpeed;
 		}
 		if (_slowFalling && !(Input.IsActionPressed("jump")) || IsOnFloor()) 
@@ -153,14 +163,14 @@ public partial class CharacterController : CharacterBody2D
 		}
 		if (_jumping) 
 		{
-			if (!(Input.IsActionPressed("jump")) || GetNode<Timer>("JumpTimer").IsStopped()) 
+			if (!(Input.IsActionPressed("jump")) || _jumpTimer.IsStopped()) 
 			{
 				_jumping = false;
-				if (!(GetNode<Timer>("JumpTimer").IsStopped())) 
+				if (!(_jumpTimer.IsStopped())) 
 				{
 					newVelocity.Y /= 4;
 				}
-				GetNode<Timer>("JumpTimer").Stop();
+				_jumpTimer.Stop();
 			}
 			else 
 			{
@@ -181,7 +191,7 @@ public partial class CharacterController : CharacterBody2D
 	private void OnDashTimeout()
 	{
 		_dashing = false;
-		GetNode<Timer>("DashCooldown").Start();
+		_dashCooldown.Start();
 	}
 	
 	private void UpdateSprite() 
@@ -253,7 +263,7 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void Attack() 
 	{
-		if (GetNode<Timer>("AttackCooldown").IsStopped() && NumBoids > 0)
+		if (_attackCooldown.IsStopped() && NumBoids > 0)
 		{
 			TimeSinceLastAttack = 0;
 			Vector2 mousePosition = GetGlobalMousePosition();
@@ -275,12 +285,17 @@ public partial class CharacterController : CharacterBody2D
 			Velocity = newVelocity;
 			NumBoids = 0;
 			Boids = [];
-			GetNode<Timer>("AttackCooldown").Start();
+			_attackCooldown.Start();
 		}
 	}
 	
 	private void OnDamage(float damage)
 	{
-		Health -= (int)damage;
+		if (_invulnerabilityTimer.IsStopped())
+		{
+			Health -= (int)damage;
+			GD.Print(Health);
+			_invulnerabilityTimer.Start();
+		}
 	}
 }
