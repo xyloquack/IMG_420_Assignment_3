@@ -83,14 +83,14 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
 height = 50.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
 Speed = 300.0
 DashSpeed = 1000.0
 Acceleration = 4000.0
 AirAccelerationMult = 1.0
 Friction = 2000.0
-AirFrictionMult = 0.7
+AirFrictionMult = 0.4
 JumpSpeed = 350.0
 BurstJumpSpeed = 1000.0
 Gravity = 1200.0

@@ -118,17 +118,15 @@ public partial class CharacterController : CharacterBody2D
 		{
 			currentAcceleration = 0;
 		}
-		GD.Print("currentFriction: ", currentFriction);
-		GD.Print("currentAcceleration: ", currentAcceleration);
 		
 		if (!IsOnFloor()) 
 		{
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
 		}
-		newVelocity.X += (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta;
+		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X + (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta, 0.55f);
 		int currentMovingDirection = Math.Sign(newVelocity.X);
-		newVelocity.X -= currentMovingDirection * currentFriction * (float)delta;
+		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X - currentMovingDirection * currentFriction * (float)delta, 0.55f);
 		int newMovingDirection = Math.Sign(newVelocity.X);
 		if (currentMovingDirection != newMovingDirection) 
 		{
@@ -162,7 +160,7 @@ public partial class CharacterController : CharacterBody2D
 			}
 			else 
 			{
-				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.35);
+				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.25);
 			}
 		}
 		else if (!IsOnFloor())
@@ -253,7 +251,6 @@ public partial class CharacterController : CharacterBody2D
 	{
 		if (GetNode<Timer>("AttackCooldown").IsStopped() && NumBoids > 0)
 		{
-			NumBoids = 0;
 			TimeSinceLastAttack = 0;
 			Vector2 mousePosition = GetGlobalMousePosition();
 			foreach (Boid boid in Boids)
@@ -266,6 +263,13 @@ public partial class CharacterController : CharacterBody2D
 				boid.GoalSeekingTurnAmount = 3f;
 				boid.Active = true;
 			}
+			Vector2 velocityChange = Vector2.Zero;
+			velocityChange -= (mousePosition - GlobalPosition).Normalized();
+			velocityChange.X *= 1100 * (NumBoids / MaxBoids);
+			velocityChange.Y *= 600 * (NumBoids / MaxBoids);
+			Vector2 newVelocity = Velocity + velocityChange;
+			Velocity = newVelocity;
+			NumBoids = 0;
 			Boids = [];
 			GetNode<Timer>("AttackCooldown").Start();
 		}
