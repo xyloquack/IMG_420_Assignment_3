@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public partial class CharacterController : CharacterBody2D
 {
 	[Export]
+	public int MaxHealth;
+	[Export]
 	public float Speed;
 	[Export]
 	public float DashSpeed;
@@ -33,6 +35,7 @@ public partial class CharacterController : CharacterBody2D
 	public double TimeSinceLastAttack;
 	public List<Boid> Boids = [];
 	public int NumBoids;
+	public int Health;
 	private bool _slowFalling;
 	private bool _jumping;
 	private bool _dashing;
@@ -46,6 +49,7 @@ public partial class CharacterController : CharacterBody2D
 		_slowFalling = false;
 		_dashing = false;
 		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+		Health = MaxHealth;
 	}
 	
 	public override void _PhysicsProcess(double delta) 
@@ -273,5 +277,10 @@ public partial class CharacterController : CharacterBody2D
 			Boids = [];
 			GetNode<Timer>("AttackCooldown").Start();
 		}
+	}
+	
+	private void OnDamage(float damage)
+	{
+		Health -= (int)damage;
 	}
 }

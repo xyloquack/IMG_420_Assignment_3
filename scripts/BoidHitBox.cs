@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class HitBox : Area2D
+public partial class BoidHitBox : Area2D
 {
 	[Export]
 	public string EnemyGroup;

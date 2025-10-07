@@ -34,7 +34,7 @@ public partial class Boid : CharacterBody2D
 	
 	override public void _Ready() 
 	{
-		GetNode<HitBox>("HitBox").DamageAmount = DamageAmount;
+		GetNode<BoidHitBox>("HitBox").DamageAmount = DamageAmount;
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Add(this);
 	}
 	

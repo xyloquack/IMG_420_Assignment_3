@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/Boid.cs" id="1_0n3de"]
 [ext_resource type="Texture2D" uid="uid://cktcyar0qedtq" path="res://assets/boid.png" id="2_5r8tn"]
-[ext_resource type="Script" uid="uid://bfahr6pxlr4jq" path="res://scripts/HitBox.cs" id="2_vrn0v"]
+[ext_resource type="Script" uid="uid://bfahr6pxlr4jq" path="res://scripts/BoidHitBox.cs" id="2_vrn0v"]
 [ext_resource type="PackedScene" uid="uid://cbutm3ronp617" path="res://scenes/boid_death_particles.tscn" id="4_0n3de"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i32he"]

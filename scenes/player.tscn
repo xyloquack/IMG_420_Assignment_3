@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=17 format=3 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/the_man_sheet.png" id="2_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="4_dqkch"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
 atlas = ExtResource("2_i3pqv")
@@ -83,8 +84,13 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sweqy"]
 height = 50.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
+radius = 8.0
+height = 46.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
+MaxHealth = 10
 Speed = 300.0
 DashSpeed = 1000.0
 Acceleration = 4000.0
@@ -111,6 +117,12 @@ position = Vector2(0, -100)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
+
+[node name="HurtBox" type="Area2D" parent="."]
+script = ExtResource("4_dqkch")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CapsuleShape2D_qhqgy")
 
 [node name="JumpTimer" type="Timer" parent="."]
 wait_time = 0.2
