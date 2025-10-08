@@ -152,6 +152,7 @@ wait_time = 0.2
 one_shot = true
 
 [node name="HUD" parent="." instance=ExtResource("5_qlg0r")]
+layer = 0
 
 [connection signal="Respawn" from="." to="." method="OnRespawn"]
 [connection signal="SetRespawn" from="." to="." method="OnSetRespawn"]
