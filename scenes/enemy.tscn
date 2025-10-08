@@ -41,7 +41,7 @@ HorizontalSpeed = 500.0
 RandomHSpeedOffset = 200.0
 VerticalSpeed = 200.0
 RandomVSpeedOffset = 150.0
-TargetHeight = -200.0
+TargetHeight = -50.0
 Gravity = 800.0
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]

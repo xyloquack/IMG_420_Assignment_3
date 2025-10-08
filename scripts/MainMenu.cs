@@ -11,7 +11,7 @@ public partial class MainMenu : Control
 	{
 		Input.SetMouseMode(Input.MouseModeEnum.Hidden);
 		_camera = GetNode<Camera2D>("Camera2D");
-		_cursor = GetNode<Sprite2D>("Cursor");
+		_cursor = GetNode<Sprite2D>("Cursor/Cursor");
 	}
 	
 	override public void _Process(double delta)

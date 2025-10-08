@@ -5,13 +5,17 @@ public partial class Hud : CanvasLayer
 {
 	public CharacterController Player;
 	private Sprite2D _cursor;
-	private ShaderMaterial _shaderMat;
+	private Sprite2D _innerHealth;
+	private ShaderMaterial _cursorShaderMat;
+	private ShaderMaterial _innerHealthShaderMat;
 	
 	override public void _Ready()
 	{
 		Player = GetParent<CharacterController>();
 		_cursor = GetNode<Sprite2D>("Cursor");
-		_shaderMat = (ShaderMaterial)_cursor.Material;
+		_innerHealth = GetNode<Sprite2D>("Health/InnerHealth");
+		_cursorShaderMat = (ShaderMaterial)_cursor.Material;
+		_innerHealthShaderMat = (ShaderMaterial)_innerHealth.Material;
 	}
 	
 	override public void _Process(double delta)
@@ -21,8 +25,9 @@ public partial class Hud : CanvasLayer
 	
 	override public void _PhysicsProcess(double delta)
 	{
-		float percentFull = (float)(((float)Player.NumBoids / (float)Player.MaxBoids));
-		GD.Print(percentFull);
-		_shaderMat.SetShaderParameter("percentFull", percentFull);
+		float cursorPercentFull = (float)(((float)Player.NumBoids / (float)Player.MaxBoids));
+		float healthPercentFull = (float)(((float)Player.Health / (float)Player.MaxHealth));
+		_cursorShaderMat.SetShaderParameter("percentFull", cursorPercentFull);
+		_innerHealthShaderMat.SetShaderParameter("healthPercent", healthPercentFull);
 	}
 }

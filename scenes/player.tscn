@@ -149,5 +149,7 @@ one_shot = true
 
 [node name="HUD" parent="." instance=ExtResource("5_qlg0r")]
 
+[connection signal="Respawn" from="." to="." method="OnRespawn"]
+[connection signal="SetRespawn" from="." to="." method="OnSetRespawn"]
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="timeout" from="DashTimer" to="." method="OnDashTimeout"]

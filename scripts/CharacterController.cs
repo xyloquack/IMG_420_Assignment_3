@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public partial class CharacterController : CharacterBody2D
 {
+	[Signal]
+	public delegate void SetRespawnEventHandler(Vector2 position);
+	[Signal]
+	public delegate void RespawnEventHandler();
 	
 	[Export]
 	public int MaxHealth;
@@ -47,6 +51,7 @@ public partial class CharacterController : CharacterBody2D
 	private Timer _dashCooldown;
 	private Timer _jumpTimer;
 	private Timer _attackCooldown;
+	private Vector2 _respawnPoint;
 	
 	public override void _Ready() 
 	{
@@ -63,6 +68,7 @@ public partial class CharacterController : CharacterBody2D
 		_jumpTimer = GetNode<Timer>("JumpTimer");
 		_attackCooldown = GetNode<Timer>("AttackCooldown");
 		Health = MaxHealth;
+		_respawnPoint = GlobalPosition;
 	}
 	
 	public override void _PhysicsProcess(double delta) 
@@ -329,5 +335,15 @@ public partial class CharacterController : CharacterBody2D
 			GD.Print(Health);
 			_invulnerabilityTimer.Start();
 		}
+	}
+	
+	private void OnSetRespawn(Vector2 position)
+	{
+		_respawnPoint = position;
+	}
+	
+	private void OnRespawn()
+	{
+		GlobalPosition = _respawnPoint;
 	}
 }
