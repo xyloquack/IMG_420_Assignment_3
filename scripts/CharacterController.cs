@@ -326,8 +326,8 @@ public partial class CharacterController : CharacterBody2D
 			}
 			Vector2 velocityChange = Vector2.Zero;
 			velocityChange -= (mousePosition - GlobalPosition).Normalized();
-			velocityChange.X *= 1100 * (NumBoids / MaxBoids);
-			velocityChange.Y *= 600 * (NumBoids / MaxBoids);
+			velocityChange.X *= 1100 * ((float)NumBoids / (float)MaxBoids);
+			velocityChange.Y *= 600 * ((float)NumBoids / (float)MaxBoids);
 			if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
 			{
 				_bufferSpeed = velocityChange;
