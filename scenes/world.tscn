@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=4 uid="uid://vmvoolsh6ded"]
+[gd_scene load_steps=63 format=4 uid="uid://vmvoolsh6ded"]
 
 [ext_resource type="Script" uid="uid://cq0iyf7oowf1x" path="res://scripts/World.cs" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://cty42wukfwuy" path="res://scenes/player.tscn" id="1_rwgxs"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/mountains.png" id="4_qfnet"]
 [ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/clouds.png" id="5_71j4m"]
 [ext_resource type="Texture2D" uid="uid://dyohpamuav40h" path="res://assets/particle.png" id="7_i7141"]
+[ext_resource type="PackedScene" uid="uid://dmvr83c5gd7cw" path="res://scenes/pause_screen.tscn" id="8_4mrxx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qfnet"]
 texture = ExtResource("3_qfnet")
@@ -988,3 +989,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.537255, 0.639216, 0.760784, 0.235294)
+
+[node name="PauseScreen" parent="." instance=ExtResource("8_4mrxx")]
+layer = 3
+visible = false

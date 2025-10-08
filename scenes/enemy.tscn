@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://vrwbmwawsyby" path="res://assets/bird_enemy.png" id="1_7p1mj"]
 [ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="2_5uy6h"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="2_md0e3"]
-[ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scenes/HitBox.cs" id="4_c4w8v"]
+[ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_c4w8v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c4w8v"]
 shader = ExtResource("2_5uy6h")

@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=18 format=3 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/the_man_sheet.png" id="2_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_qhqgy"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="4_dqkch"]
+[ext_resource type="PackedScene" uid="uid://c1ifyulebswpo" path="res://scenes/hud.tscn" id="5_qlg0r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
 atlas = ExtResource("2_i3pqv")
@@ -145,6 +146,8 @@ one_shot = true
 [node name="InvulnerabilityTimer" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
+
+[node name="HUD" parent="." instance=ExtResource("5_qlg0r")]
 
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="timeout" from="DashTimer" to="." method="OnDashTimeout"]

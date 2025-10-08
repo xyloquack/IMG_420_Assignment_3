@@ -192,7 +192,7 @@ public partial class CharacterController : CharacterBody2D
 			}
 			else 
 			{
-				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.25);
+				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.15);
 			}
 		}
 		else if (!IsOnFloor())

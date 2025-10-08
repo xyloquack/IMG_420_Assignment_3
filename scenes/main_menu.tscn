@@ -1,0 +1,1114 @@
+[gd_scene load_steps=68 format=3 uid="uid://mn86qcay6nmo"]
+
+[ext_resource type="Script" uid="uid://bqtsw2kfthw8f" path="res://scripts/MainMenu.cs" id="1_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/clouds.png" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/mountains.png" id="2_bqqt6"]
+[ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="2_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="3_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://e8cktylw54k2" path="res://assets/title.png" id="4_wu84c"]
+[ext_resource type="Texture2D" uid="uid://exixpj4ckpb1" path="res://assets/play_button.png" id="5_8ln24"]
+[ext_resource type="Texture2D" uid="uid://b783614fifwni" path="res://assets/quit_button.png" id="6_rtw2f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5dd4i"]
+shader = ExtResource("2_tbmy8")
+shader_parameter/percentFull = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wu84c"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(199, 30, 54, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ln24"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtw2f"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oa1go"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbmy8"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jk1qb"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dd4i"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgwnu"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flqon"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcqid"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ajci"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b55j"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pajh"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7ex8"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8gd2"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hstxw"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8egab"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gw5y6"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svtp6"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dfpl"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qywvv"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wgol"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1acrt"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vr8o3"]
+atlas = ExtResource("1_ekxnf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1a85y"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hl5e0"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_engjn"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6h3lr"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dj67d"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vcge"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ip0br"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyero"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcusk"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4puye"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q13xq"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u43bj"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvjdd"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxnar"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eku7s"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6nra"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qw82i"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1468l"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_01xyg"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_764ux"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wadof"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4jiv"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68b7m"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vanrq"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ybca7"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5xsf"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71lbq"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akqfu"]
+atlas = ExtResource("2_bqqt6")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mb34c"]
+atlas = ExtResource("5_8ln24")
+region = Rect2(0, 0, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgh51"]
+atlas = ExtResource("5_8ln24")
+region = Rect2(0, 64, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjv1c"]
+atlas = ExtResource("5_8ln24")
+region = Rect2(0, 32, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41a2d"]
+atlas = ExtResource("6_rtw2f")
+region = Rect2(0, 0, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5cck"]
+atlas = ExtResource("6_rtw2f")
+region = Rect2(0, 64, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4ogs"]
+atlas = ExtResource("6_rtw2f")
+region = Rect2(0, 32, 64, 32)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bqqt6")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_5dd4i")
+position = Vector2(620, 340)
+texture = ExtResource("3_jk1qb")
+offset = Vector2(6, 6)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(532, -40)
+ignore_rotation = false
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -128
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+z_as_relative = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 1)
+metadata/_edit_lock_ = true
+
+[node name="Clouds" type="ParallaxBackground" parent="."]
+layer = -102
+
+[node name="Back" type="ParallaxLayer" parent="Clouds"]
+position = Vector2(0, 14)
+motion_scale = Vector2(0.07, 0.07)
+metadata/_edit_lock_ = true
+
+[node name="Cloud" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1849, 162.5)
+texture = SubResource("AtlasTexture_wu84c")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud2" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1769, 197.5)
+texture = SubResource("AtlasTexture_8ln24")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud3" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-383.5, 102.5)
+texture = SubResource("AtlasTexture_rtw2f")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud4" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-377.5, 163.5)
+texture = SubResource("AtlasTexture_oa1go")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud5" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-155.5, 126.5)
+texture = SubResource("AtlasTexture_tbmy8")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud6" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-26.5, 106.5)
+texture = SubResource("AtlasTexture_jk1qb")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud7" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(102.5, 105.5)
+texture = SubResource("AtlasTexture_5dd4i")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud8" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1692, 137.5)
+texture = SubResource("AtlasTexture_lgwnu")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud9" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-72.5, 156.5)
+texture = SubResource("AtlasTexture_flqon")
+metadata/_edit_lock_ = true
+
+[node name="Cloud10" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1607, 132.5)
+texture = SubResource("AtlasTexture_rcqid")
+metadata/_edit_lock_ = true
+
+[node name="Cloud11" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1672, 191.5)
+texture = SubResource("AtlasTexture_1ajci")
+metadata/_edit_lock_ = true
+
+[node name="Cloud12" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1600, 193.5)
+texture = SubResource("AtlasTexture_7b55j")
+metadata/_edit_lock_ = true
+
+[node name="Cloud13" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(189.5, 107.5)
+texture = SubResource("AtlasTexture_5pajh")
+metadata/_edit_lock_ = true
+
+[node name="Cloud14" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(237.5, 193.5)
+texture = SubResource("AtlasTexture_j7ex8")
+metadata/_edit_lock_ = true
+
+[node name="Cloud15" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(144.5, 162.5)
+texture = SubResource("AtlasTexture_a8gd2")
+metadata/_edit_lock_ = true
+
+[node name="Cloud16" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(263.5, 141.5)
+texture = SubResource("AtlasTexture_hstxw")
+metadata/_edit_lock_ = true
+
+[node name="Cloud17" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(352, 108)
+texture = SubResource("AtlasTexture_8egab")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud18" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(31.5, 144.5)
+texture = SubResource("AtlasTexture_gw5y6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud19" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-268.5, 158.5)
+texture = SubResource("AtlasTexture_svtp6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud20" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1840, 215.5)
+texture = SubResource("AtlasTexture_1dfpl")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud21" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-234.5, 109.5)
+texture = SubResource("AtlasTexture_qywvv")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud22" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(-317.5, 102.5)
+texture = SubResource("AtlasTexture_3wgol")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud23" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1777, 141.5)
+texture = SubResource("AtlasTexture_1acrt")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud24" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1538, 168.5)
+texture = SubResource("AtlasTexture_vr8o3")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud25" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(670, 151.5)
+texture = SubResource("AtlasTexture_wu84c")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud26" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(590, 186.5)
+texture = SubResource("AtlasTexture_8ln24")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud27" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(731, 128.5)
+texture = SubResource("AtlasTexture_rtw2f")
+metadata/_edit_lock_ = true
+
+[node name="Cloud28" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(737, 189.5)
+texture = SubResource("AtlasTexture_oa1go")
+metadata/_edit_lock_ = true
+
+[node name="Cloud29" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(347, 183)
+texture = SubResource("AtlasTexture_tbmy8")
+metadata/_edit_lock_ = true
+
+[node name="Cloud30" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(513, 126.5)
+texture = SubResource("AtlasTexture_lgwnu")
+metadata/_edit_lock_ = true
+
+[node name="Cloud31" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(428, 121.5)
+texture = SubResource("AtlasTexture_rcqid")
+metadata/_edit_lock_ = true
+
+[node name="Cloud32" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(493, 180.5)
+texture = SubResource("AtlasTexture_1ajci")
+metadata/_edit_lock_ = true
+
+[node name="Cloud33" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(421, 182.5)
+texture = SubResource("AtlasTexture_7b55j")
+metadata/_edit_lock_ = true
+
+[node name="Cloud34" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(846, 184.5)
+texture = SubResource("AtlasTexture_svtp6")
+metadata/_edit_lock_ = true
+
+[node name="Cloud35" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(661, 204.5)
+texture = SubResource("AtlasTexture_1dfpl")
+metadata/_edit_lock_ = true
+
+[node name="Cloud36" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(924, 144)
+texture = SubResource("AtlasTexture_qywvv")
+metadata/_edit_lock_ = true
+
+[node name="Cloud37" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(797, 128.5)
+texture = SubResource("AtlasTexture_3wgol")
+metadata/_edit_lock_ = true
+
+[node name="Cloud38" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(598, 130.5)
+texture = SubResource("AtlasTexture_1acrt")
+metadata/_edit_lock_ = true
+
+[node name="Cloud39" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(996.5, 165)
+texture = SubResource("AtlasTexture_wu84c")
+metadata/_edit_lock_ = true
+
+[node name="Cloud40" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1057.5, 142)
+texture = SubResource("AtlasTexture_rtw2f")
+metadata/_edit_lock_ = true
+
+[node name="Cloud41" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1063.5, 203)
+texture = SubResource("AtlasTexture_oa1go")
+metadata/_edit_lock_ = true
+
+[node name="Cloud42" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1285.5, 166)
+texture = SubResource("AtlasTexture_tbmy8")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud43" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1414.5, 146)
+texture = SubResource("AtlasTexture_jk1qb")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud44" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1368.5, 196)
+texture = SubResource("AtlasTexture_flqon")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud45" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1472.5, 184)
+texture = SubResource("AtlasTexture_gw5y6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud46" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1172.5, 198)
+texture = SubResource("AtlasTexture_svtp6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud47" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(987.5, 218)
+texture = SubResource("AtlasTexture_1dfpl")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud48" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1206.5, 149)
+texture = SubResource("AtlasTexture_qywvv")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud49" type="Sprite2D" parent="Clouds/Back"]
+position = Vector2(1123.5, 142)
+texture = SubResource("AtlasTexture_3wgol")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Front" type="ParallaxLayer" parent="Clouds"]
+position = Vector2(0, -148)
+motion_scale = Vector2(0.1, 0.1)
+metadata/_edit_lock_ = true
+
+[node name="Cloud" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(352, 177)
+texture = SubResource("AtlasTexture_wu84c")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud2" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(272, 212)
+texture = SubResource("AtlasTexture_8ln24")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud3" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(413, 154)
+texture = SubResource("AtlasTexture_rtw2f")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud4" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(419, 215)
+texture = SubResource("AtlasTexture_oa1go")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud5" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(641, 178)
+texture = SubResource("AtlasTexture_tbmy8")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud6" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(770, 158)
+texture = SubResource("AtlasTexture_jk1qb")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud7" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(899, 157)
+texture = SubResource("AtlasTexture_5dd4i")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud8" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(195, 152)
+texture = SubResource("AtlasTexture_lgwnu")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud9" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(724, 208)
+texture = SubResource("AtlasTexture_flqon")
+metadata/_edit_lock_ = true
+
+[node name="Cloud10" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(110, 147)
+texture = SubResource("AtlasTexture_rcqid")
+metadata/_edit_lock_ = true
+
+[node name="Cloud11" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(175, 206)
+texture = SubResource("AtlasTexture_1ajci")
+metadata/_edit_lock_ = true
+
+[node name="Cloud12" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(103, 208)
+texture = SubResource("AtlasTexture_7b55j")
+metadata/_edit_lock_ = true
+
+[node name="Cloud13" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(986, 159)
+texture = SubResource("AtlasTexture_5pajh")
+metadata/_edit_lock_ = true
+
+[node name="Cloud14" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1034, 245)
+texture = SubResource("AtlasTexture_j7ex8")
+metadata/_edit_lock_ = true
+
+[node name="Cloud15" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(941, 214)
+texture = SubResource("AtlasTexture_a8gd2")
+metadata/_edit_lock_ = true
+
+[node name="Cloud16" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1060, 193)
+texture = SubResource("AtlasTexture_hstxw")
+metadata/_edit_lock_ = true
+
+[node name="Cloud17" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1136, 161)
+texture = SubResource("AtlasTexture_8egab")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud18" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(828, 196)
+texture = SubResource("AtlasTexture_gw5y6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud19" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(528, 210)
+texture = SubResource("AtlasTexture_svtp6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud20" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(343, 230)
+texture = SubResource("AtlasTexture_1dfpl")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud21" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(562, 161)
+texture = SubResource("AtlasTexture_qywvv")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud22" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(479, 154)
+texture = SubResource("AtlasTexture_3wgol")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud23" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(280, 156)
+texture = SubResource("AtlasTexture_1acrt")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud24" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(41, 183)
+texture = SubResource("AtlasTexture_vr8o3")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud25" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1454, 204.5)
+texture = SubResource("AtlasTexture_wu84c")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud26" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1374, 239.5)
+texture = SubResource("AtlasTexture_8ln24")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud27" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1515, 181.5)
+texture = SubResource("AtlasTexture_rtw2f")
+metadata/_edit_lock_ = true
+
+[node name="Cloud28" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1521, 242.5)
+texture = SubResource("AtlasTexture_oa1go")
+metadata/_edit_lock_ = true
+
+[node name="Cloud29" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1131, 236)
+texture = SubResource("AtlasTexture_tbmy8")
+metadata/_edit_lock_ = true
+
+[node name="Cloud30" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1297, 179.5)
+texture = SubResource("AtlasTexture_lgwnu")
+metadata/_edit_lock_ = true
+
+[node name="Cloud31" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1212, 174.5)
+texture = SubResource("AtlasTexture_rcqid")
+metadata/_edit_lock_ = true
+
+[node name="Cloud32" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1277, 233.5)
+texture = SubResource("AtlasTexture_1ajci")
+metadata/_edit_lock_ = true
+
+[node name="Cloud33" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1205, 235.5)
+texture = SubResource("AtlasTexture_7b55j")
+metadata/_edit_lock_ = true
+
+[node name="Cloud34" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1630, 237.5)
+texture = SubResource("AtlasTexture_svtp6")
+metadata/_edit_lock_ = true
+
+[node name="Cloud35" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1445, 257.5)
+texture = SubResource("AtlasTexture_1dfpl")
+metadata/_edit_lock_ = true
+
+[node name="Cloud36" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1708, 197)
+texture = SubResource("AtlasTexture_qywvv")
+metadata/_edit_lock_ = true
+
+[node name="Cloud37" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1581, 181.5)
+texture = SubResource("AtlasTexture_3wgol")
+metadata/_edit_lock_ = true
+
+[node name="Cloud38" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(1382, 183.5)
+texture = SubResource("AtlasTexture_1acrt")
+metadata/_edit_lock_ = true
+
+[node name="Cloud39" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-500.5, 179.5)
+texture = SubResource("AtlasTexture_wu84c")
+metadata/_edit_lock_ = true
+
+[node name="Cloud40" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-439.5, 156.5)
+texture = SubResource("AtlasTexture_rtw2f")
+metadata/_edit_lock_ = true
+
+[node name="Cloud41" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-433.5, 217.5)
+texture = SubResource("AtlasTexture_oa1go")
+metadata/_edit_lock_ = true
+
+[node name="Cloud42" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-211.5, 180.5)
+texture = SubResource("AtlasTexture_tbmy8")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud43" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-82.5, 160.5)
+texture = SubResource("AtlasTexture_jk1qb")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud44" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-128.5, 210.5)
+texture = SubResource("AtlasTexture_flqon")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud45" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-24.5, 198.5)
+texture = SubResource("AtlasTexture_gw5y6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud46" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-324.5, 212.5)
+texture = SubResource("AtlasTexture_svtp6")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud47" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-509.5, 232.5)
+texture = SubResource("AtlasTexture_1dfpl")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud48" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-290.5, 163.5)
+texture = SubResource("AtlasTexture_qywvv")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Cloud49" type="Sprite2D" parent="Clouds/Front"]
+position = Vector2(-373.5, 156.5)
+texture = SubResource("AtlasTexture_3wgol")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="FogLayer1" type="CanvasLayer" parent="."]
+layer = -101
+
+[node name="ColorRect" type="ColorRect" parent="FogLayer1"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+metadata/_edit_lock_ = true
+
+[node name="FarMountainRange" type="ParallaxBackground" parent="."]
+
+[node name="MountainBack" type="ParallaxLayer" parent="FarMountainRange"]
+position = Vector2(-81, -3)
+motion_scale = Vector2(0.2, 0.2)
+metadata/_edit_lock_ = true
+
+[node name="MountainBack1" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(-14, 358)
+texture = SubResource("AtlasTexture_1a85y")
+metadata/_edit_lock_ = true
+
+[node name="MountainBack2" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(389, 364)
+texture = SubResource("AtlasTexture_hl5e0")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainBack3" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(800, 391)
+texture = SubResource("AtlasTexture_engjn")
+metadata/_edit_lock_ = true
+
+[node name="MountainBack4" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(-429, 402)
+texture = SubResource("AtlasTexture_6h3lr")
+metadata/_edit_lock_ = true
+
+[node name="MountainBack5" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(-735, 416)
+texture = SubResource("AtlasTexture_dj67d")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainBack6" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(-1128, 389)
+texture = SubResource("AtlasTexture_6vcge")
+metadata/_edit_lock_ = true
+
+[node name="MountainBack7" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(1232, 340)
+texture = SubResource("AtlasTexture_ip0br")
+metadata/_edit_lock_ = true
+
+[node name="MountainBack8" type="Sprite2D" parent="FarMountainRange/MountainBack"]
+position = Vector2(1704, 343)
+texture = SubResource("AtlasTexture_xyero")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="FogLayer2" type="CanvasLayer" parent="."]
+layer = -99
+
+[node name="ColorRect" type="ColorRect" parent="FogLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+metadata/_edit_lock_ = true
+
+[node name="ModerateMountainRange" type="ParallaxBackground" parent="."]
+layer = -98
+
+[node name="MountainMiddle" type="ParallaxLayer" parent="ModerateMountainRange"]
+position = Vector2(-252, 40)
+motion_scale = Vector2(0.35, 0.35)
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle1" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(23, 335)
+texture = SubResource("AtlasTexture_tcusk")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle2" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(501, 342)
+texture = SubResource("AtlasTexture_4puye")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle3" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(827, 355)
+texture = SubResource("AtlasTexture_q13xq")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle4" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(1131, 373)
+texture = SubResource("AtlasTexture_u43bj")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle5" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(1551, 335)
+texture = SubResource("AtlasTexture_jvjdd")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle6" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(1999, 330)
+texture = SubResource("AtlasTexture_yxnar")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle7" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(-305, 326)
+texture = SubResource("AtlasTexture_eku7s")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle8" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(-637, 326)
+texture = SubResource("AtlasTexture_c6nra")
+metadata/_edit_lock_ = true
+
+[node name="MountainMiddle9" type="Sprite2D" parent="ModerateMountainRange/MountainMiddle"]
+position = Vector2(-1022, 339)
+texture = SubResource("AtlasTexture_qw82i")
+metadata/_edit_lock_ = true
+
+[node name="FogLayer3" type="CanvasLayer" parent="."]
+layer = -97
+
+[node name="ColorRect" type="ColorRect" parent="FogLayer3"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+metadata/_edit_lock_ = true
+
+[node name="CloseMountainRange" type="ParallaxBackground" parent="."]
+layer = -96
+
+[node name="MountainFront" type="ParallaxLayer" parent="CloseMountainRange"]
+position = Vector2(3, 117)
+motion_scale = Vector2(0.5, 0.5)
+metadata/_edit_lock_ = true
+
+[node name="MountainFront1" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(-1468, 260)
+texture = SubResource("AtlasTexture_1468l")
+metadata/_edit_lock_ = true
+
+[node name="MountainFront2" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(2379, 292)
+texture = SubResource("AtlasTexture_01xyg")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainFront3" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(1886, 294)
+texture = SubResource("AtlasTexture_764ux")
+metadata/_edit_lock_ = true
+
+[node name="MountainFront4" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(1537, 284)
+texture = SubResource("AtlasTexture_wadof")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainFront5" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(1155, 299)
+texture = SubResource("AtlasTexture_b4jiv")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainFront6" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(838, 322)
+texture = SubResource("AtlasTexture_68b7m")
+metadata/_edit_lock_ = true
+
+[node name="MountainFront7" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(656, 317)
+texture = SubResource("AtlasTexture_vanrq")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainFront8" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(310, 330)
+texture = SubResource("AtlasTexture_ybca7")
+metadata/_edit_lock_ = true
+
+[node name="MountainFront9" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(-2, 316)
+texture = SubResource("AtlasTexture_k5xsf")
+metadata/_edit_lock_ = true
+
+[node name="MountainFront10" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(-511, 307)
+texture = SubResource("AtlasTexture_71lbq")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="MountainFront11" type="Sprite2D" parent="CloseMountainRange/MountainFront"]
+position = Vector2(-990, 286)
+texture = SubResource("AtlasTexture_akqfu")
+metadata/_edit_lock_ = true
+
+[node name="FogLayer4" type="CanvasLayer" parent="."]
+layer = -95
+
+[node name="ColorRect" type="ColorRect" parent="FogLayer4"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.235294)
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -145.0
+offset_right = 20.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control"]
+position = Vector2(20, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wu84c")
+
+[node name="PlayButton" type="TextureButton" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 59.0
+offset_right = 64.0
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00231, 1.00231)
+texture_normal = SubResource("AtlasTexture_mb34c")
+texture_pressed = SubResource("AtlasTexture_sgh51")
+texture_hover = SubResource("AtlasTexture_hjv1c")
+stretch_mode = 0
+
+[node name="QuitButton" type="TextureButton" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 152.0
+offset_right = 64.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00231, 1.00231)
+texture_normal = SubResource("AtlasTexture_41a2d")
+texture_pressed = SubResource("AtlasTexture_f5cck")
+texture_hover = SubResource("AtlasTexture_s4ogs")
+stretch_mode = 0
+
+[connection signal="pressed" from="CanvasLayer/PlayButton" to="." method="OnPlay"]
+[connection signal="pressed" from="CanvasLayer/QuitButton" to="." method="OnQuit"]
