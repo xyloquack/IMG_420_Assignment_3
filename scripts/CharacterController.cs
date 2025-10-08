@@ -41,8 +41,10 @@ public partial class CharacterController : CharacterBody2D
 	public List<Boid> Boids = [];
 	public int NumBoids;
 	public int Health;
+	
 	private Vector2 _bufferSpeed;
 	private bool _slowFalling;
+	private bool _wasOnFloor;
 	private bool _jumping;
 	private bool _dashing;
 	private AnimatedSprite2D _playerSprite;
@@ -51,6 +53,7 @@ public partial class CharacterController : CharacterBody2D
 	private Timer _dashCooldown;
 	private Timer _jumpTimer;
 	private Timer _attackCooldown;
+	private Timer _coyoteTimer;
 	private Vector2 _respawnPoint;
 	
 	public override void _Ready() 
@@ -67,6 +70,7 @@ public partial class CharacterController : CharacterBody2D
 		_dashCooldown = GetNode<Timer>("DashCooldown");
 		_jumpTimer = GetNode<Timer>("JumpTimer");
 		_attackCooldown = GetNode<Timer>("AttackCooldown");
+		_coyoteTimer = GetNode<Timer>("CoyoteTimer");
 		Health = MaxHealth;
 		_respawnPoint = GlobalPosition;
 	}
@@ -122,9 +126,15 @@ public partial class CharacterController : CharacterBody2D
 				Vector2 newVelocity = Velocity;
 				newVelocity.Y += Gravity / 2 * (float)delta;
 				Velocity = newVelocity;
+				if (_wasOnFloor)
+				{
+					_coyoteTimer.Start();
+					_wasOnFloor = false;
+				}
 			}
 			else
 			{
+				_wasOnFloor = true;
 				Vector2 newVelocity = Velocity;
 				newVelocity.Y = 0;
 				Velocity = newVelocity;
@@ -138,6 +148,12 @@ public partial class CharacterController : CharacterBody2D
 	
 	private Vector2 WalkingVelocity(double delta)
 	{
+		if (_wasOnFloor && !IsOnFloor())
+		{
+			_coyoteTimer.Start();
+			_wasOnFloor = false;
+		}
+		
 		Vector2 newVelocity = Velocity;
 		int direction = 0;
 		if (Input.IsActionPressed("left")) 
@@ -162,6 +178,10 @@ public partial class CharacterController : CharacterBody2D
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
 		}
+		else
+		{
+			_wasOnFloor = true;
+		}
 		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X + (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta, 0.55f);
 		int currentMovingDirection = Math.Sign(newVelocity.X);
 		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X - currentMovingDirection * currentFriction * (float)delta, 0.55f);
@@ -170,11 +190,12 @@ public partial class CharacterController : CharacterBody2D
 		{
 			newVelocity.X = 0;
 		}
-		if (IsOnFloor() && Input.IsActionPressed("jump")) 
+		if ((IsOnFloor() || (!_coyoteTimer.IsStopped())) && Input.IsActionPressed("jump") && !_jumping) 
 		{
 			_slowFalling = true;
 			_jumping = true;
 			_jumpTimer.Start();
+			_coyoteTimer.Stop();
 			newVelocity.Y = -BurstJumpSpeed;
 		}
 		if (_slowFalling && !(Input.IsActionPressed("jump")) || IsOnFloor()) 
