@@ -25,6 +25,7 @@ public partial class Enemy : CharacterBody2D
 	public float TargetHeight;
 	[Export]
 	public float Gravity;
+	public bool IsDead = false;
 	public STATE State = STATE.IDLE;
 	public Vector2 Home;
 	public Vector2 Target;
@@ -121,7 +122,8 @@ public partial class Enemy : CharacterBody2D
 	{
 		if (Health <= 0)
 		{
-			QueueFree();
+			IsDead = true;
+			Hide();
 		}
 	}
 }

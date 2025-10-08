@@ -1,0 +1,109 @@
+[gd_scene load_steps=14 format=3 uid="uid://cppw68p6nove4"]
+
+[ext_resource type="Script" uid="uid://boxvlb1ypijus" path="res://scenes/VictoryScreen.cs" id="1_1juoc"]
+[ext_resource type="Texture2D" uid="uid://jx5i4e5mtbca" path="res://assets/restart.png" id="2_1juoc"]
+[ext_resource type="Texture2D" uid="uid://cnpteslccqtc3" path="res://assets/victory.png" id="2_wbi6c"]
+[ext_resource type="Texture2D" uid="uid://dnmeejb48np81" path="res://assets/main_menu_button.png" id="3_wbi6c"]
+[ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="4_u4hde"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="5_66hvp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2cu1"]
+atlas = ExtResource("2_1juoc")
+region = Rect2(0, 0, 96, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uycue"]
+atlas = ExtResource("2_1juoc")
+region = Rect2(0, 64, 96, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ox400"]
+atlas = ExtResource("2_1juoc")
+region = Rect2(0, 32, 96, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l423"]
+atlas = ExtResource("3_wbi6c")
+region = Rect2(0, 0, 96, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xhdp"]
+atlas = ExtResource("3_wbi6c")
+region = Rect2(0, 64, 96, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dynx"]
+atlas = ExtResource("3_wbi6c")
+region = Rect2(0, 32, 96, 32)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jjx08"]
+shader = ExtResource("4_u4hde")
+shader_parameter/percentFull = 0.0
+
+[node name="VictoryScreen" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_1juoc")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.27451)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Victory" type="Sprite2D" parent="Control"]
+position = Vector2(20, -152)
+scale = Vector2(2, 2)
+texture = ExtResource("2_wbi6c")
+
+[node name="RestartButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -95.9999
+offset_top = 84.0
+offset_right = 6.10352e-05
+offset_bottom = 124.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.00022, 2.00022)
+texture_normal = SubResource("AtlasTexture_a2cu1")
+texture_pressed = SubResource("AtlasTexture_uycue")
+texture_hover = SubResource("AtlasTexture_ox400")
+
+[node name="MainMenuButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 164.0
+offset_bottom = 204.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.00034, 2.00034)
+texture_normal = SubResource("AtlasTexture_7l423")
+texture_pressed = SubResource("AtlasTexture_6xhdp")
+texture_hover = SubResource("AtlasTexture_5dynx")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_jjx08")
+position = Vector2(620, 340)
+texture = ExtResource("5_66hvp")
+offset = Vector2(6, 6)
+
+[connection signal="pressed" from="RestartButton" to="." method="OnRestart"]
+[connection signal="pressed" from="MainMenuButton" to="." method="OnMainMenu"]

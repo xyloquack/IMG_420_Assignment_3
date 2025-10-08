@@ -334,6 +334,15 @@ public partial class CharacterController : CharacterBody2D
 			Health -= (int)damage;
 			GD.Print(Health);
 			_invulnerabilityTimer.Start();
+			CheckHealth();
+		}
+	}
+	
+	private void CheckHealth()
+	{
+		if (Health <= 0)
+		{
+			GetParent<World>().EmitSignal("Death");
 		}
 	}
 	
