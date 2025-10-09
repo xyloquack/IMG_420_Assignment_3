@@ -1,13 +1,13 @@
 [gd_scene load_steps=68 format=3 uid="uid://mn86qcay6nmo"]
 
 [ext_resource type="Script" uid="uid://bqtsw2kfthw8f" path="res://scripts/MainMenu.cs" id="1_bqqt6"]
-[ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/clouds.png" id="1_ekxnf"]
-[ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/mountains.png" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/sprites/clouds.png" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/sprites/mountains.png" id="2_bqqt6"]
 [ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="2_tbmy8"]
-[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="3_jk1qb"]
-[ext_resource type="Texture2D" uid="uid://e8cktylw54k2" path="res://assets/title.png" id="4_wu84c"]
-[ext_resource type="Texture2D" uid="uid://exixpj4ckpb1" path="res://assets/play_button.png" id="5_8ln24"]
-[ext_resource type="Texture2D" uid="uid://b783614fifwni" path="res://assets/quit_button.png" id="6_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/sprites/cursor.png" id="3_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://e8cktylw54k2" path="res://assets/sprites/title.png" id="4_wu84c"]
+[ext_resource type="Texture2D" uid="uid://exixpj4ckpb1" path="res://assets/sprites/play_button.png" id="5_8ln24"]
+[ext_resource type="Texture2D" uid="uid://b783614fifwni" path="res://assets/sprites/quit_button.png" id="6_rtw2f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wu84c"]
 atlas = ExtResource("1_ekxnf")

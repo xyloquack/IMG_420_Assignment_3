@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://brft0n078bbv6"]
 
-[ext_resource type="Script" uid="uid://bce3jixdk2muo" path="res://scenes/DeathScreen.cs" id="1_7ns25"]
-[ext_resource type="Texture2D" uid="uid://bwl3gfnnvugru" path="res://assets/you_died.png" id="1_uyutr"]
-[ext_resource type="Texture2D" uid="uid://jx5i4e5mtbca" path="res://assets/restart.png" id="2_dwo6e"]
-[ext_resource type="Texture2D" uid="uid://dnmeejb48np81" path="res://assets/main_menu_button.png" id="3_mqh5l"]
+[ext_resource type="Script" uid="uid://bce3jixdk2muo" path="res://scripts/DeathScreen.cs" id="1_7ns25"]
+[ext_resource type="Texture2D" uid="uid://bwl3gfnnvugru" path="res://assets/sprites/you_died.png" id="1_uyutr"]
+[ext_resource type="Texture2D" uid="uid://jx5i4e5mtbca" path="res://assets/sprites/restart.png" id="2_dwo6e"]
+[ext_resource type="Texture2D" uid="uid://dnmeejb48np81" path="res://assets/sprites/main_menu_button.png" id="3_mqh5l"]
 [ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="5_wfw3d"]
-[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="6_wtkkp"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/sprites/cursor.png" id="6_wtkkp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mqh5l"]
 atlas = ExtResource("2_dwo6e")

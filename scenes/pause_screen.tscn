@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://dmvr83c5gd7cw"]
 
 [ext_resource type="Script" uid="uid://dgksrwsda8w7t" path="res://scripts/PauseScreen.cs" id="1_gchx3"]
-[ext_resource type="Texture2D" uid="uid://jgiphtga52oh" path="res://assets/paused.png" id="2_hr2n2"]
+[ext_resource type="Texture2D" uid="uid://jgiphtga52oh" path="res://assets/sprites/paused.png" id="2_hr2n2"]
 [ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="2_k26m1"]
-[ext_resource type="Texture2D" uid="uid://cd4eqhi8pveb8" path="res://assets/resume.png" id="3_27awe"]
-[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="3_o31j6"]
-[ext_resource type="Texture2D" uid="uid://dnmeejb48np81" path="res://assets/main_menu_button.png" id="4_27awe"]
+[ext_resource type="Texture2D" uid="uid://cd4eqhi8pveb8" path="res://assets/sprites/resume.png" id="3_27awe"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/sprites/cursor.png" id="3_o31j6"]
+[ext_resource type="Texture2D" uid="uid://dnmeejb48np81" path="res://assets/sprites/main_menu_button.png" id="4_27awe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k26m1"]
 atlas = ExtResource("3_27awe")

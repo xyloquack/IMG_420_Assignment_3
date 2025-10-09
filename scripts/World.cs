@@ -26,9 +26,9 @@ public partial class World : Node2D
 	override public void _PhysicsProcess(double delta)
 	{
 		TimePassed += (float)delta;
-		if (TimePassed > 0.5f)
+		if (TimePassed > 1f)
 		{
-			TimePassed -= 0.5f;
+			TimePassed -= 1f;
 			GD.Print(Engine.GetFramesPerSecond());
 		}
 		

@@ -40,7 +40,10 @@ public partial class Boid : CharacterBody2D
 	
 	public void OnTimeout()
 	{
-		EmitSignal("Kill");
+		if (Active)
+		{
+			EmitSignal("Kill");
+		}
 	}
 	
 	public void OnKill()
@@ -52,6 +55,30 @@ public partial class Boid : CharacterBody2D
 		deathParticles.ZIndex = ZIndex;
 		GetTree().Root.AddChild(deathParticles);
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Remove(this);
+		AudioStreamPlayer2D deathAudio = GetNode<AudioStreamPlayer2D>("DeathAudio");
+		deathAudio.PitchScale = 0.90f + (GD.Randf() * 0.2f);
+		deathAudio.Play();
+		Hide();
+		Active = false;
+	}
+	
+	public void PlayAudioAfterDelay(double delay)
+	{
+		Timer audioTimer = GetNode<Timer>("AudioTimer");
+		audioTimer.WaitTime = (float)delay;
+		audioTimer.Start();
+	}
+	
+	private void OnAudioDelayTimeout()
+	{
+		AudioStreamPlayer2D whooshAudio = GetNode<AudioStreamPlayer2D>("WhooshAudio");
+		whooshAudio.PitchScale = 0.90f + (GD.Randf() * 0.2f);
+		whooshAudio.Play();
+		GD.Print("Playing Audio!");
+	}
+	
+	private void OnAudioComplete()
+	{
 		QueueFree();
 	}
 }

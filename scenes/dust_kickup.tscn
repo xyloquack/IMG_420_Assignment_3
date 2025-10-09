@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://dus7awjfppcma"]
+
+[ext_resource type="Texture2D" uid="uid://tlipoqi8oa5g" path="res://assets/sprites/landing_dust_kickup.png" id="1_ffkiy"]
+[ext_resource type="Script" uid="uid://rkft6jka5ggj" path="res://scripts/DustKickup.cs" id="2_0vene"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vene"]
+atlas = ExtResource("1_ffkiy")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xqy0"]
+atlas = ExtResource("1_ffkiy")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uh35h"]
+atlas = ExtResource("1_ffkiy")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwaf7"]
+atlas = ExtResource("1_ffkiy")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5r2jr"]
+atlas = ExtResource("1_ffkiy")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_47v53"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vene")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xqy0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uh35h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwaf7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5r2jr")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="DustKickup" type="AnimatedSprite2D"]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_47v53")
+frame = 1
+frame_progress = 0.756569
+script = ExtResource("2_0vene")
+
+[connection signal="animation_finished" from="." to="." method="OnFinished"]

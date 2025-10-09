@@ -35,6 +35,8 @@ public partial class CharacterController : CharacterBody2D
 	public PackedScene BoidScene { get; set; }
 	[Export]
 	public int MaxBoids;
+	[Export]
+	public PackedScene DustScene { get; set; }
 	
 	public double TimePassed;
 	public double TimeSinceLastAttack;
@@ -55,6 +57,9 @@ public partial class CharacterController : CharacterBody2D
 	private Timer _attackCooldown;
 	private Timer _coyoteTimer;
 	private Vector2 _respawnPoint;
+	private AudioStreamPlayer2D _movingSound1;
+	private AudioStreamPlayer2D _movingSound2;
+	private AudioStreamPlayer2D _landingSound;
 	
 	public override void _Ready() 
 	{
@@ -73,6 +78,9 @@ public partial class CharacterController : CharacterBody2D
 		_coyoteTimer = GetNode<Timer>("CoyoteTimer");
 		Health = MaxHealth;
 		_respawnPoint = GlobalPosition;
+		_movingSound1 = GetNode<AudioStreamPlayer2D>("MovingSound1");
+		_movingSound2 = GetNode<AudioStreamPlayer2D>("MovingSound2");
+		_landingSound = GetNode<AudioStreamPlayer2D>("LandingSound");
 	}
 	
 	public override void _PhysicsProcess(double delta) 
@@ -144,6 +152,10 @@ public partial class CharacterController : CharacterBody2D
 		{
 			Velocity = WalkingVelocity(delta);
 		}
+		_movingSound1.VolumeDb = Mathf.Lerp(_movingSound1.VolumeDb, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 4), 0, 8) - 26), 0.25f);
+		_movingSound1.PitchScale = Mathf.Lerp(_movingSound1.PitchScale, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 2), 0.1, 4) / 8 + 8), 0.25f);
+		_movingSound2.VolumeDb = Mathf.Lerp(_movingSound2.VolumeDb, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 4), 0, 8) - 26), 0.25f);
+		_movingSound2.PitchScale = Mathf.Lerp(_movingSound2.PitchScale, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 2), 0.1, 4) / 8 + 8), 0.25f);
 	}
 	
 	private Vector2 WalkingVelocity(double delta)
@@ -171,10 +183,24 @@ public partial class CharacterController : CharacterBody2D
 		{
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
+			_wasOnFloor = false;
 		}
 		else
 		{
 			_coyoteTimer.Start();
+			if (!_wasOnFloor)
+			{
+				_landingSound.PitchScale = 0.8f + (GD.Randf() * 0.4f);
+				_landingSound.Play();
+				DustKickup newDust = DustScene.Instantiate<DustKickup>(); 
+				Vector2 dustPosition = _playerSprite.Offset + GlobalPosition;
+				dustPosition.Y += 12;
+				newDust.GlobalPosition = dustPosition;
+				newDust.Play();
+				newDust.ZIndex = ZIndex + 1;
+				GetParent().AddChild(newDust);
+				GD.Print("Landing!");
+			}
 			_wasOnFloor = true;
 		}
 		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X + (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta, 0.55f);
@@ -189,6 +215,7 @@ public partial class CharacterController : CharacterBody2D
 		{
 			_slowFalling = true;
 			_jumping = true;
+			_wasOnFloor = false;
 			_jumpTimer.Start();
 			newVelocity.Y = -BurstJumpSpeed;
 		}
@@ -323,6 +350,7 @@ public partial class CharacterController : CharacterBody2D
 				boid.Rotation = (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5);
 				boid.GoalSeekingTurnAmount = 3f;
 				boid.Active = true;
+				boid.PlayAudioAfterDelay(GD.Randf() * 0.1);
 			}
 			Vector2 velocityChange = Vector2.Zero;
 			velocityChange -= (mousePosition - GlobalPosition).Normalized();
