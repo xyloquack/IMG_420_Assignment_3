@@ -194,9 +194,9 @@ public partial class CharacterController : CharacterBody2D
 				_landingSound.Play();
 				DustKickup newDust = DustScene.Instantiate<DustKickup>(); 
 				Vector2 dustPosition = _playerSprite.Offset + GlobalPosition;
-				dustPosition.Y += 12;
+				dustPosition.Y += 25;
 				newDust.GlobalPosition = dustPosition;
-				newDust.Play();
+				newDust.Emitting = true;
 				newDust.ZIndex = ZIndex + 1;
 				GetParent().AddChild(newDust);
 				GD.Print("Landing!");

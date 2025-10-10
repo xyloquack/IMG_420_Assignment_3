@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dus7awjfppcma"]
+[gd_scene load_steps=8 format=3 uid="uid://dus7awjfppcma"]
 
 [ext_resource type="Texture2D" uid="uid://tlipoqi8oa5g" path="res://assets/sprites/landing_dust_kickup.png" id="1_ffkiy"]
-[ext_resource type="Script" uid="uid://rkft6jka5ggj" path="res://scripts/DustKickup.cs" id="2_0vene"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0vene"]
 atlas = ExtResource("1_ffkiy")
@@ -51,6 +50,3 @@ z_index = 1
 sprite_frames = SubResource("SpriteFrames_47v53")
 frame = 1
 frame_progress = 0.756569
-script = ExtResource("2_0vene")
-
-[connection signal="animation_finished" from="." to="." method="OnFinished"]

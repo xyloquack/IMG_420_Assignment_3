@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class DustKickup : AnimatedSprite2D
+public partial class DustKickup : GpuParticles2D
 {
 	public void OnFinished()
 	{
