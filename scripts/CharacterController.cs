@@ -49,6 +49,9 @@ public partial class CharacterController : CharacterBody2D
 	private bool _wasOnFloor;
 	private bool _jumping;
 	private bool _dashing;
+	private bool _isAttacking = false;
+	private List<Boid> _boidsToLaunch;
+	private const int BOIDS_PER_FRAME = 50;
 	private AnimatedSprite2D _playerSprite;
 	private Timer _invulnerabilityTimer;
 	private Timer _dashTimer;
@@ -91,9 +94,24 @@ public partial class CharacterController : CharacterBody2D
 		UpdateSprite();
 		AttemptBoidSpawn();
 		UpdateIdleBoidGoal();
-		if (Input.IsActionPressed("attack"))
+		if (Input.IsActionJustPressed("attack"))
 		{
 			Attack();
+		}
+		if (_isAttacking)
+		{
+			int launchCount = Math.Min(BOIDS_PER_FRAME, _boidsToLaunch.Count);
+			for (int i = 0; i < launchCount; i++)
+			{
+				Boid boid = _boidsToLaunch[0];
+				Vector2 mousePosition = GetGlobalMousePosition();
+				boid.Launch(mousePosition, 1000f, (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5));
+				_boidsToLaunch.RemoveAt(0);
+			}
+			if (_boidsToLaunch.Count == 0)
+			{
+				_isAttacking = false;
+			}
 		}
 		MoveAndSlide();
 	}
@@ -193,8 +211,8 @@ public partial class CharacterController : CharacterBody2D
 				_landingSound.PitchScale = 0.8f + (GD.Randf() * 0.4f);
 				_landingSound.Play();
 				DustKickup newDust = DustScene.Instantiate<DustKickup>(); 
-				Vector2 dustPosition = _playerSprite.Offset + GlobalPosition;
-				dustPosition.Y += 25;
+				Vector2 dustPosition = GlobalPosition;
+				dustPosition.Y += 22;
 				newDust.GlobalPosition = dustPosition;
 				newDust.Emitting = true;
 				newDust.ZIndex = ZIndex + 1;
@@ -308,8 +326,8 @@ public partial class CharacterController : CharacterBody2D
 			Boid newBoid = BoidScene.Instantiate<Boid>();
 			Vector2 newPosition;
 			newPosition.X = 0f;
-			newPosition.Y = (float)(GD.Randf() * 10 - 15);
-			newBoid.GlobalPosition = newPosition;
+			newPosition.Y = (float)(GD.Randf() * 10f - 15f);
+			newBoid.Position = newPosition;
 			newBoid.Speed = 200;
 			newBoid.GoalSeekingTurnAmount = 0.5f;
 			Boids.Add(newBoid);
@@ -335,38 +353,32 @@ public partial class CharacterController : CharacterBody2D
 		}
 	}
 	
-	private void Attack() 
+	
+	private void Attack()
 	{
-		if (_attackCooldown.IsStopped() && NumBoids > 0)
+		if (_attackCooldown.IsStopped() && NumBoids > 0 && !_isAttacking)
 		{
 			TimeSinceLastAttack = 0;
+			
 			Vector2 mousePosition = GetGlobalMousePosition();
-			foreach (Boid boid in Boids)
-			{
-				boid.GetNode<Timer>("Lifetime").WaitTime += GD.Randf() * 0.2;
-				boid.GetNode<Timer>("Lifetime").Start();
-				boid.Goal = mousePosition;
-				boid.Speed = 1000;
-				boid.Rotation = (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5);
-				boid.GoalSeekingTurnAmount = 3f;
-				boid.Active = true;
-				boid.PlayAudioAfterDelay(GD.Randf() * 0.1);
-			}
-			Vector2 velocityChange = Vector2.Zero;
-			velocityChange -= (mousePosition - GlobalPosition).Normalized();
+			Vector2 velocityChange = -(mousePosition - GlobalPosition).Normalized();
 			velocityChange.X *= 1100 * ((float)NumBoids / (float)MaxBoids);
 			velocityChange.Y *= 600 * ((float)NumBoids / (float)MaxBoids);
+			
 			if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
 			{
 				_bufferSpeed = velocityChange;
 			}
 			else
 			{
-				Vector2 newVelocity = Velocity + velocityChange;
-				Velocity = newVelocity;
+				Velocity += velocityChange;
 			}
+			
+			_boidsToLaunch = new List<Boid>(Boids);
+			_isAttacking = true;
+
 			NumBoids = 0;
-			Boids = [];
+			Boids.Clear();
 			_attackCooldown.Start();
 		}
 	}

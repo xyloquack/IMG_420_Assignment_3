@@ -29,13 +29,28 @@ public partial class Boid : CharacterBody2D
 	public PackedScene DeathParticles;
 	
 	public Vector2 Goal;
-	
 	public bool Active = false;
+	
+	private Timer _lifetimeTimer;
+	private CharacterController _player;
 	
 	override public void _Ready() 
 	{
 		GetNode<BoidHitBox>("HitBox").DamageAmount = DamageAmount;
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Add(this);
+		_lifetimeTimer = GetNode<Timer>("Lifetime");
+	}
+	
+	public void Launch(Vector2 goal, float speed, float rotation)
+	{
+		_lifetimeTimer.WaitTime += GD.Randf() * 0.2;
+		_lifetimeTimer.Start();
+		Goal = goal;
+		Speed = speed;
+		Rotation = rotation;
+		GoalSeekingTurnAmount = 3f;
+		Active = true;
+		PlayAudioAfterDelay(GD.Randf() * 0.1);
 	}
 	
 	public void OnTimeout()

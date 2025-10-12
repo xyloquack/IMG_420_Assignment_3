@@ -22,7 +22,8 @@ emitting = false
 amount = 50
 one_shot = true
 explosiveness = 1.0
-fixed_fps = 60
+fixed_fps = 0
+interpolate = false
 process_material = SubResource("ParticleProcessMaterial_dupdm")
 script = ExtResource("1_dupdm")
 
