@@ -51,7 +51,7 @@ public partial class CharacterController : CharacterBody2D
 	private bool _dashing;
 	private bool _isAttacking = false;
 	private List<Boid> _boidsToLaunch;
-	private const int BOIDS_PER_FRAME = 50;
+	private const int BOIDS_PER_FRAME = 100;
 	private AnimatedSprite2D _playerSprite;
 	private Timer _invulnerabilityTimer;
 	private Timer _dashTimer;
@@ -324,9 +324,8 @@ public partial class CharacterController : CharacterBody2D
 		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
 		{
 			Boid newBoid = BoidScene.Instantiate<Boid>();
-			Vector2 newPosition;
-			newPosition.X = 0f;
-			newPosition.Y = (float)(GD.Randf() * 10f - 15f);
+			Vector2 newPosition = Vector2.Zero;
+			newPosition.Y += (float)(GD.Randf() * 10f - 15f);
 			newBoid.Position = newPosition;
 			newBoid.Speed = 200;
 			newBoid.GoalSeekingTurnAmount = 0.5f;

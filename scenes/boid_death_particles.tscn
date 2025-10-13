@@ -1,29 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbutm3ronp617"]
+[gd_scene load_steps=5 format=3 uid="uid://cbutm3ronp617"]
 
 [ext_resource type="Texture2D" uid="uid://cba42hw0ylmbn" path="res://assets/sprites/feather.png" id="1_usfkx"]
 [ext_resource type="Script" uid="uid://coxuuyqwsnj1i" path="res://scripts/BoidDeathParticles.cs" id="2_jjm7u"]
 
-[node name="BoidDeathParticles" type="CPUParticles2D"]
-emitting = false
-amount = 6
-texture = ExtResource("1_usfkx")
-lifetime = 0.2
-one_shot = true
-explosiveness = 0.8
-randomness = 0.2
-lifetime_randomness = 0.7
-direction = Vector2(0, -1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_usfkx"]
+atlas = ExtResource("1_usfkx")
+region = Rect2(0, 1, 5, 4)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jjm7u"]
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 360.0
+direction = Vector3(0, -1, 0)
 spread = 180.0
-gravity = Vector2(0, 0)
 initial_velocity_min = 100.0
 initial_velocity_max = 150.0
 angular_velocity_min = 220.0
 angular_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
 damping_min = 500.0
 damping_max = 700.0
-angle_max = 360.0
-scale_amount_min = 0.7
-scale_amount_max = 1.2
+scale_min = 0.7
+scale_max = 1.2
+
+[node name="BoidDeathParticles" type="GPUParticles2D"]
+emitting = false
+amount = 6
+texture = SubResource("AtlasTexture_usfkx")
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.8
+randomness = 0.2
+fixed_fps = 0
+interpolate = false
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_jjm7u")
 script = ExtResource("2_jjm7u")
 
 [connection signal="finished" from="." to="." method="OnFinished"]

@@ -32,13 +32,16 @@ public partial class Boid : CharacterBody2D
 	public bool Active = false;
 	
 	private Timer _lifetimeTimer;
-	private CharacterController _player;
+	private Timer _deathTime;
+	private AudioController _audioController;
 	
 	override public void _Ready() 
 	{
 		GetNode<BoidHitBox>("HitBox").DamageAmount = DamageAmount;
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Add(this);
 		_lifetimeTimer = GetNode<Timer>("Lifetime");
+		_deathTime = GetNode<Timer>("DeathTime");
+		_audioController = GetNode<AudioController>("../../AudioController");
 	}
 	
 	public void Launch(Vector2 goal, float speed, float rotation)
@@ -63,18 +66,25 @@ public partial class Boid : CharacterBody2D
 	
 	public void OnKill()
 	{
-		CpuParticles2D deathParticles = DeathParticles.Instantiate<CpuParticles2D>();
+		BoidDeathParticles deathParticles = DeathParticles.Instantiate<BoidDeathParticles>();
 		deathParticles.Emitting = true;
 		deathParticles.Restart();
 		deathParticles.GlobalPosition = GlobalPosition;
 		deathParticles.ZIndex = ZIndex;
 		GetTree().Root.AddChild(deathParticles);
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Remove(this);
-		AudioStreamPlayer2D deathAudio = GetNode<AudioStreamPlayer2D>("DeathAudio");
-		deathAudio.PitchScale = 0.90f + (GD.Randf() * 0.2f);
-		deathAudio.Play();
+		float waitTime = _audioController.RequestAudio("BoidDeathAudio", 0, this) + 0.1f;
 		Hide();
 		Active = false;
+		if (waitTime > 0f)
+		{
+			_deathTime.WaitTime = waitTime;
+			_deathTime.Start();
+		}
+		else
+		{
+			QueueFree();
+		}
 	}
 	
 	public void PlayAudioAfterDelay(double delay)
@@ -86,10 +96,7 @@ public partial class Boid : CharacterBody2D
 	
 	private void OnAudioDelayTimeout()
 	{
-		AudioStreamPlayer2D whooshAudio = GetNode<AudioStreamPlayer2D>("WhooshAudio");
-		whooshAudio.PitchScale = 0.90f + (GD.Randf() * 0.2f);
-		whooshAudio.Play();
-		GD.Print("Playing Audio!");
+		_audioController.RequestAudio("BoidWhooshAudio", 0, this);
 	}
 	
 	private void OnAudioComplete()
