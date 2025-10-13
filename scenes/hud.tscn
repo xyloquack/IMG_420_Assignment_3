@@ -4,7 +4,7 @@
 [ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="2_6fi6k"]
 [ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/sprites/cursor.png" id="3_5ysmq"]
 [ext_resource type="Texture2D" uid="uid://dkcdvqcig3xfl" path="res://assets/sprites/health.png" id="4_6fi6k"]
-[ext_resource type="Shader" uid="uid://c8q7cgt4oiykf" path="res://scenes/health.gdshader" id="5_uo2fv"]
+[ext_resource type="Shader" uid="uid://c8q7cgt4oiykf" path="res://scripts/health.gdshader" id="5_uo2fv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8sq4i"]
 shader = ExtResource("2_6fi6k")
