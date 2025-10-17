@@ -11,7 +11,7 @@ public partial class AudioController : Node2D
 	
 	override public void _Ready()
 	{
-		audioDictionary.Add("BoidWhooshAudio", GD.Load("uid://b0fofkly8bdp1"));
+		audioDictionary.Add("BoidWhooshAudio", GD.Load("uid://bebq734ktjixy"));
 		audioCounts.Add("BoidWhooshAudio", 0);
 		audioDictionary.Add("BoidDeathAudio", GD.Load("uid://d2n7yym8kdv7x"));
 		audioCounts.Add("BoidDeathAudio", 0);
