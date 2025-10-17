@@ -3065,6 +3065,7 @@ texture = SubResource("AtlasTexture_18clu")
 
 [node name="FogLayer4" type="CanvasLayer" parent="Scenery"]
 layer = -95
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="Scenery/FogLayer4"]
 anchors_preset = 15
