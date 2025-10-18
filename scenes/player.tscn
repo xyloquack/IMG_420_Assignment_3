@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=33 format=4 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/sprites/the_man_sheet.png" id="2_i3pqv"]
@@ -12,6 +12,38 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
 atlas = ExtResource("2_i3pqv")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
+atlas = ExtResource("5_smehm")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
+atlas = ExtResource("5_smehm")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fulsm"]
+atlas = ExtResource("5_smehm")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
+atlas = ExtResource("5_smehm")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60mlk"]
+atlas = ExtResource("5_smehm")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4ail"]
+atlas = ExtResource("5_smehm")
+region = Rect2(64, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a38lo"]
+atlas = ExtResource("5_smehm")
+region = Rect2(128, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ni07"]
+atlas = ExtResource("5_smehm")
+region = Rect2(192, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
 atlas = ExtResource("5_smehm")
@@ -57,6 +89,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_smehm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfm1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fulsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4r5pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60mlk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4ail")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a38lo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ni07")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ur7pv")
 }, {
 "duration": 1.0,
@@ -81,7 +142,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_a8ls1")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"walk_right",
 "speed": 5.0
 }]
 
@@ -129,14 +190,14 @@ DustScene = ExtResource("3_fjrip")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hqtel")
-animation = &"walk"
-autoplay = "walk"
+animation = &"walk_left"
+autoplay = "walk_right"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_sweqy")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
-position = Vector2(0, -100)
+position = Vector2(0, -150)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0

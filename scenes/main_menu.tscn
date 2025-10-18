@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://mn86qcay6nmo"]
+[gd_scene load_steps=70 format=3 uid="uid://mn86qcay6nmo"]
 
 [ext_resource type="Script" uid="uid://bqtsw2kfthw8f" path="res://scripts/MainMenu.cs" id="1_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/sprites/clouds.png" id="1_ekxnf"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://e8cktylw54k2" path="res://assets/sprites/title.png" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://exixpj4ckpb1" path="res://assets/sprites/play_button.png" id="5_8ln24"]
 [ext_resource type="Texture2D" uid="uid://b783614fifwni" path="res://assets/sprites/quit_button.png" id="6_rtw2f"]
+[ext_resource type="Shader" uid="uid://dusfc4vmsemf" path="res://scenes/vignette.gdshader" id="9_jk1qb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wu84c"]
 atlas = ExtResource("1_ekxnf")
@@ -216,6 +217,9 @@ region = Rect2(1024, 0, 512, 512)
 [sub_resource type="AtlasTexture" id="AtlasTexture_akqfu"]
 atlas = ExtResource("2_bqqt6")
 region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lgwnu"]
+shader = ExtResource("9_jk1qb")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mb34c"]
 atlas = ExtResource("5_8ln24")
@@ -1037,6 +1041,7 @@ metadata/_edit_lock_ = true
 
 [node name="FogLayer4" type="CanvasLayer" parent="."]
 layer = -95
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="FogLayer4"]
 anchors_preset = 15
@@ -1047,8 +1052,20 @@ grow_vertical = 2
 color = Color(0.537255, 0.639216, 0.760784, 0.235294)
 metadata/_edit_lock_ = true
 
+[node name="Vignette" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Vignette"]
+material = SubResource("ShaderMaterial_lgwnu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
 [node name="MenuElements" type="CanvasLayer" parent="."]
-layer = 0
+layer = 2
 
 [node name="Control" type="Control" parent="MenuElements"]
 layout_mode = 3

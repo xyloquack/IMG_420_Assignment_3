@@ -53,6 +53,9 @@ public partial class Boid : CharacterBody2D
 		Rotation = rotation;
 		GoalSeekingTurnAmount = 3f;
 		Active = true;
+		Node newParent = GetParent().GetParent();
+		Reparent(newParent);
+		ResetPhysicsInterpolation();
 		PlayAudioAfterDelay(GD.Randf() * 0.1);
 	}
 	

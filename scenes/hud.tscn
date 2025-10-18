@@ -33,18 +33,15 @@ offset = Vector2(6, 6)
 
 [node name="Health" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
+anchors_preset = 0
 offset_right = 40.0
-grow_vertical = 0
+offset_bottom = 40.0
 
 [node name="OuterHealth" type="Sprite2D" parent="Health"]
-position = Vector2(96, -56)
+position = Vector2(107, 107)
 texture = SubResource("AtlasTexture_uo2fv")
 
 [node name="InnerHealth" type="Sprite2D" parent="Health"]
 material = SubResource("ShaderMaterial_047uy")
-position = Vector2(96, -56)
+position = Vector2(107, 107)
 texture = SubResource("AtlasTexture_047uy")

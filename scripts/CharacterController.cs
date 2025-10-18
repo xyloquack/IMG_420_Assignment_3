@@ -295,12 +295,12 @@ public partial class CharacterController : CharacterBody2D
 		
 		if (_dashing)
 		{
-			_playerSprite.SetFrame(_playerSprite.GetSpriteFrames().GetFrameCount("walk") - 1);
+			_playerSprite.SetFrame(_playerSprite.GetSpriteFrames().GetFrameCount(_playerSprite.Animation) - 1);
 		}
 		else
 		{
 			_playerSprite.Stop();
-			int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount("walk") - 1;
+			int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount(_playerSprite.Animation) - 1;
 			int newFrame = (int)Math.Floor(numFrames * (Math.Abs(Velocity.X) / Speed));
 			if (newFrame >= numFrames) 
 			{
@@ -311,10 +311,12 @@ public partial class CharacterController : CharacterBody2D
 		if (Velocity.X < 0) 
 		{
 			_playerSprite.FlipH = true;
+			_playerSprite.Animation = "walk_left";
 		}
 		if (Velocity.X > 0) 
 		{
 			_playerSprite.FlipH = false;
+			_playerSprite.Animation = "walk_right";
 		}
 		
 	}

@@ -17,7 +17,7 @@ collision_mode = 2
 collision_use_scale = true
 
 [node name="LandingParticles" type="GPUParticles2D"]
-modulate = Color(1, 1, 1, 0.470588)
+modulate = Color(1, 1, 1, 0.705882)
 emitting = false
 amount = 50
 one_shot = true
