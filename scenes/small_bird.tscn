@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://ipd2ftyd4sbl"]
+
+[ext_resource type="Script" uid="uid://blfkisgdo1uom" path="res://scripts/SmallBird.cs" id="1_0qx7c"]
+[ext_resource type="Texture2D" uid="uid://dthcfwhmrfebx" path="res://assets/sprites/small_bird_enemy.png" id="2_22d0u"]
+[ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_clgt1"]
+[ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="5_q7mcx"]
+[ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="5_r24mh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q7mcx"]
+shader = ExtResource("5_r24mh")
+shader_parameter/enable = false
+shader_parameter/opacity = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7mcx"]
+atlas = ExtResource("2_22d0u")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clgt1"]
+atlas = ExtResource("2_22d0u")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r24mh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7mcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clgt1")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1edq7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r24mh"]
+radius = 41.0488
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4rw7d"]
+radius = 54.0093
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vivoj"]
+radius = 800.0
+
+[node name="SmallBird" type="CharacterBody2D"]
+script = ExtResource("1_0qx7c")
+VerticalSpeed = 250.0
+HorizontalSpeed = 200.0
+RandomVSpeedOffset = 150.0
+Gravity = 800.0
+WanderRange = 20.0
+MaxHealth = 100.0
+Damage = 1.0
+
+[node name="SmallBirdSprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_q7mcx")
+sprite_frames = SubResource("SpriteFrames_r24mh")
+frame_progress = 0.777844
+
+[node name="SmallBirdCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1edq7")
+disabled = true
+
+[node name="Navigation" type="NavigationAgent2D" parent="."]
+
+[node name="HitBox" type="Area2D" parent="."]
+script = ExtResource("4_clgt1")
+EnemyGroup = "player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_r24mh")
+
+[node name="HurtBox" type="Area2D" parent="." groups=["enemy"]]
+script = ExtResource("5_q7mcx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CircleShape2D_4rw7d")
+
+[node name="DetectionRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius"]
+shape = SubResource("CircleShape2D_vivoj")
+
+[node name="FlapTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="FlashTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
+[connection signal="body_entered" from="DetectionRadius" to="." method="OnDetectionEntered"]

@@ -37,12 +37,15 @@ public partial class CharacterController : CharacterBody2D
 	public int MaxBoids;
 	[Export]
 	public PackedScene DustScene { get; set; }
+	[Export]
+	public PackedScene DashTrailScene { get; set; }
 	
 	public double TimePassed;
 	public double TimeSinceLastAttack;
 	public List<Boid> Boids = [];
 	public int NumBoids;
 	public int Health;
+	public float LastFloorHeight;
 	
 	private Vector2 _bufferSpeed;
 	private bool _slowFalling;
@@ -144,6 +147,18 @@ public partial class CharacterController : CharacterBody2D
 			Vector2 newVelocity = new Vector2(DashSpeed * direction, 0);
 			Velocity = newVelocity;
 			_dashTimer.Start();
+			
+			GpuParticles2D dashTrail = DashTrailScene.Instantiate<GpuParticles2D>();
+			dashTrail.Emitting = true;
+			dashTrail.Position = _playerSprite.Offset;
+			dashTrail.ZIndex = _playerSprite.ZIndex - 1;
+			//if (direction == -1)
+			//{
+				//Image newImage = dashTrail.Texture.GetImage();
+				//newImage.FlipX();
+				//dashTrail.Texture = ImageTexture.CreateFromImage(newImage);
+			//}
+			AddChild(dashTrail);
 		}
 		if (_dashing)
 		{
@@ -164,6 +179,7 @@ public partial class CharacterController : CharacterBody2D
 				Vector2 newVelocity = Velocity;
 				newVelocity.Y = 0;
 				Velocity = newVelocity;
+				LastFloorHeight = GlobalPosition.Y;
 			}
 		}
 		else

@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://e8cktylw54k2" path="res://assets/sprites/title.png" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://exixpj4ckpb1" path="res://assets/sprites/play_button.png" id="5_8ln24"]
 [ext_resource type="Texture2D" uid="uid://b783614fifwni" path="res://assets/sprites/quit_button.png" id="6_rtw2f"]
-[ext_resource type="Shader" uid="uid://dusfc4vmsemf" path="res://scenes/vignette.gdshader" id="9_jk1qb"]
+[ext_resource type="Shader" uid="uid://dusfc4vmsemf" path="res://scripts/vignette.gdshader" id="9_jk1qb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wu84c"]
 atlas = ExtResource("1_ekxnf")

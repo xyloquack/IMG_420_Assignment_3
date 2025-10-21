@@ -1,10 +1,11 @@
-[gd_scene load_steps=33 format=4 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=36 format=4 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/sprites/the_man_sheet.png" id="2_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://hrie1ibpv2hv" path="res://scenes/landing_particles.tscn" id="3_fjrip"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="4_dqkch"]
+[ext_resource type="PackedScene" uid="uid://omdf3itudvkj" path="res://scenes/dash_trail.tscn" id="4_ur7pv"]
 [ext_resource type="PackedScene" uid="uid://c1ifyulebswpo" path="res://scenes/hud.tscn" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://cwlx8k5g4q78c" path="res://assets/sprites/the_man_recolored.png" id="5_smehm"]
 [ext_resource type="AudioStream" uid="uid://dogg5ptewsg4a" path="res://assets/audio/landing.ogg" id="6_tuyoq"]
@@ -171,6 +172,14 @@ sampling_rate = 44100.0
 packet_sequence = SubResource("OggPacketSequence_jm4y0")
 loop = true
 
+[sub_resource type="Curve" id="Curve_ur7pv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.89727, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_y4r1p"]
+interpolation_mode = 2
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
 MaxHealth = 10
@@ -187,6 +196,7 @@ SlowFallMult = 0.6
 BoidScene = ExtResource("2_qhqgy")
 MaxBoids = 20
 DustScene = ExtResource("3_fjrip")
+DashTrailScene = ExtResource("4_ur7pv")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hqtel")
@@ -251,6 +261,16 @@ autoplay = true
 [node name="LandingSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_tuyoq")
 volume_db = 5.0
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0)
+width = 42.0
+width_curve = SubResource("Curve_ur7pv")
+gradient = SubResource("Gradient_y4r1p")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+round_precision = 16
 
 [connection signal="Respawn" from="." to="." method="OnRespawn"]
 [connection signal="SetRespawn" from="." to="." method="OnSetRespawn"]
