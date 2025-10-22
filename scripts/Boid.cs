@@ -35,6 +35,8 @@ public partial class Boid : CharacterBody2D
 	private Timer _lifetimeTimer;
 	private Timer _deathTime;
 	private AudioController _audioController;
+	private float _waitTime = 0f;
+	private bool _dying = false;
 	
 	override public void _Ready() 
 	{
@@ -73,24 +75,21 @@ public partial class Boid : CharacterBody2D
 	
 	public void OnKill()
 	{
-		BoidDeathParticles deathParticles = DeathParticles.Instantiate<BoidDeathParticles>();
-		deathParticles.Emitting = true;
-		deathParticles.Restart();
-		deathParticles.GlobalPosition = GlobalPosition;
-		deathParticles.ZIndex = ZIndex;
-		GetTree().Root.AddChild(deathParticles);
-		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Remove(this);
-		float waitTime = _audioController.RequestAudio("BoidDeathAudio", 0, this) + 0.1f;
-		Hide();
-		Active = false;
-		if (waitTime > 0f)
+		if (!_dying)
 		{
-			_deathTime.WaitTime = waitTime;
+			_dying = true;
+			BoidDeathParticles deathParticles = DeathParticles.Instantiate<BoidDeathParticles>();
+			deathParticles.Emitting = true;
+			deathParticles.Restart();
+			deathParticles.GlobalPosition = GlobalPosition;
+			deathParticles.ZIndex = ZIndex;
+			GetTree().Root.AddChild(deathParticles);
+			GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Remove(this);
+			_waitTime = Mathf.Max(_audioController.RequestAudio("BoidDeathAudio", 0, this) + 0.1f, _waitTime);
+			Hide();
+			Active = false;
+			_deathTime.WaitTime = _waitTime;
 			_deathTime.Start();
-		}
-		else
-		{
-			QueueFree();
 		}
 	}
 	
@@ -103,7 +102,15 @@ public partial class Boid : CharacterBody2D
 	
 	private void OnAudioDelayTimeout()
 	{
-		_audioController.RequestAudio("BoidWhooshAudio", 0, this);
+		_waitTime = Mathf.Max(_audioController.RequestAudio("BoidWhooshAudio", 0, this) + 0.1f, _waitTime);
+		if (!_deathTime.IsStopped())
+		{
+			if (_deathTime.TimeLeft < _deathTime.WaitTime)
+			{
+				_deathTime.WaitTime = _waitTime;
+				_deathTime.Start();
+			}
+		}
 	}
 	
 	private void OnAudioComplete()

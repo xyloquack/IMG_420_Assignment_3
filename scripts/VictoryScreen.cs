@@ -26,7 +26,7 @@ public partial class VictoryScreen : CanvasLayer
 		GetTree().Paused = false;
 		Hide();
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids = [];
-		GetTree().ChangeSceneToFile("uid://vmvoolsh6ded");
+		GetTree().ChangeSceneToFile("uid://c7f8c54cffku6");
 	}
 	
 	private void OnMainMenu()

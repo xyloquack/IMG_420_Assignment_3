@@ -21,6 +21,8 @@ public partial class Enemy : CharacterBody2D
 		Health = MaxHealth;
 		Sprite = GetNode<AnimatedSprite2D>("Sprite");
 		ShaderMat = (ShaderMaterial)Sprite.Material;
+		ShaderMat = (ShaderMaterial)ShaderMat.Duplicate();
+		Sprite.Material = ShaderMat;
 		ShaderMat.SetShaderParameter("flash_color", new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		FlashTimer = GetNode<Timer>("FlashTimer");
 	}
@@ -28,7 +30,7 @@ public partial class Enemy : CharacterBody2D
 	private void OnDamage(float damage)
 	{
 		Health -= damage;
-		ShaderMat.SetShaderParameter("enable", true);
+		GD.Print("Flash!");
 		FlashTimer.Start();
 		CheckHealth();
 	}
@@ -37,13 +39,14 @@ public partial class Enemy : CharacterBody2D
 	{
 		if (node.IsInGroup("player"))
 		{
-			Player = (CharacterController)node;
+			PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
+			PhysicsRayQueryParameters2D query = PhysicsRayQueryParameters2D.Create(node.GlobalPosition, GlobalPosition);
+			var result = spaceState.IntersectRay(query);
+			if (result.Count == 0)
+			{
+				Player = (CharacterController)node;
+			}
 		}
-	}
-	
-	private void OnFlashTimeout()
-	{
-		ShaderMat.SetShaderParameter("enable", false);
 	}
 	
 	private void CheckHealth()

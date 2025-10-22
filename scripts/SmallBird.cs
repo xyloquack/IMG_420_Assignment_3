@@ -45,6 +45,7 @@ public partial class SmallBird : Enemy
 	private float _remainingTelegraphingTime;
 	private float _remainingDiveWaitTime;
 	private float _remainingDiveDuration;
+	private bool _diving = false;
 	
 	override public void _Ready()
 	{
@@ -61,11 +62,9 @@ public partial class SmallBird : Enemy
 		switch (State)
 		{
 			case BirdState.Idle:
-				GD.Print("Idle!");
 				_navigation.TargetPosition = _homePosition + new Vector2(GD.Randf() * WanderRange, GD.Randf() * WanderRange);
 				break;
 			case BirdState.Follow:
-				GD.Print("Follow!");
 				if (Player != null)
 				{
 					if (Player.LastFloorHeight != 0f)
@@ -94,17 +93,29 @@ public partial class SmallBird : Enemy
 				}
 				break;
 			case BirdState.Dive:
+				
 				if (_remainingDiveDuration == DiveDuration)
 				{
 					_navigation.TargetPosition = Player.GlobalPosition + Player.Velocity * 0.3f;
+					PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
+					PhysicsRayQueryParameters2D query = PhysicsRayQueryParameters2D.Create(_navigation.TargetPosition, GlobalPosition);
+					var result = spaceState.IntersectRay(query);
+					if (result.Count == 0)
+					{
+						_remainingDiveDuration -= (float)delta;
+						_diving = true;
+					}
 				}
-				_remainingDiveDuration -= (float)delta;
+				if (_diving)
+				{
+					_remainingDiveDuration -= (float)delta;
+				}
 				if (_remainingDiveDuration <= 0 || (_navigation.TargetPosition - GlobalPosition).Length() < 10)
 				{
 					State = BirdState.Follow;
 					_remainingDiveWaitTime = DiveWaitTime;
+					_diving = false;
 				}
-				GD.Print("Dive!");
 				break;
 			default:
 				break;

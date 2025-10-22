@@ -100,7 +100,10 @@ public partial class CharacterController : CharacterBody2D
 		}
 		if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
 		{
-			_bufferSpeed = velocityChange;
+			if (_bufferSpeed == Vector2.Zero)
+			{
+				_bufferSpeed = velocityChange;
+			}
 		}
 		else
 		{
@@ -377,7 +380,6 @@ public partial class CharacterController : CharacterBody2D
 		if (_invulnerabilityTimer.IsStopped())
 		{
 			Health -= (int)damage;
-			_shaderMat.SetShaderParameter("enable", true);
 			_flashTimer.Start();
 			_hitSound.PitchScale = (float)(0.9 + GD.Randf() * 0.2);
 			_hitSound.Play();
@@ -385,11 +387,6 @@ public partial class CharacterController : CharacterBody2D
 			_invulnerabilityTimer.Start();
 			CheckHealth();
 		}
-	}
-	
-	private void OnFlashTimeout()
-	{
-		_shaderMat.SetShaderParameter("enable", false);
 	}
 	
 	private void CheckHealth()
@@ -412,6 +409,7 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void OnEquipWeapon(PackedScene WeaponScene)
 	{
+		TimeSinceLastAttack = 0f;
 		EquippedWeaponScene = WeaponScene;
 		AddChild(EquippedWeaponScene.Instantiate());
 	}

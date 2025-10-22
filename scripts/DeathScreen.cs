@@ -26,7 +26,7 @@ public partial class DeathScreen : CanvasLayer
 		GetTree().Paused = false;
 		Hide();
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids = [];
-		GetTree().ChangeSceneToFile("uid://cmv6c30k5fpj0");
+		GetTree().ChangeSceneToFile("uid://c7f8c54cffku6");
 	}
 	
 	private void OnMainMenu()

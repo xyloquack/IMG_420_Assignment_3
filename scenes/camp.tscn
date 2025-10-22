@@ -580,7 +580,7 @@ region = Rect2(1024, 0, 512, 512)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k2wcm"]
 shader = ExtResource("4_xqowg")
 
-[node name="Camp" type="Node2D"]
+[node name="World" type="Node2D"]
 script = ExtResource("1_nawe8")
 
 [node name="CollectibleWeapon" parent="." instance=ExtResource("2_esv4c")]
@@ -589,7 +589,7 @@ WeaponScene = ExtResource("3_k6sw2")
 Icon = ExtResource("4_aus63")
 
 [node name="Player" parent="." instance=ExtResource("2_tt7v5")]
-position = Vector2(-6928, -800)
+position = Vector2(-8375, 231)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Player"]
 position = Vector2(-640, -720)
@@ -602,16 +602,16 @@ visibility_rect = Rect2(540, 620, 200, 200)
 process_material = SubResource("ParticleProcessMaterial_xqowg")
 
 [node name="SmallBird" parent="." instance=ExtResource("6_k6sw2")]
-position = Vector2(-4352, -1664)
+position = Vector2(-4352, -1600)
 
 [node name="SmallBird2" parent="." instance=ExtResource("6_k6sw2")]
-position = Vector2(-2200, -1704)
+position = Vector2(-2256, -1664)
 
 [node name="SmallBird3" parent="." instance=ExtResource("6_k6sw2")]
-position = Vector2(-2056, -1704)
+position = Vector2(-2064, -1664)
 
 [node name="SmallBird4" parent="." instance=ExtResource("6_k6sw2")]
-position = Vector2(-1936, -1704)
+position = Vector2(-1936, -1664)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_wfmch")
@@ -628,6 +628,7 @@ position = Vector2(-7008, -808)
 shape = SubResource("CircleShape2D_esv4c")
 
 [node name="Guides" type="Node2D" parent="."]
+z_index = -2
 
 [node name="MoveGuide" type="Sprite2D" parent="Guides"]
 position = Vector2(-8384, 64)
@@ -642,7 +643,7 @@ position = Vector2(-5624, -280)
 texture = SubResource("AtlasTexture_digqh")
 
 [node name="AttackGuide" type="Sprite2D" parent="Guides"]
-position = Vector2(-6880, -816)
+position = Vector2(-7152, -824)
 texture = SubResource("AtlasTexture_i2yyo")
 
 [node name="BoostDashGuide" type="Sprite2D" parent="Guides"]
@@ -3296,7 +3297,7 @@ visible = false
 
 [node name="Infirmary" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(-8352, 168)
+position = Vector2(-8352, 166)
 texture = ExtResource("8_wfmch")
 
 [connection signal="Death" from="." to="." method="OnDeath"]

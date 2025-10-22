@@ -9,7 +9,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q7mcx"]
 shader = ExtResource("5_r24mh")
-shader_parameter/enable = false
 shader_parameter/opacity = 0.0
 shader_parameter/flash_color = Vector4(1, 1, 1, 1)
 

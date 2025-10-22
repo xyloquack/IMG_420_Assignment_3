@@ -13,7 +13,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d2wvv"]
 shader = ExtResource("5_y4r1p")
-shader_parameter/enable = false
 shader_parameter/opacity = 0.0
 shader_parameter/flash_color = Vector4(1, 1, 1, 1)
 

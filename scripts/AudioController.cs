@@ -31,6 +31,7 @@ public partial class AudioController : Node2D
 			audio.Position = Vector2.Zero;
 			audio.Play();
 			audioCounts[audioName]++;
+			GD.Print(audioName, ": ", audioCounts[audioName]);
 			return (float)audio.Stream.GetLength();
 		}
 		return 0f;
@@ -39,5 +40,6 @@ public partial class AudioController : Node2D
 	public void RemoveAudio(string audioName)
 	{
 		audioCounts[audioName]--;
+		GD.Print(audioName, ": ", audioCounts[audioName]);
 	}
 }
