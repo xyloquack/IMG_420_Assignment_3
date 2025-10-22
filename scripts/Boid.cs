@@ -31,6 +31,7 @@ public partial class Boid : CharacterBody2D
 	public Vector2 Goal;
 	public bool Active = false;
 	
+	private CollisionShape2D _collision;
 	private Timer _lifetimeTimer;
 	private Timer _deathTime;
 	private AudioController _audioController;
@@ -39,9 +40,10 @@ public partial class Boid : CharacterBody2D
 	{
 		GetNode<BoidHitBox>("HitBox").DamageAmount = DamageAmount;
 		GetTree().Root.GetNode<BoidManager>("BoidManager").Boids.Add(this);
+		_collision = GetNode<CollisionShape2D>("CollisionShape2D");
 		_lifetimeTimer = GetNode<Timer>("Lifetime");
 		_deathTime = GetNode<Timer>("DeathTime");
-		_audioController = GetNode<AudioController>("../../AudioController");
+		_audioController = GetNode<AudioController>("/root/AudioController");
 	}
 	
 	public void Launch(Vector2 goal, float speed, float rotation)

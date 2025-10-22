@@ -6,12 +6,14 @@ public partial class World : Node2D
 {
 	[Signal]
 	public delegate void DeathEventHandler();
+	[Signal]
+	public delegate void RemoveEnemyEventHandler(Enemy givenEnemy);
 	
 	public float TimePassed;
 	private PauseScreen _pauseScreen;
 	private DeathScreen _deathScreen;
 	private VictoryScreen _victoryScreen;
-	private List<Enemy> EnemyList = [];
+	private List<Enemy> RequiredEnemies = [];
 	
 	override public void _Ready()
 	{
@@ -20,7 +22,8 @@ public partial class World : Node2D
 		_deathScreen = GetNode<DeathScreen>("DeathScreen");
 		_victoryScreen = GetNode<VictoryScreen>("VictoryScreen");
 		
-		EnemyList.Add(GetNode<Enemy>("Enemy"));
+		//RequiredEnemies.Add(GetNode<Enemy>("Enemy"));
+		RequiredEnemies.Add(GetNode<Enemy>("SmallBird"));
 	}
 	
 	override public void _PhysicsProcess(double delta)
@@ -32,18 +35,14 @@ public partial class World : Node2D
 			GD.Print(Engine.GetFramesPerSecond());
 		}
 		
-		if (Input.IsActionPressed("pause"))
+		if (Input.IsActionJustPressed("pause"))
 		{
 			_pauseScreen.Pause();
 		}
-		bool win = true;
-		foreach (Enemy enemy in EnemyList)
+		bool win = false;
+		if (RequiredEnemies.Count == 0)
 		{
-			if (enemy.IsDead == false)
-			{
-				win = false;
-				break;
-			}
+			win = true;
 		}
 		if (win)
 		{
@@ -54,5 +53,13 @@ public partial class World : Node2D
 	private void OnDeath()
 	{
 		_deathScreen.Dead();
+	}
+	
+	private void OnRemoveEnemy(Enemy givenEnemy)
+	{
+		if (RequiredEnemies.Contains(givenEnemy))
+		{
+			RequiredEnemies.Remove(givenEnemy);
+		}
 	}
 }

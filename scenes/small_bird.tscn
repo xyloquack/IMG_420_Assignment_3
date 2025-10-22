@@ -54,7 +54,7 @@ WanderRange = 20.0
 MaxHealth = 100.0
 Damage = 1.0
 
-[node name="SmallBirdSprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_q7mcx")
 sprite_frames = SubResource("SpriteFrames_r24mh")
 frame_progress = 0.777844

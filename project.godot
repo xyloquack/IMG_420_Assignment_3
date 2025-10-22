@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 BoidManager="*res://scripts/BoidManager.cs"
 WindowManager="*res://scripts/WindowManager.cs"
+PlayerData="*res://scripts/PlayerData.cs"
+AudioController="*res://scripts/AudioController.cs"
 
 [display]
 

@@ -45,7 +45,7 @@ public partial class CharacterController : CharacterBody2D
 	public List<Boid> Boids = [];
 	public int NumBoids;
 	public int Health;
-	public float LastFloorHeight;
+	public float LastFloorHeight = 0f;
 	
 	private Vector2 _bufferSpeed;
 	private bool _slowFalling;
@@ -69,9 +69,7 @@ public partial class CharacterController : CharacterBody2D
 	
 	public override void _Ready() 
 	{
-		TimePassed = 0.0;
-		TimeSinceLastAttack = 0.0;
-		NumBoids = 0;
+		GetNode<PlayerData>("/root/PlayerData").LoadData(this);
 		_bufferSpeed = Vector2.Zero;
 		_slowFalling = false;
 		_dashing = false; 
@@ -82,7 +80,6 @@ public partial class CharacterController : CharacterBody2D
 		_jumpTimer = GetNode<Timer>("JumpTimer");
 		_attackCooldown = GetNode<Timer>("AttackCooldown");
 		_coyoteTimer = GetNode<Timer>("CoyoteTimer");
-		Health = MaxHealth;
 		_respawnPoint = GlobalPosition;
 		_movingSound1 = GetNode<AudioStreamPlayer2D>("MovingSound1");
 		_movingSound2 = GetNode<AudioStreamPlayer2D>("MovingSound2");
@@ -152,12 +149,6 @@ public partial class CharacterController : CharacterBody2D
 			dashTrail.Emitting = true;
 			dashTrail.Position = _playerSprite.Offset;
 			dashTrail.ZIndex = _playerSprite.ZIndex - 1;
-			//if (direction == -1)
-			//{
-				//Image newImage = dashTrail.Texture.GetImage();
-				//newImage.FlipX();
-				//dashTrail.Texture = ImageTexture.CreateFromImage(newImage);
-			//}
 			AddChild(dashTrail);
 		}
 		if (_dashing)
@@ -342,19 +333,20 @@ public partial class CharacterController : CharacterBody2D
 		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
 		{
 			Boid newBoid = BoidScene.Instantiate<Boid>();
-			Vector2 newPosition = Vector2.Zero;
+			Vector2 newPosition = GlobalPosition;
 			newPosition.Y += (float)(GD.Randf() * 10f - 15f);
-			newBoid.Position = newPosition;
-			newBoid.Speed = 200;
+			newBoid.GlobalPosition = newPosition;
+			newBoid.Speed = 300;
 			newBoid.GoalSeekingTurnAmount = 0.5f;
 			Boids.Add(newBoid);
-			AddChild(newBoid);
+			GetParent().AddChild(newBoid);
 			NumBoids++;
 		}
 	}
 	
 	private void UpdateIdleBoidGoal()
 	{
+		List<Boid> BoidsToRemove = [];
 		foreach (Boid boid in Boids)
 		{
 			Vector2 goalPosition = GlobalPosition + new Vector2(0, -25);
@@ -367,6 +359,17 @@ public partial class CharacterController : CharacterBody2D
 				goalPosition.X -= 40;
 			}
 			boid.Goal = goalPosition;
+			if ((boid.GlobalPosition - GlobalPosition).Length() > 200)
+			{
+				BoidsToRemove.Add(boid);
+			}
+		}
+		foreach (Boid boid in BoidsToRemove)
+		{
+			Boids.Remove(boid);
+			boid.EmitSignal("Kill");
+			NumBoids--;
+			AttemptBoidSpawn();
 		}
 	}
 	
@@ -427,5 +430,10 @@ public partial class CharacterController : CharacterBody2D
 	private void OnRespawn()
 	{
 		GlobalPosition = _respawnPoint;
+	}
+	
+	override public void _ExitTree()
+	{
+		GetNode<PlayerData>("/root/PlayerData").SaveData(this);
 	}
 }

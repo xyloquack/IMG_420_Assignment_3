@@ -230,7 +230,7 @@ public partial class BoidManager : Node
 				
 				newVelocity *= Boids[i].Speed;
 				Boids[i].Velocity = newVelocity;
-				Boids[i].Position += Boids[i].Velocity * (float)delta;
+				Boids[i].MoveAndSlide();
 			}
 		}
 		else
@@ -310,7 +310,7 @@ public partial class BoidManager : Node
 				
 				newVelocity *= Boids[i].Speed;
 				Boids[i].Velocity = newVelocity;
-				Boids[i].Position += Boids[i].Velocity * (float)delta;
+				Boids[i].MoveAndSlide();
 			}
 		}
 	}
