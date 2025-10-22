@@ -29,7 +29,7 @@ public partial class MainMenu : Control
 	
 	private void OnPlay()
 	{
-		GetTree().ChangeSceneToFile("uid://vmvoolsh6ded");
+		GetTree().ChangeSceneToFile("uid://c7f8c54cffku6");
 	}
 	
 	private void OnQuit()

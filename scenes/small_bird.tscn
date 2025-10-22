@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://ipd2ftyd4sbl"]
+[gd_scene load_steps=15 format=3 uid="uid://ipd2ftyd4sbl"]
 
 [ext_resource type="Script" uid="uid://blfkisgdo1uom" path="res://scripts/SmallBird.cs" id="1_0qx7c"]
 [ext_resource type="Texture2D" uid="uid://dthcfwhmrfebx" path="res://assets/sprites/small_bird_enemy.png" id="2_22d0u"]
+[ext_resource type="PackedScene" uid="uid://dt0h4br1he5xa" path="res://scenes/telegraph_particles.tscn" id="2_q7mcx"]
 [ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_clgt1"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="5_q7mcx"]
 [ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="5_r24mh"]
@@ -10,6 +11,7 @@
 shader = ExtResource("5_r24mh")
 shader_parameter/enable = false
 shader_parameter/opacity = 0.0
+shader_parameter/flash_color = Vector4(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q7mcx"]
 atlas = ExtResource("2_22d0u")
@@ -36,21 +38,29 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_1edq7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r24mh"]
-radius = 41.0488
+radius = 9.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4rw7d"]
-radius = 54.0093
+radius = 16.0312
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vivoj"]
 radius = 800.0
 
-[node name="SmallBird" type="CharacterBody2D"]
+[node name="SmallBird" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("1_0qx7c")
 VerticalSpeed = 250.0
 HorizontalSpeed = 200.0
 RandomVSpeedOffset = 150.0
 Gravity = 800.0
 WanderRange = 20.0
+DiveDistance = 300.0
+TelegraphingTime = 0.2
+DiveWaitTime = 2.0
+DiveDuration = 3.0
+DiveSpeed = 600.0
+TelegraphParticles = ExtResource("2_q7mcx")
 MaxHealth = 100.0
 Damage = 1.0
 
@@ -61,7 +71,6 @@ frame_progress = 0.777844
 
 [node name="SmallBirdCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_1edq7")
-disabled = true
 
 [node name="Navigation" type="NavigationAgent2D" parent="."]
 
@@ -93,3 +102,4 @@ one_shot = true
 
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="body_entered" from="DetectionRadius" to="." method="OnDetectionEntered"]
+[connection signal="timeout" from="FlashTimer" to="." method="OnFlashTimeout"]

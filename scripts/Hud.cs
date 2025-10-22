@@ -25,7 +25,7 @@ public partial class Hud : CanvasLayer
 	
 	override public void _PhysicsProcess(double delta)
 	{
-		float cursorPercentFull = (float)(((float)Player.NumBoids / (float)Player.MaxBoids));
+		float cursorPercentFull = (float)(((float)Player.GetAmmo() / (float)Player.GetMaxAmmo()));
 		float healthPercentFull = (float)(((float)Player.Health / (float)Player.MaxHealth));
 		_cursorShaderMat.SetShaderParameter("percentFull", cursorPercentFull);
 		_innerHealthShaderMat.SetShaderParameter("healthPercent", healthPercentFull);

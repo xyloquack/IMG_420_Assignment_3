@@ -21,6 +21,7 @@ public partial class Enemy : CharacterBody2D
 		Health = MaxHealth;
 		Sprite = GetNode<AnimatedSprite2D>("Sprite");
 		ShaderMat = (ShaderMaterial)Sprite.Material;
+		ShaderMat.SetShaderParameter("flash_color", new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		FlashTimer = GetNode<Timer>("FlashTimer");
 	}
 	
@@ -32,7 +33,7 @@ public partial class Enemy : CharacterBody2D
 		CheckHealth();
 	}
 	
-	private void OnDetectionEntered(Node2D node)
+	virtual public void OnDetectionEntered(Node2D node)
 	{
 		if (node.IsInGroup("player"))
 		{

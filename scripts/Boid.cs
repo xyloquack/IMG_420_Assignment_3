@@ -54,6 +54,8 @@ public partial class Boid : CharacterBody2D
 		Speed = speed;
 		Rotation = rotation;
 		GoalSeekingTurnAmount = 3f;
+		RotationStrength = 25f;
+		MaxSteeringForce = 20f;
 		Active = true;
 		Node newParent = GetParent().GetParent();
 		Reparent(newParent);

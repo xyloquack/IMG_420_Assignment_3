@@ -1,8 +1,17 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class SmallBird : Enemy
 {
+	public enum BirdState
+	{
+		Idle,
+		Follow,
+		Telegraphing,
+		Dive
+	}
+	
 	[Export]
 	public float VerticalSpeed;
 	[Export]
@@ -13,13 +22,29 @@ public partial class SmallBird : Enemy
 	public float Gravity;
 	[Export]
 	public float WanderRange;
+	[Export]
+	public float DiveDistance;
+	[Export]
+	public float TelegraphingTime;
+	[Export]
+	public float DiveWaitTime;
+	[Export]
+	public float DiveDuration;
+	[Export]
+	public float DiveSpeed;
+	[Export]
+	public PackedScene TelegraphParticles { get; set; }
 	
 	public Vector2 SuggestedVelocity = Vector2.Zero;
+	public BirdState State = BirdState.Idle;
 	
 	private Timer _flapTimer;
 	private NavigationAgent2D _navigation;
 	private Vector2 _homePosition;
 	private float _health;
+	private float _remainingTelegraphingTime;
+	private float _remainingDiveWaitTime;
+	private float _remainingDiveDuration;
 	
 	override public void _Ready()
 	{
@@ -28,37 +53,107 @@ public partial class SmallBird : Enemy
 		_navigation = GetNode<NavigationAgent2D>("Navigation");
 		_homePosition = GlobalPosition;
 		GetNode<HitBox>("HitBox").DamageAmount = Damage;
+		_remainingDiveWaitTime = DiveWaitTime;
 	}
 	
 	override public void _PhysicsProcess(double delta)
 	{
-		if (Player == null)
+		switch (State)
 		{
-			_navigation.TargetPosition = _homePosition + new Vector2(GD.Randf() * WanderRange, GD.Randf() * WanderRange);
-		}
-		else
-		{
-			if (Player.LastFloorHeight != 0f)
-			{
-				_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, Player.LastFloorHeight - 50);
-			}
-			else
-			{
-				_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, -50);
-			}
+			case BirdState.Idle:
+				GD.Print("Idle!");
+				_navigation.TargetPosition = _homePosition + new Vector2(GD.Randf() * WanderRange, GD.Randf() * WanderRange);
+				break;
+			case BirdState.Follow:
+				GD.Print("Follow!");
+				if (Player != null)
+				{
+					if (Player.LastFloorHeight != 0f)
+					{
+						_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, Player.LastFloorHeight - 50);
+					}
+					else
+					{
+						_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, -50);
+					}
+					if ((_navigation.TargetPosition - GlobalPosition).Length() < DiveDistance)
+					{
+						PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
+						PhysicsRayQueryParameters2D query = PhysicsRayQueryParameters2D.Create(_navigation.TargetPosition, GlobalPosition);
+						var result = spaceState.IntersectRay(query);
+						if (result.Count == 0)
+						{
+							_remainingDiveWaitTime -= (float)delta;
+						}
+						if (_remainingDiveWaitTime <= 0)
+						{
+							State = BirdState.Telegraphing;
+							_remainingTelegraphingTime = TelegraphingTime;
+						}
+					}
+				}
+				break;
+			case BirdState.Dive:
+				if (_remainingDiveDuration == DiveDuration)
+				{
+					_navigation.TargetPosition = Player.GlobalPosition + Player.Velocity * 0.3f;
+				}
+				_remainingDiveDuration -= (float)delta;
+				if (_remainingDiveDuration <= 0 || (_navigation.TargetPosition - GlobalPosition).Length() < 10)
+				{
+					State = BirdState.Follow;
+					_remainingDiveWaitTime = DiveWaitTime;
+				}
+				GD.Print("Dive!");
+				break;
+			default:
+				break;
 		}
 		SuggestedVelocity = (_navigation.GetNextPathPosition() - GlobalPosition).Normalized();
-		ShaderMat.SetShaderParameter("opacity", FlashTimer.TimeLeft / FlashTimer.WaitTime);
-		Vector2 newVelocity = Velocity;
-		if (SuggestedVelocity.Y < 0 && _flapTimer.IsStopped()) 
+		Vector2 newVelocity;
+		switch (State)
 		{
-			newVelocity.Y = Flap();
-			Sprite.Play();
+			case BirdState.Idle:
+			case BirdState.Follow:
+				newVelocity = Velocity;
+				if (SuggestedVelocity.Y < 0 && _flapTimer.IsStopped()) 
+				{
+					newVelocity.Y = Flap();
+					Sprite.Play();
+				}
+				newVelocity.X = Mathf.Lerp(newVelocity.X, SuggestedVelocity.X * HorizontalSpeed, 0.3f);
+				newVelocity.Y += Gravity * (float)delta;
+				Velocity = newVelocity;
+				break;
+				
+			case BirdState.Telegraphing:
+				if (_remainingTelegraphingTime == TelegraphingTime)
+				{
+					GpuParticles2D particles = TelegraphParticles.Instantiate<GpuParticles2D>();
+					particles.Emitting = true;
+					AddChild(particles);
+				}
+				newVelocity = Velocity;
+				newVelocity.X = Mathf.Lerp(newVelocity.X, 0, 0.2f);
+				newVelocity.Y = Mathf.Lerp(newVelocity.Y, 0, 0.2f);
+				Velocity = newVelocity;
+				_remainingTelegraphingTime -= (float)delta;
+				if (_remainingTelegraphingTime <= 0)
+				{
+					State = BirdState.Dive;
+					_remainingDiveDuration = DiveDuration;
+				}
+				break;
+				
+			case BirdState.Dive:
+				newVelocity = Velocity;
+				newVelocity.X = Mathf.Lerp(Velocity.X, SuggestedVelocity.X * DiveSpeed, 0.3f);
+				newVelocity.Y = Mathf.Lerp(Velocity.Y, SuggestedVelocity.Y * DiveSpeed, 0.3f);
+				Velocity = newVelocity;
+				break;
 		}
-		newVelocity.X = Mathf.Lerp(newVelocity.X, SuggestedVelocity.X * HorizontalSpeed, 0.3f);
-		newVelocity.Y += Gravity * (float)delta;
-		Velocity = newVelocity;
 		MoveAndSlide();
+		ShaderMat.SetShaderParameter("opacity", FlashTimer.TimeLeft / FlashTimer.WaitTime);
 		if (Velocity.X < 0)
 		{
 			Sprite.FlipH = false;
@@ -74,5 +169,14 @@ public partial class SmallBird : Enemy
 		GD.Print("Flap!");
 		_flapTimer.Start();
 		return -VerticalSpeed - GD.Randf() * RandomVSpeedOffset;
+	}
+	
+	override public void OnDetectionEntered(Node2D node)
+	{
+		base.OnDetectionEntered(node);
+		if (Player != null)
+		{
+			State = BirdState.Follow;
+		}
 	}
 }

@@ -8,6 +8,8 @@ public partial class CharacterController : CharacterBody2D
 	public delegate void SetRespawnEventHandler(Vector2 position);
 	[Signal]
 	public delegate void RespawnEventHandler();
+	[Signal]
+	public delegate void EquipWeaponEventHandler(PackedScene WeaponScene);
 	
 	[Export]
 	public int MaxHealth;
@@ -32,20 +34,16 @@ public partial class CharacterController : CharacterBody2D
 	[Export]
 	public float SlowFallMult;
 	[Export]
-	public PackedScene BoidScene { get; set; }
-	[Export]
-	public int MaxBoids;
-	[Export]
 	public PackedScene DustScene { get; set; }
 	[Export]
 	public PackedScene DashTrailScene { get; set; }
 	
 	public double TimePassed;
 	public double TimeSinceLastAttack;
-	public List<Boid> Boids = [];
-	public int NumBoids;
 	public int Health;
 	public float LastFloorHeight = 0f;
+	public AnimatedSprite2D PlayerSprite;
+	public PackedScene EquippedWeaponScene;
 	
 	private Vector2 _bufferSpeed;
 	private bool _slowFalling;
@@ -53,19 +51,18 @@ public partial class CharacterController : CharacterBody2D
 	private bool _jumping;
 	private bool _dashing;
 	private bool _isAttacking = false;
-	private List<Boid> _boidsToLaunch;
-	private const int BOIDS_PER_FRAME = 100;
-	private AnimatedSprite2D _playerSprite;
+	private ShaderMaterial _shaderMat;
 	private Timer _invulnerabilityTimer;
 	private Timer _dashTimer;
 	private Timer _dashCooldown;
 	private Timer _jumpTimer;
-	private Timer _attackCooldown;
 	private Timer _coyoteTimer;
+	private Timer _flashTimer;
 	private Vector2 _respawnPoint;
 	private AudioStreamPlayer2D _movingSound1;
 	private AudioStreamPlayer2D _movingSound2;
 	private AudioStreamPlayer2D _landingSound;
+	private AudioStreamPlayer2D _hitSound;
 	
 	public override void _Ready() 
 	{
@@ -73,45 +70,41 @@ public partial class CharacterController : CharacterBody2D
 		_bufferSpeed = Vector2.Zero;
 		_slowFalling = false;
 		_dashing = false; 
-		_playerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+		PlayerSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+		_shaderMat = (ShaderMaterial)PlayerSprite.Material;
+		_shaderMat.SetShaderParameter("flash_color", new Vector4(1.0f, 0.3f, 0.2f, 1.0f));
 		_invulnerabilityTimer = GetNode<Timer>("InvulnerabilityTimer");
 		_dashTimer = GetNode<Timer>("DashTimer");
 		_dashCooldown = GetNode<Timer>("DashCooldown");
 		_jumpTimer = GetNode<Timer>("JumpTimer");
-		_attackCooldown = GetNode<Timer>("AttackCooldown");
 		_coyoteTimer = GetNode<Timer>("CoyoteTimer");
+		_flashTimer = GetNode<Timer>("FlashTimer");
 		_respawnPoint = GlobalPosition;
 		_movingSound1 = GetNode<AudioStreamPlayer2D>("MovingSound1");
 		_movingSound2 = GetNode<AudioStreamPlayer2D>("MovingSound2");
 		_landingSound = GetNode<AudioStreamPlayer2D>("LandingSound");
+		_hitSound = GetNode<AudioStreamPlayer2D>("HitSound");
 	}
 	
 	public override void _PhysicsProcess(double delta) 
 	{
 		TimePassed += delta;
 		TimeSinceLastAttack += delta;
+		_shaderMat.SetShaderParameter("opacity", _flashTimer.TimeLeft / _flashTimer.WaitTime);
 		UpdateVelocity(delta);
 		UpdateSprite();
-		AttemptBoidSpawn();
-		UpdateIdleBoidGoal();
+		Vector2 velocityChange = Vector2.Zero;
 		if (Input.IsActionJustPressed("attack"))
 		{
-			Attack();
+			velocityChange = Attack();
 		}
-		if (_isAttacking)
+		if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
 		{
-			int launchCount = Math.Min(BOIDS_PER_FRAME, _boidsToLaunch.Count);
-			for (int i = 0; i < launchCount; i++)
-			{
-				Boid boid = _boidsToLaunch[0];
-				Vector2 mousePosition = GetGlobalMousePosition();
-				boid.Launch(mousePosition, 1000f, (float)(Vector2.Right.AngleTo(mousePosition) + GD.Randf() * 3 - 1.5));
-				_boidsToLaunch.RemoveAt(0);
-			}
-			if (_boidsToLaunch.Count == 0)
-			{
-				_isAttacking = false;
-			}
+			_bufferSpeed = velocityChange;
+		}
+		else
+		{
+			Velocity += velocityChange;
 		}
 		MoveAndSlide();
 	}
@@ -132,7 +125,7 @@ public partial class CharacterController : CharacterBody2D
 			}
 			if (direction == 0)
 			{
-				if (_playerSprite.FlipH)
+				if (PlayerSprite.FlipH)
 				{
 					direction = -1;
 				}
@@ -147,8 +140,8 @@ public partial class CharacterController : CharacterBody2D
 			
 			GpuParticles2D dashTrail = DashTrailScene.Instantiate<GpuParticles2D>();
 			dashTrail.Emitting = true;
-			dashTrail.Position = _playerSprite.Offset;
-			dashTrail.ZIndex = _playerSprite.ZIndex - 1;
+			dashTrail.Position = PlayerSprite.Offset;
+			dashTrail.ZIndex = PlayerSprite.ZIndex - 1;
 			AddChild(dashTrail);
 		}
 		if (_dashing)
@@ -212,6 +205,7 @@ public partial class CharacterController : CharacterBody2D
 		}
 		else
 		{
+			LastFloorHeight = GlobalPosition.Y;
 			_coyoteTimer.Start();
 			if (!_wasOnFloor)
 			{
@@ -298,109 +292,84 @@ public partial class CharacterController : CharacterBody2D
 		Vector2 newOffset;
 		newOffset.X = 0;
 		newOffset.Y = (float)(4 * Math.Sin(TimePassed * 2.5) - 4);
-		_playerSprite.Offset = newOffset;
+		PlayerSprite.Offset = newOffset;
 		
 		if (_dashing)
 		{
-			_playerSprite.SetFrame(_playerSprite.GetSpriteFrames().GetFrameCount(_playerSprite.Animation) - 1);
+			PlayerSprite.SetFrame(PlayerSprite.GetSpriteFrames().GetFrameCount(PlayerSprite.Animation) - 1);
 		}
 		else
 		{
-			_playerSprite.Stop();
-			int numFrames = _playerSprite.GetSpriteFrames().GetFrameCount(_playerSprite.Animation) - 1;
+			PlayerSprite.Stop();
+			int numFrames = PlayerSprite.GetSpriteFrames().GetFrameCount(PlayerSprite.Animation) - 1;
 			int newFrame = (int)Math.Floor(numFrames * (Math.Abs(Velocity.X) / Speed));
 			if (newFrame >= numFrames) 
 			{
 				newFrame = numFrames - 1;
 			}
-			_playerSprite.SetFrame(newFrame);
+			PlayerSprite.SetFrame(newFrame);
 		}
 		if (Velocity.X < 0) 
 		{
-			_playerSprite.FlipH = true;
-			_playerSprite.Animation = "walk_left";
+			PlayerSprite.FlipH = true;
+			PlayerSprite.Animation = "walk_left";
 		}
 		if (Velocity.X > 0) 
 		{
-			_playerSprite.FlipH = false;
-			_playerSprite.Animation = "walk_right";
-		}
-		
-	}
-	
-	private void AttemptBoidSpawn() 
-	{
-		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
-		{
-			Boid newBoid = BoidScene.Instantiate<Boid>();
-			Vector2 newPosition = GlobalPosition;
-			newPosition.Y += (float)(GD.Randf() * 10f - 15f);
-			newBoid.GlobalPosition = newPosition;
-			newBoid.Speed = 300;
-			newBoid.GoalSeekingTurnAmount = 0.5f;
-			Boids.Add(newBoid);
-			GetParent().AddChild(newBoid);
-			NumBoids++;
+			PlayerSprite.FlipH = false;
+			PlayerSprite.Animation = "walk_right";
 		}
 	}
-	
-	private void UpdateIdleBoidGoal()
-	{
-		List<Boid> BoidsToRemove = [];
-		foreach (Boid boid in Boids)
-		{
-			Vector2 goalPosition = GlobalPosition + new Vector2(0, -25);
-			if (_playerSprite.FlipH)
-			{
-				goalPosition.X += 40;
-			}
-			else
-			{
-				goalPosition.X -= 40;
-			}
-			boid.Goal = goalPosition;
-			if ((boid.GlobalPosition - GlobalPosition).Length() > 200)
-			{
-				BoidsToRemove.Add(boid);
-			}
-		}
-		foreach (Boid boid in BoidsToRemove)
-		{
-			Boids.Remove(boid);
-			boid.EmitSignal("Kill");
-			NumBoids--;
-			AttemptBoidSpawn();
-		}
-	}
-	
-	
-	private void Attack()
-	{
-		if (_attackCooldown.IsStopped() && NumBoids > 0 && !_isAttacking)
-		{
-			TimeSinceLastAttack = 0;
-			
-			Vector2 mousePosition = GetGlobalMousePosition();
-			Vector2 velocityChange = -(mousePosition - GlobalPosition).Normalized();
-			velocityChange.X *= 1100 * ((float)NumBoids / (float)MaxBoids);
-			velocityChange.Y *= 600 * ((float)NumBoids / (float)MaxBoids);
-			
-			if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
-			{
-				_bufferSpeed = velocityChange;
-			}
-			else
-			{
-				Velocity += velocityChange;
-			}
-			
-			_boidsToLaunch = new List<Boid>(Boids);
-			_isAttacking = true;
 
-			NumBoids = 0;
-			Boids.Clear();
-			_attackCooldown.Start();
+	private Vector2 Attack()
+	{
+		foreach (Node child in GetChildren())
+		{
+			if (child.IsInGroup("weapon"))
+			{
+				Weapon weapon = (Weapon)child;
+				return weapon.Attack();
+			}
 		}
+		return Vector2.Zero;
+	}
+	
+	public int GetAmmo()
+	{
+		foreach (Node child in GetChildren())
+		{
+			if (child.IsInGroup("weapon"))
+			{
+				Weapon weapon = (Weapon)child;
+				return weapon.GetAmmo();
+			}
+		}
+		return 0;
+	}
+	
+	public void SetAmmo(int num)
+	{
+		foreach (Node child in GetChildren())
+		{
+			if (child.IsInGroup("weapon"))
+			{
+				Weapon weapon = (Weapon)child;
+				weapon.SetAmmo(num);
+			}
+		}
+	}
+	
+	public int GetMaxAmmo()
+	{
+		foreach (Node child in GetChildren())
+		{
+			if (child.IsInGroup("weapon"))
+			{
+				Weapon weapon = (Weapon)child;
+				return weapon.GetMaxAmmo();
+			}
+		}
+		return 1;
 	}
 	
 	private void OnDamage(float damage)
@@ -408,10 +377,19 @@ public partial class CharacterController : CharacterBody2D
 		if (_invulnerabilityTimer.IsStopped())
 		{
 			Health -= (int)damage;
+			_shaderMat.SetShaderParameter("enable", true);
+			_flashTimer.Start();
+			_hitSound.PitchScale = (float)(0.9 + GD.Randf() * 0.2);
+			_hitSound.Play();
 			GD.Print(Health);
 			_invulnerabilityTimer.Start();
 			CheckHealth();
 		}
+	}
+	
+	private void OnFlashTimeout()
+	{
+		_shaderMat.SetShaderParameter("enable", false);
 	}
 	
 	private void CheckHealth()
@@ -432,8 +410,18 @@ public partial class CharacterController : CharacterBody2D
 		GlobalPosition = _respawnPoint;
 	}
 	
+	private void OnEquipWeapon(PackedScene WeaponScene)
+	{
+		EquippedWeaponScene = WeaponScene;
+		AddChild(EquippedWeaponScene.Instantiate());
+	}
+	
 	override public void _ExitTree()
 	{
+		if (Health == 0)
+		{
+			Health = MaxHealth;
+		}
 		GetNode<PlayerData>("/root/PlayerData").SaveData(this);
 	}
 }

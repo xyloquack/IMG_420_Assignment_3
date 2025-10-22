@@ -22,8 +22,12 @@ public partial class World : Node2D
 		_deathScreen = GetNode<DeathScreen>("DeathScreen");
 		_victoryScreen = GetNode<VictoryScreen>("VictoryScreen");
 		
-		//RequiredEnemies.Add(GetNode<Enemy>("Enemy"));
 		RequiredEnemies.Add(GetNode<Enemy>("SmallBird"));
+		RequiredEnemies.Add(GetNode<Enemy>("SmallBird2"));
+		RequiredEnemies.Add(GetNode<Enemy>("SmallBird3"));
+		RequiredEnemies.Add(GetNode<Enemy>("SmallBird4"));
+		GetNode<Sprite2D>("Guides/AttackGuide").Visible = false;
+		GetNode<Sprite2D>("Guides/BoostDashGuide").Visible = false;
 	}
 	
 	override public void _PhysicsProcess(double delta)
@@ -60,6 +64,15 @@ public partial class World : Node2D
 		if (RequiredEnemies.Contains(givenEnemy))
 		{
 			RequiredEnemies.Remove(givenEnemy);
+		}
+	}
+	
+	private void OnGuideZoneEntered(Node body)
+	{
+		if (body.IsInGroup("player"))
+		{
+			GetNode<Sprite2D>("Guides/AttackGuide").Visible = true;
+			GetNode<Sprite2D>("Guides/BoostDashGuide").Visible = true;
 		}
 	}
 }

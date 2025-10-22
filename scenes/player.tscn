@@ -1,14 +1,21 @@
-[gd_scene load_steps=36 format=4 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=38 format=4 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/sprites/the_man_sheet.png" id="2_i3pqv"]
-[ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://hrie1ibpv2hv" path="res://scenes/landing_particles.tscn" id="3_fjrip"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="4_dqkch"]
 [ext_resource type="PackedScene" uid="uid://omdf3itudvkj" path="res://scenes/dash_trail.tscn" id="4_ur7pv"]
 [ext_resource type="PackedScene" uid="uid://c1ifyulebswpo" path="res://scenes/hud.tscn" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://cwlx8k5g4q78c" path="res://assets/sprites/the_man_recolored.png" id="5_smehm"]
+[ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="5_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://dogg5ptewsg4a" path="res://assets/audio/landing.ogg" id="6_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://be2mbjxo0fdv3" path="res://assets/audio/player_hit.ogg" id="11_d2wvv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2wvv"]
+shader = ExtResource("5_y4r1p")
+shader_parameter/enable = false
+shader_parameter/opacity = 0.0
+shader_parameter/flash_color = Vector4(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jdcf7"]
 atlas = ExtResource("2_i3pqv")
@@ -193,12 +200,11 @@ JumpSpeed = 350.0
 BurstJumpSpeed = 1000.0
 Gravity = 1200.0
 SlowFallMult = 0.6
-BoidScene = ExtResource("2_qhqgy")
-MaxBoids = 20
 DustScene = ExtResource("3_fjrip")
 DashTrailScene = ExtResource("4_ur7pv")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_d2wvv")
 sprite_frames = SubResource("SpriteFrames_hqtel")
 animation = &"walk_left"
 autoplay = "walk_right"
@@ -244,6 +250,10 @@ one_shot = true
 wait_time = 0.2
 one_shot = true
 
+[node name="FlashTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [node name="HUD" parent="." instance=ExtResource("5_qlg0r")]
 layer = 0
 
@@ -262,6 +272,10 @@ autoplay = true
 stream = ExtResource("6_tuyoq")
 volume_db = 5.0
 
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_d2wvv")
+max_polyphony = 2
+
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(0, 0)
 width = 42.0
@@ -272,6 +286,7 @@ begin_cap_mode = 2
 end_cap_mode = 2
 round_precision = 16
 
+[connection signal="EquipWeapon" from="." to="." method="OnEquipWeapon"]
 [connection signal="Respawn" from="." to="." method="OnRespawn"]
 [connection signal="SetRespawn" from="." to="." method="OnSetRespawn"]
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]

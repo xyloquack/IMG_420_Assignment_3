@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dt0h4br1he5xa"]
+
+[ext_resource type="Script" uid="uid://b7rnfrj8kht53" path="res://scenes/TelegraphParticles.cs" id="1_8i46e"]
+
+[sub_resource type="Gradient" id="Gradient_kbc0t"]
+colors = PackedColorArray(1, 0.3, 0.3, 1, 0.57, 0.1425, 0.1425, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8i46e"]
+gradient = SubResource("Gradient_kbc0t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kbc0t"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 150.0
+initial_velocity_max = 175.0
+gravity = Vector3(0, 0, 0)
+damping_min = 600.0
+damping_max = 600.0
+color_ramp = SubResource("GradientTexture1D_8i46e")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.2
+
+[node name="TelegraphParticles" type="GPUParticles2D"]
+modulate = Color(0.920499, 0, 0.191674, 1)
+emitting = false
+amount = 50
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_kbc0t")
+script = ExtResource("1_8i46e")
+
+[connection signal="finished" from="." to="." method="OnFinished"]
