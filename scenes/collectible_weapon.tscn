@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cse7uuboboa13"]
 
-[ext_resource type="Script" uid="uid://0us70s4u8ir4" path="res://scenes/CollectibleWeapon.cs" id="1_mv2wd"]
+[ext_resource type="Script" uid="uid://0us70s4u8ir4" path="res://scripts/CollectibleWeapon.cs" id="1_mv2wd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mv2wd"]
 radius = 30.0

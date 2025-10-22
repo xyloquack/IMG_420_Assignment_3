@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dt0h4br1he5xa"]
 
-[ext_resource type="Script" uid="uid://b7rnfrj8kht53" path="res://scenes/TelegraphParticles.cs" id="1_8i46e"]
+[ext_resource type="Script" uid="uid://b7rnfrj8kht53" path="res://scripts/TelegraphParticles.cs" id="1_8i46e"]
 
 [sub_resource type="Gradient" id="Gradient_kbc0t"]
 colors = PackedColorArray(1, 0.3, 0.3, 1, 0.57, 0.1425, 0.1425, 1)
