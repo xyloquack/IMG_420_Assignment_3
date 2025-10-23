@@ -12,7 +12,6 @@ public partial class PlayerData : Node
 	public void SaveData(CharacterController player)
 	{
 		TimePassed = player.TimePassed;
-		TimeSinceLastAttack = player.TimeSinceLastAttack;
 		numAmmo = player.GetAmmo();
 		Health = player.Health;
 		GD.Print("TimePassed: ", TimePassed);
@@ -24,7 +23,6 @@ public partial class PlayerData : Node
 	public void LoadData(CharacterController player)
 	{
 		player.TimePassed = TimePassed;
-		player.TimeSinceLastAttack = TimeSinceLastAttack;
 		player.SetAmmo(numAmmo);
 		player.Health = Health;
 		GD.Print("TimePassed: ", TimePassed);

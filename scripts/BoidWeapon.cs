@@ -9,19 +9,18 @@ public partial class BoidWeapon : Weapon
 	[Export]
 	public int MaxBoids = 10;
 	
-	public int NumBoids;
+	public int NumBoids = 0;
 	public List<Boid> Boids = [];
 
 	private List<Boid> _boidsToLaunch;
 	private const int BOIDS_PER_FRAME = 100;
 	private Timer _attackCooldown;
 	private bool _isAttacking = false;
-	private CharacterController _player;
+	private double _timeSinceLastAttack = 0f;
 
 	override public void _Ready()
 	{
 		_attackCooldown = GetNode<Timer>("AttackCooldown");
-		_player = GetParent<CharacterController>();
 		for (int i = 0; i < NumBoids; i++)
 		{
 			BoidSpawn();
@@ -30,6 +29,7 @@ public partial class BoidWeapon : Weapon
 	
 	override public void _PhysicsProcess(double delta)
 	{
+		_timeSinceLastAttack += delta;
 		AttemptBoidSpawn();
 		UpdateIdleBoidGoal();
 		if (_isAttacking)
@@ -49,12 +49,12 @@ public partial class BoidWeapon : Weapon
 		}
 	}
 
-	override public Vector2 Attack()
+	override public void Attack()
 	{
 		Vector2 velocityChange = Vector2.Zero;
 		if (_attackCooldown.IsStopped() && NumBoids > 0 && !_isAttacking)
 		{
-			_player.TimeSinceLastAttack = 0;
+			_timeSinceLastAttack = 0;
 			
 			Vector2 mousePosition = GetGlobalMousePosition();
 			velocityChange = -(mousePosition - GlobalPosition).Normalized();
@@ -68,12 +68,12 @@ public partial class BoidWeapon : Weapon
 			Boids.Clear();
 			_attackCooldown.Start();
 		}
-		return velocityChange;
+		EmitSignal("Attacked", velocityChange);
 	}
 
 	private void AttemptBoidSpawn() 
 	{
-		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, _player.TimeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
+		for (int i = 0; i < Math.Floor(Mathf.Clamp(Math.Pow(3, _timeSinceLastAttack) - 1, 0, MaxBoids) - NumBoids); i++)
 		{
 			BoidSpawn();
 			NumBoids++;
@@ -83,13 +83,13 @@ public partial class BoidWeapon : Weapon
 	private void BoidSpawn()
 	{
 		Boid newBoid = BoidScene.Instantiate<Boid>();
-		Vector2 newPosition = _player.GlobalPosition;
+		Vector2 newPosition = ParentPosition;
 		newPosition.Y += (float)(GD.Randf() * 10f - 15f);
 		newBoid.GlobalPosition = newPosition;
 		newBoid.Speed = 400;
 		newBoid.GoalSeekingTurnAmount = 0.5f;
 		Boids.Add(newBoid);
-		_player.GetParent().CallDeferred("add_child", newBoid);
+		WorldScene.CallDeferred("add_child", newBoid);
 	}
 
 	private void UpdateIdleBoidGoal()
@@ -97,8 +97,8 @@ public partial class BoidWeapon : Weapon
 		List<Boid> BoidsToRemove = [];
 		foreach (Boid boid in Boids)
 		{
-			Vector2 goalPosition = _player.GlobalPosition + new Vector2(0, -25);
-			if (_player.PlayerSprite.FlipH)
+			Vector2 goalPosition = ParentPosition + new Vector2(0, -25);
+			if (ParentFlipped)
 			{
 				goalPosition.X += 40;
 			}
@@ -107,7 +107,7 @@ public partial class BoidWeapon : Weapon
 				goalPosition.X -= 40;
 			}
 			boid.Goal = goalPosition;
-			float distance = (boid.GlobalPosition - _player.GlobalPosition).Length();
+			float distance = (boid.GlobalPosition - ParentPosition).Length();
 			if (distance > 400)
 			{
 				BoidsToRemove.Add(boid);

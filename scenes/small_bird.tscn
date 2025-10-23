@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ipd2ftyd4sbl"]
+[gd_scene load_steps=16 format=3 uid="uid://ipd2ftyd4sbl"]
 
 [ext_resource type="Script" uid="uid://blfkisgdo1uom" path="res://scripts/SmallBird.cs" id="1_0qx7c"]
 [ext_resource type="Texture2D" uid="uid://dthcfwhmrfebx" path="res://assets/sprites/small_bird_enemy.png" id="2_22d0u"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_clgt1"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="5_q7mcx"]
 [ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="5_r24mh"]
+[ext_resource type="AudioStream" uid="uid://b8qrvibjb8ee4" path="res://assets/audio/smallbird.ogg" id="7_r24mh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q7mcx"]
 shader = ExtResource("5_r24mh")
@@ -98,6 +99,10 @@ one_shot = true
 [node name="FlashTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
+
+[node name="TelegraphSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_r24mh")
+volume_db = 3.0
 
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="body_entered" from="DetectionRadius" to="." method="OnDetectionEntered"]

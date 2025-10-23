@@ -39,7 +39,6 @@ public partial class CharacterController : CharacterBody2D
 	public PackedScene DashTrailScene { get; set; }
 	
 	public double TimePassed;
-	public double TimeSinceLastAttack;
 	public int Health;
 	public float LastFloorHeight = 0f;
 	public AnimatedSprite2D PlayerSprite;
@@ -63,6 +62,7 @@ public partial class CharacterController : CharacterBody2D
 	private AudioStreamPlayer2D _movingSound2;
 	private AudioStreamPlayer2D _landingSound;
 	private AudioStreamPlayer2D _hitSound;
+	private Weapon _equippedWeapon = null;
 	
 	public override void _Ready() 
 	{
@@ -89,25 +89,16 @@ public partial class CharacterController : CharacterBody2D
 	public override void _PhysicsProcess(double delta) 
 	{
 		TimePassed += delta;
-		TimeSinceLastAttack += delta;
 		_shaderMat.SetShaderParameter("opacity", _flashTimer.TimeLeft / _flashTimer.WaitTime);
 		UpdateVelocity(delta);
 		UpdateSprite();
-		Vector2 velocityChange = Vector2.Zero;
-		if (Input.IsActionJustPressed("attack"))
+		if (_equippedWeapon != null)
 		{
-			velocityChange = Attack();
+			UpdateWeaponInfo();
 		}
-		if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
+		if (Input.IsActionJustPressed("attack") && _equippedWeapon != null)
 		{
-			if (_bufferSpeed == Vector2.Zero)
-			{
-				_bufferSpeed = velocityChange;
-			}
-		}
-		else
-		{
-			Velocity += velocityChange;
+			_equippedWeapon.Attack();
 		}
 		MoveAndSlide();
 	}
@@ -324,53 +315,49 @@ public partial class CharacterController : CharacterBody2D
 		}
 	}
 
-	private Vector2 Attack()
+	public void UpdateWeaponInfo()
 	{
-		foreach (Node child in GetChildren())
+		_equippedWeapon.ParentPosition = GlobalPosition;
+		_equippedWeapon.ParentFlipped = PlayerSprite.FlipH;
+	}
+
+	private void OnAttacked(Vector2 velocityChange) 
+	{
+		if (_dashing && _dashTimer.TimeLeft < _dashTimer.WaitTime / 2)
 		{
-			if (child.IsInGroup("weapon"))
+			if (_bufferSpeed == Vector2.Zero)
 			{
-				Weapon weapon = (Weapon)child;
-				return weapon.Attack();
+				_bufferSpeed = velocityChange;
 			}
 		}
-		return Vector2.Zero;
+		else
+		{
+			Velocity += velocityChange;
+		}
 	}
 	
 	public int GetAmmo()
 	{
-		foreach (Node child in GetChildren())
+		if (_equippedWeapon != null)
 		{
-			if (child.IsInGroup("weapon"))
-			{
-				Weapon weapon = (Weapon)child;
-				return weapon.GetAmmo();
-			}
+			return _equippedWeapon.GetAmmo();
 		}
 		return 0;
 	}
 	
 	public void SetAmmo(int num)
 	{
-		foreach (Node child in GetChildren())
+		if (_equippedWeapon != null)
 		{
-			if (child.IsInGroup("weapon"))
-			{
-				Weapon weapon = (Weapon)child;
-				weapon.SetAmmo(num);
-			}
+			_equippedWeapon.SetAmmo(num);
 		}
 	}
 	
 	public int GetMaxAmmo()
 	{
-		foreach (Node child in GetChildren())
+		if (_equippedWeapon != null)
 		{
-			if (child.IsInGroup("weapon"))
-			{
-				Weapon weapon = (Weapon)child;
-				return weapon.GetMaxAmmo();
-			}
+			return _equippedWeapon.GetMaxAmmo();
 		}
 		return 1;
 	}
@@ -409,9 +396,17 @@ public partial class CharacterController : CharacterBody2D
 	
 	private void OnEquipWeapon(PackedScene WeaponScene)
 	{
-		TimeSinceLastAttack = 0f;
+		if (_equippedWeapon != null)
+		{
+			_equippedWeapon.Attacked -= OnAttacked;
+			_equippedWeapon.QueueFree();
+		}
+
 		EquippedWeaponScene = WeaponScene;
-		AddChild(EquippedWeaponScene.Instantiate());
+		_equippedWeapon = EquippedWeaponScene.Instantiate<Weapon>();
+		_equippedWeapon.Attacked += OnAttacked;
+		_equippedWeapon.WorldScene = GetParent();
+		AddChild(_equippedWeapon);
 	}
 	
 	override public void _ExitTree()

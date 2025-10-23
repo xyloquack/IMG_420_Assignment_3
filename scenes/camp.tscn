@@ -1,4 +1,4 @@
-[gd_scene load_steps=105 format=4 uid="uid://c7f8c54cffku6"]
+[gd_scene load_steps=107 format=4 uid="uid://c7f8c54cffku6"]
 
 [ext_resource type="Script" uid="uid://cq0iyf7oowf1x" path="res://scripts/World.cs" id="1_nawe8"]
 [ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/sprites/clouds.png" id="2_40kdf"]
@@ -18,6 +18,14 @@
 [ext_resource type="Texture2D" uid="uid://41h2qgq13nx5" path="res://assets/sprites/infirmary.png" id="8_wfmch"]
 [ext_resource type="Texture2D" uid="uid://dpolqotsi0bjc" path="res://assets/sprites/guides.png" id="8_yfdyn"]
 
+[sub_resource type="Gradient" id="Gradient_k6sw2"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.319328, 0.647059, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aus63"]
+gradient = SubResource("Gradient_k6sw2")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xqowg"]
 particle_flag_disable_z = true
 emission_shape = 3
@@ -30,6 +38,7 @@ initial_velocity_min = 10.0
 initial_velocity_max = 20.0
 gravity = Vector3(7, 2, 0)
 scale_max = 2.5
+color_ramp = SubResource("GradientTexture1D_aus63")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_wfmch"]
 vertices = PackedVector2Array(-3239, -2201, -1738, -2201, -1738, -2198, -3097, -2090, -3239, -2090, -1735, -2198, -1735, -1546, -3097, -1546, -3239, -1738, -3367, -1738, -3367, -1546, -5598, -1546, -5598, -2230, -3239, -2230)

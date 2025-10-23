@@ -46,6 +46,7 @@ public partial class SmallBird : Enemy
 	private float _remainingDiveWaitTime;
 	private float _remainingDiveDuration;
 	private bool _diving = false;
+	private AudioStreamPlayer2D _telegraphSound;
 	
 	override public void _Ready()
 	{
@@ -55,6 +56,7 @@ public partial class SmallBird : Enemy
 		_homePosition = GlobalPosition;
 		GetNode<HitBox>("HitBox").DamageAmount = Damage;
 		_remainingDiveWaitTime = DiveWaitTime;
+		_telegraphSound = GetNode<AudioStreamPlayer2D>("TelegraphSound");
 	}
 	
 	override public void _PhysicsProcess(double delta)
@@ -96,7 +98,7 @@ public partial class SmallBird : Enemy
 				
 				if (_remainingDiveDuration == DiveDuration)
 				{
-					_navigation.TargetPosition = Player.GlobalPosition + Player.Velocity * 0.3f;
+					_navigation.TargetPosition = Player.GlobalPosition + Player.Velocity * 0.1f;
 					PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
 					PhysicsRayQueryParameters2D query = PhysicsRayQueryParameters2D.Create(_navigation.TargetPosition, GlobalPosition);
 					var result = spaceState.IntersectRay(query);
@@ -142,6 +144,8 @@ public partial class SmallBird : Enemy
 				{
 					GpuParticles2D particles = TelegraphParticles.Instantiate<GpuParticles2D>();
 					particles.Emitting = true;
+					_telegraphSound.PitchScale = (float)(0.95 + GD.Randf() * 0.1);
+					_telegraphSound.Play();
 					AddChild(particles);
 				}
 				newVelocity = Velocity;
