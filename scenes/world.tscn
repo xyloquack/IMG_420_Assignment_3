@@ -610,6 +610,12 @@ position = Vector2(496, -161)
 
 [node name="SmallBird" parent="." instance=ExtResource("6_pm21f")]
 position = Vector2(-7497, 195)
+DiveDistance = 0.0
+TelegraphingTime = 0.0
+DiveWaitTime = 0.0
+DiveDuration = 0.0
+DiveSpeed = 0.0
+TelegraphParticles = null
 
 [node name="Guides" type="Node2D" parent="."]
 

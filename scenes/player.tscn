@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://cty42wukfwuy"]
+[gd_scene load_steps=36 format=4 uid="uid://cty42wukfwuy"]
 
 [ext_resource type="Script" uid="uid://x04ncyptx4lr" path="res://scripts/CharacterController.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cv36fvhkm21mw" path="res://assets/sprites/the_man_sheet.png" id="2_i3pqv"]
@@ -178,14 +178,6 @@ sampling_rate = 44100.0
 packet_sequence = SubResource("OggPacketSequence_jm4y0")
 loop = true
 
-[sub_resource type="Curve" id="Curve_ur7pv"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.89727, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Gradient" id="Gradient_y4r1p"]
-interpolation_mode = 2
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
-
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
 MaxHealth = 10
@@ -274,16 +266,6 @@ volume_db = 5.0
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_d2wvv")
 max_polyphony = 2
-
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(0, 0)
-width = 42.0
-width_curve = SubResource("Curve_ur7pv")
-gradient = SubResource("Gradient_y4r1p")
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-round_precision = 16
 
 [connection signal="EquipWeapon" from="." to="." method="OnEquipWeapon"]
 [connection signal="Respawn" from="." to="." method="OnRespawn"]

@@ -4,5 +4,5 @@ using System;
 public partial class HurtBox : Area2D
 {
 	[Signal]
-	private delegate void DamageEventHandler(float damage);
+	private delegate void DamageEventHandler(float damage, Vector2 knockback);
 }

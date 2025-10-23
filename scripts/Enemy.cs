@@ -7,6 +7,8 @@ public partial class Enemy : CharacterBody2D
 	public float MaxHealth;
 	[Export]
 	public float Damage;
+	[Export]
+	public float Knockback;
 	
 	public bool IsDead = false;
 	
@@ -27,7 +29,7 @@ public partial class Enemy : CharacterBody2D
 		FlashTimer = GetNode<Timer>("FlashTimer");
 	}
 	
-	private void OnDamage(float damage)
+	private void OnDamage(float damage, Vector2 knockback)
 	{
 		Health -= damage;
 		GD.Print("Flash!");

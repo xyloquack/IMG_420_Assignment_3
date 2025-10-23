@@ -169,29 +169,36 @@ public partial class CharacterController : CharacterBody2D
 		_movingSound2.VolumeDb = Mathf.Lerp(_movingSound2.VolumeDb, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 4), 0, 8) - 26), 0.25f);
 		_movingSound2.PitchScale = Mathf.Lerp(_movingSound2.PitchScale, (float)(Mathf.Clamp(Velocity.Length() / (Speed / 2), 0.1, 4) / 8 + 8), 0.25f);
 	}
-	
+
 	private Vector2 WalkingVelocity(double delta)
 	{
-		Vector2 newVelocity = Velocity;
+		Vector2 newVelocity;
+		newVelocity.X = HorizontalMovement(delta);
+		newVelocity.Y = VerticalMovement(delta);
+		return newVelocity;
+	}
+
+	private float HorizontalMovement(double delta)
+	{
+		float newVelocity = Velocity.X;
 		int direction = 0;
-		if (Input.IsActionPressed("left")) 
+		if (Input.IsActionPressed("left"))
 		{
 			direction -= 1;
 		}
-		if (Input.IsActionPressed("right")) 
+		if (Input.IsActionPressed("right"))
 		{
 			direction += 1;
 		}
-		float currentFriction = Friction * Math.Abs(newVelocity.X) / Speed;
+		float currentFriction = Friction * Math.Abs(newVelocity) / Speed;
 		float currentAcceleration = Acceleration;
-		float currentGravity = Gravity;
-		
-		if (Math.Abs(newVelocity.X) > Speed) 
+
+		if (Math.Abs(newVelocity) > Speed)
 		{
 			currentAcceleration = 0;
 		}
-		
-		if (!IsOnFloor()) 
+
+		if (!IsOnFloor())
 		{
 			currentAcceleration *= AirAccelerationMult;
 			currentFriction *= AirFrictionMult;
@@ -205,7 +212,7 @@ public partial class CharacterController : CharacterBody2D
 			{
 				_landingSound.PitchScale = 0.8f + (GD.Randf() * 0.4f);
 				_landingSound.Play();
-				DustKickup newDust = DustScene.Instantiate<DustKickup>(); 
+				DustKickup newDust = DustScene.Instantiate<DustKickup>();
 				Vector2 dustPosition = GlobalPosition;
 				dustPosition.Y += 22;
 				newDust.GlobalPosition = dustPosition;
@@ -216,54 +223,62 @@ public partial class CharacterController : CharacterBody2D
 			}
 			_wasOnFloor = true;
 		}
-		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X + (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta, 0.55f);
-		int currentMovingDirection = Math.Sign(newVelocity.X);
-		newVelocity.X = Mathf.Lerp(newVelocity.X, newVelocity.X - currentMovingDirection * currentFriction * (float)delta, 0.55f);
-		int newMovingDirection = Math.Sign(newVelocity.X);
-		if (currentMovingDirection != newMovingDirection) 
+		newVelocity = Mathf.Lerp(newVelocity, newVelocity + (direction * currentAcceleration - currentFriction * Math.Sign(Velocity.X)) * (float)delta, 0.55f);
+		int currentMovingDirection = Math.Sign(newVelocity);
+		newVelocity = Mathf.Lerp(newVelocity, newVelocity - currentMovingDirection * currentFriction * (float)delta, 0.55f);
+		int newMovingDirection = Math.Sign(newVelocity);
+		if (currentMovingDirection != newMovingDirection)
 		{
-			newVelocity.X = 0;
+			newVelocity = 0;
 		}
-		if ((IsOnFloor() || (!_coyoteTimer.IsStopped())) && Input.IsActionPressed("jump") && !_jumping) 
+		return newVelocity;
+
+	}
+	
+	private float VerticalMovement(double delta)
+	{
+		float newVelocity = Velocity.Y;
+		float currentGravity = Gravity;
+		if ((IsOnFloor() || (!_coyoteTimer.IsStopped())) && Input.IsActionPressed("jump") && !_jumping)
 		{
 			_slowFalling = true;
 			_jumping = true;
 			_wasOnFloor = false;
 			_jumpTimer.Start();
-			newVelocity.Y = -BurstJumpSpeed;
+			newVelocity = -BurstJumpSpeed;
 		}
-		if (_slowFalling && (!(Input.IsActionPressed("jump")) || IsOnFloor())) 
+		if (_slowFalling && (!(Input.IsActionPressed("jump")) || IsOnFloor()))
 		{
 			_slowFalling = false;
 		}
-		if (_slowFalling) 
+		if (_slowFalling)
 		{
 			currentGravity *= SlowFallMult;
 		}
-		if (_jumping) 
+		if (_jumping)
 		{
 			_coyoteTimer.Stop();
-			if (!(Input.IsActionPressed("jump")) || _jumpTimer.IsStopped()) 
+			if (!(Input.IsActionPressed("jump")) || _jumpTimer.IsStopped())
 			{
 				_jumping = false;
-				if (!(_jumpTimer.IsStopped())) 
+				if (!(_jumpTimer.IsStopped()))
 				{
-					newVelocity.Y /= 4;
+					newVelocity /= 4;
 				}
 				_jumpTimer.Stop();
 			}
-			else 
+			else
 			{
-				newVelocity.Y = Mathf.Lerp(newVelocity.Y, -JumpSpeed, (float)0.15);
+				newVelocity = Mathf.Lerp(newVelocity, -JumpSpeed, (float)0.15);
 			}
 		}
 		else if (!IsOnFloor())
 		{
-			newVelocity.Y += currentGravity * (float)delta;
+			newVelocity += currentGravity * (float)delta;
 		}
-		else 
+		else
 		{
-			newVelocity.Y = 0;
+			newVelocity = 0;
 		}
 		return newVelocity;
 	}
@@ -362,7 +377,7 @@ public partial class CharacterController : CharacterBody2D
 		return 1;
 	}
 	
-	private void OnDamage(float damage)
+	private void OnDamage(float damage, Vector2 knockback)
 	{
 		if (_invulnerabilityTimer.IsStopped())
 		{
@@ -372,6 +387,21 @@ public partial class CharacterController : CharacterBody2D
 			_hitSound.Play();
 			GD.Print(Health);
 			_invulnerabilityTimer.Start();
+			if (_dashing)
+			{
+				_dashing = false;
+				_dashTimer.Stop();
+				_dashCooldown.Start();
+			}
+			else
+			{
+				if (_dashCooldown.TimeLeft < 0.2)
+				{
+					_dashCooldown.Start(0.2);
+				}
+			}
+			GD.Print(knockback);
+			Velocity = knockback;
 			CheckHealth();
 		}
 	}

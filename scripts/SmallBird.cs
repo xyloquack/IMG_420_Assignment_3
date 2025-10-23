@@ -54,9 +54,10 @@ public partial class SmallBird : Enemy
 		_flapTimer = GetNode<Timer>("FlapTimer");
 		_navigation = GetNode<NavigationAgent2D>("Navigation");
 		_homePosition = GlobalPosition;
-		GetNode<HitBox>("HitBox").DamageAmount = Damage;
 		_remainingDiveWaitTime = DiveWaitTime;
 		_telegraphSound = GetNode<AudioStreamPlayer2D>("TelegraphSound");
+		GetNode<HitBox>("HitBox").DamageAmount = Damage;
+		GetNode<HitBox>("HitBox").KnockbackAmount = Knockback;
 	}
 	
 	override public void _PhysicsProcess(double delta)
@@ -69,14 +70,7 @@ public partial class SmallBird : Enemy
 			case BirdState.Follow:
 				if (Player != null)
 				{
-					if (Player.LastFloorHeight != 0f)
-					{
-						_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, Player.LastFloorHeight - 50);
-					}
-					else
-					{
-						_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X, -50);
-					}
+					_navigation.TargetPosition = new Vector2(Player.GlobalPosition.X - 40 * Mathf.Sign(Player.GlobalPosition.X - GlobalPosition.X),Player.LastFloorHeight - 50);
 					if ((_navigation.TargetPosition - GlobalPosition).Length() < DiveDistance)
 					{
 						PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
@@ -99,14 +93,8 @@ public partial class SmallBird : Enemy
 				if (_remainingDiveDuration == DiveDuration)
 				{
 					_navigation.TargetPosition = Player.GlobalPosition + Player.Velocity * 0.1f;
-					PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
-					PhysicsRayQueryParameters2D query = PhysicsRayQueryParameters2D.Create(_navigation.TargetPosition, GlobalPosition);
-					var result = spaceState.IntersectRay(query);
-					if (result.Count == 0)
-					{
-						_remainingDiveDuration -= (float)delta;
-						_diving = true;
-					}
+					_remainingDiveDuration -= (float)delta;
+					_diving = true;
 				}
 				if (_diving)
 				{

@@ -7,6 +7,7 @@ public partial class HitBox : Area2D
 	public string EnemyGroup;
 	
 	public float DamageAmount;
+	public float KnockbackAmount;
 	
 	override public void _PhysicsProcess(double delta)
 	{
@@ -14,7 +15,8 @@ public partial class HitBox : Area2D
 		{
 			if (area.IsInGroup(EnemyGroup))
 			{
-				area.EmitSignal("Damage", DamageAmount);
+				Vector2 knockback = new Vector2(Mathf.Sign((area.GlobalPosition - GlobalPosition).X), -0.5f).Normalized() * KnockbackAmount;
+				area.EmitSignal("Damage", DamageAmount, knockback);
 			}
 		}
 	}

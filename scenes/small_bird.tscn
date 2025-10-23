@@ -63,6 +63,7 @@ DiveSpeed = 600.0
 TelegraphParticles = ExtResource("2_q7mcx")
 MaxHealth = 100.0
 Damage = 1.0
+Knockback = 800.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_q7mcx")
@@ -106,4 +107,3 @@ volume_db = 3.0
 
 [connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
 [connection signal="body_entered" from="DetectionRadius" to="." method="OnDetectionEntered"]
-[connection signal="timeout" from="FlashTimer" to="." method="OnFlashTimeout"]
