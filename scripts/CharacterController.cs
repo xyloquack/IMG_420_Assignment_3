@@ -239,7 +239,7 @@ public partial class CharacterController : CharacterBody2D
 	{
 		float newVelocity = Velocity.Y;
 		float currentGravity = Gravity;
-		if ((IsOnFloor() || (!_coyoteTimer.IsStopped())) && Input.IsActionPressed("jump") && !_jumping)
+		if ((IsOnFloor() || (!_coyoteTimer.IsStopped())) && Input.IsActionJustPressed("jump") && !_jumping)
 		{
 			_slowFalling = true;
 			_jumping = true;
@@ -348,6 +348,11 @@ public partial class CharacterController : CharacterBody2D
 		else
 		{
 			Velocity += velocityChange;
+			if (_jumping)
+			{
+				_jumping = false;
+				_jumpTimer.Stop();
+			}
 		}
 	}
 	

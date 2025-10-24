@@ -59,7 +59,7 @@ public partial class BoidWeapon : Weapon
 			Vector2 mousePosition = GetGlobalMousePosition();
 			velocityChange = -(mousePosition - GlobalPosition).Normalized();
 			velocityChange.X *= 1100 * ((float)NumBoids / (float)MaxBoids);
-			velocityChange.Y *= 600 * ((float)NumBoids / (float)MaxBoids);
+			velocityChange.Y *= 400 * ((float)NumBoids / (float)MaxBoids);
 			
 			_boidsToLaunch = new List<Boid>(Boids);
 			_isAttacking = true;
