@@ -2,6 +2,7 @@
 
 ### Gameplay Video ###
 https://youtu.be/HB7apS70xpw
+
 ![vivari_gameplay](https://github.com/user-attachments/assets/6f546810-93c7-4dc7-a031-0549d3271262)
 
 ### Main Game ##
