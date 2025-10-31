@@ -1,4 +1,4 @@
-## Birds of a Feather ##
+## Vivari ##
 ### Main Game ##
 - For right now this is a small and incomplete experience that proves the basics of a game like this
 - Boids are used as the main weapon in the game, which are fired out in swarms that charge up over time
