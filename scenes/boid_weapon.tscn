@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4x8e2xqvncbl"]
+
+[ext_resource type="Script" uid="uid://bru0pq8vc2w8n" path="res://scripts/BoidWeapon.cs" id="1_q3nfq"]
+[ext_resource type="PackedScene" uid="uid://nbgp1heoqfxd" path="res://scenes/boid.tscn" id="2_dkkfp"]
+
+[node name="BoidWeapon" type="Node2D" groups=["weapon"]]
+script = ExtResource("1_q3nfq")
+BoidScene = ExtResource("2_dkkfp")
+
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

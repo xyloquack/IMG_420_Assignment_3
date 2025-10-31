@@ -16,7 +16,7 @@ public partial class BoidHitBox : Area2D
 			{
 				if (area.IsInGroup(EnemyGroup))
 				{
-					area.EmitSignal("Damage", DamageAmount);
+					area.EmitSignal("Damage", DamageAmount, Vector2.Zero);
 					GetParent<Boid>().EmitSignal("Kill");
 				}
 			}

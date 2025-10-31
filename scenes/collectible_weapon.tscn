@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cse7uuboboa13"]
+
+[ext_resource type="Script" uid="uid://0us70s4u8ir4" path="res://scripts/CollectibleWeapon.cs" id="1_mv2wd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mv2wd"]
+radius = 30.0
+
+[node name="CollectibleWeapon" type="Node2D"]
+script = ExtResource("1_mv2wd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_mv2wd")
+
+[connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]

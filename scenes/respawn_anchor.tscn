@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cuqfage0g44ub"]
 
-[ext_resource type="Script" uid="uid://bh1bc7cl7c8xo" path="res://scenes/RespawnAnchor.cs" id="1_a8ikp"]
+[ext_resource type="Script" uid="uid://bh1bc7cl7c8xo" path="res://scripts/RespawnAnchor.cs" id="1_a8ikp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ncuun"]
 radius = 100.0

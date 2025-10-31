@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://nbgp1heoqfxd"]
 
 [ext_resource type="Script" uid="uid://dqj6fyuvlj8na" path="res://scripts/Boid.cs" id="1_0n3de"]
-[ext_resource type="Texture2D" uid="uid://cktcyar0qedtq" path="res://assets/boid.png" id="2_5r8tn"]
+[ext_resource type="Texture2D" uid="uid://cktcyar0qedtq" path="res://assets/sprites/boid.png" id="2_5r8tn"]
 [ext_resource type="Script" uid="uid://bfahr6pxlr4jq" path="res://scripts/BoidHitBox.cs" id="2_vrn0v"]
 [ext_resource type="PackedScene" uid="uid://cbutm3ronp617" path="res://scenes/boid_death_particles.tscn" id="4_0n3de"]
 
@@ -13,12 +13,12 @@ radius = 6.0
 
 [node name="Boid" type="CharacterBody2D"]
 z_index = -1
-collision_layer = 2
-collision_mask = 0
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_0n3de")
 Speed = 750.0
 RotationStrength = 15.0
-MaxSteeringForce = 20.0
+MaxSteeringForce = 10.0
 IdealDistance = 50.0
 SeparationTurnAmount = 1.0
 AlignmentTurnAmount = 0.2
@@ -32,7 +32,6 @@ texture = ExtResource("2_5r8tn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i32he")
-disabled = true
 debug_color = Color(0, 0.6, 0.701961, 0.0392157)
 
 [node name="HitBox" type="Area2D" parent="."]
@@ -46,6 +45,15 @@ debug_color = Color(0.992157, 0, 0.25098, 0.403922)
 
 [node name="Lifetime" type="Timer" parent="."]
 wait_time = 0.65
+one_shot = true
+
+[node name="AudioTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DeathTime" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="Kill" from="." to="." method="OnKill"]
 [connection signal="timeout" from="Lifetime" to="." method="OnTimeout"]
+[connection signal="timeout" from="AudioTimer" to="." method="OnAudioDelayTimeout"]
+[connection signal="timeout" from="DeathTime" to="." method="OnAudioComplete"]

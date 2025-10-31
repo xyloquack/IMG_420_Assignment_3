@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://doirahe1tolru" path="res://scripts/Hud.cs" id="1_5ysmq"]
 [ext_resource type="Shader" uid="uid://dsxjuorngufxj" path="res://scripts/ammo_indicator.gdshader" id="2_6fi6k"]
-[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/cursor.png" id="3_5ysmq"]
-[ext_resource type="Texture2D" uid="uid://dkcdvqcig3xfl" path="res://assets/health.png" id="4_6fi6k"]
-[ext_resource type="Shader" uid="uid://c8q7cgt4oiykf" path="res://scenes/health.gdshader" id="5_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://d1yt00culmcqg" path="res://assets/sprites/cursor.png" id="3_5ysmq"]
+[ext_resource type="Texture2D" uid="uid://dkcdvqcig3xfl" path="res://assets/sprites/health.png" id="4_6fi6k"]
+[ext_resource type="Shader" uid="uid://c8q7cgt4oiykf" path="res://scripts/health.gdshader" id="5_uo2fv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8sq4i"]
 shader = ExtResource("2_6fi6k")
@@ -33,18 +33,15 @@ offset = Vector2(6, 6)
 
 [node name="Health" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
+anchors_preset = 0
 offset_right = 40.0
-grow_vertical = 0
+offset_bottom = 40.0
 
 [node name="OuterHealth" type="Sprite2D" parent="Health"]
-position = Vector2(96, -56)
+position = Vector2(107, 107)
 texture = SubResource("AtlasTexture_uo2fv")
 
 [node name="InnerHealth" type="Sprite2D" parent="Health"]
 material = SubResource("ShaderMaterial_047uy")
-position = Vector2(96, -56)
+position = Vector2(107, 107)
 texture = SubResource("AtlasTexture_047uy")

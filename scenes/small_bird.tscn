@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=3 uid="uid://ipd2ftyd4sbl"]
+
+[ext_resource type="Script" uid="uid://blfkisgdo1uom" path="res://scripts/SmallBird.cs" id="1_0qx7c"]
+[ext_resource type="Texture2D" uid="uid://dthcfwhmrfebx" path="res://assets/sprites/small_bird_enemy.png" id="2_22d0u"]
+[ext_resource type="PackedScene" uid="uid://dt0h4br1he5xa" path="res://scenes/telegraph_particles.tscn" id="2_q7mcx"]
+[ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_clgt1"]
+[ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="5_q7mcx"]
+[ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="5_r24mh"]
+[ext_resource type="AudioStream" uid="uid://b8qrvibjb8ee4" path="res://assets/audio/smallbird.ogg" id="7_r24mh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q7mcx"]
+shader = ExtResource("5_r24mh")
+shader_parameter/opacity = 0.0
+shader_parameter/flash_color = Vector4(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7mcx"]
+atlas = ExtResource("2_22d0u")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clgt1"]
+atlas = ExtResource("2_22d0u")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r24mh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7mcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clgt1")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1edq7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r24mh"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4rw7d"]
+radius = 16.0312
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vivoj"]
+radius = 800.0
+
+[node name="SmallBird" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_0qx7c")
+VerticalSpeed = 200.0
+HorizontalSpeed = 200.0
+RandomVSpeedOffset = 150.0
+Gravity = 800.0
+WanderRange = 20.0
+DiveDistance = 300.0
+TelegraphingTime = 0.2
+DiveWaitTime = 2.0
+DiveDuration = 3.0
+DiveSpeed = 600.0
+TelegraphParticles = ExtResource("2_q7mcx")
+MaxHealth = 100.0
+Damage = 1.0
+Knockback = 500.0
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_q7mcx")
+sprite_frames = SubResource("SpriteFrames_r24mh")
+frame_progress = 0.777844
+
+[node name="SmallBirdCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1edq7")
+
+[node name="Navigation" type="NavigationAgent2D" parent="."]
+
+[node name="HitBox" type="Area2D" parent="."]
+script = ExtResource("4_clgt1")
+EnemyGroup = "player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_r24mh")
+
+[node name="HurtBox" type="Area2D" parent="." groups=["enemy"]]
+script = ExtResource("5_q7mcx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CircleShape2D_4rw7d")
+
+[node name="DetectionRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius"]
+shape = SubResource("CircleShape2D_vivoj")
+
+[node name="FlapTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="FlashTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="TelegraphSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_r24mh")
+volume_db = 3.0
+
+[connection signal="Damage" from="HurtBox" to="." method="OnDamage"]
+[connection signal="body_entered" from="DetectionRadius" to="." method="OnDetectionEntered"]

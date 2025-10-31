@@ -1,15 +1,15 @@
 [gd_scene load_steps=12 format=3 uid="uid://debfi2qm5ug76"]
 
 [ext_resource type="Script" uid="uid://b8pe1d3r8265s" path="res://scripts/Enemy.cs" id="1_4ra3w"]
-[ext_resource type="Texture2D" uid="uid://vrwbmwawsyby" path="res://assets/bird_enemy.png" id="1_7p1mj"]
+[ext_resource type="Texture2D" uid="uid://vrwbmwawsyby" path="res://assets/sprites/bird_enemy.png" id="1_7p1mj"]
 [ext_resource type="Shader" uid="uid://bcmo0jkhp8h20" path="res://scripts/hit_flash.gdshader" id="2_5uy6h"]
 [ext_resource type="Script" uid="uid://bbwh1hspqmyyj" path="res://scripts/HurtBox.cs" id="2_md0e3"]
 [ext_resource type="Script" uid="uid://dvi3i33yfpvuk" path="res://scripts/HitBox.cs" id="4_c4w8v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c4w8v"]
 shader = ExtResource("2_5uy6h")
-shader_parameter/enable = false
 shader_parameter/opacity = 0.0
+shader_parameter/flash_color = Vector4(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_md0e3"]
 animations = [{
@@ -36,15 +36,8 @@ radius = 800.0
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_4ra3w")
-Health = 400.0
-HorizontalSpeed = 500.0
-RandomHSpeedOffset = 200.0
-VerticalSpeed = 200.0
-RandomVSpeedOffset = 150.0
-TargetHeight = -50.0
-Gravity = 800.0
 
-[node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_c4w8v")
 sprite_frames = SubResource("SpriteFrames_md0e3")
 

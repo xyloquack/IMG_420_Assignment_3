@@ -1,0 +1,3315 @@
+[gd_scene load_steps=107 format=4 uid="uid://c7f8c54cffku6"]
+
+[ext_resource type="Script" uid="uid://cq0iyf7oowf1x" path="res://scripts/World.cs" id="1_nawe8"]
+[ext_resource type="Texture2D" uid="uid://thydfpa81pfn" path="res://assets/sprites/clouds.png" id="2_40kdf"]
+[ext_resource type="PackedScene" uid="uid://cse7uuboboa13" path="res://scenes/collectible_weapon.tscn" id="2_esv4c"]
+[ext_resource type="PackedScene" uid="uid://cty42wukfwuy" path="res://scenes/player.tscn" id="2_tt7v5"]
+[ext_resource type="PackedScene" uid="uid://b4x8e2xqvncbl" path="res://scenes/boid_weapon.tscn" id="3_k6sw2"]
+[ext_resource type="Texture2D" uid="uid://bd4vko1cww3ve" path="res://assets/sprites/grass_tiles.png" id="3_t5w3m"]
+[ext_resource type="Texture2D" uid="uid://c55b2i4cm13r7" path="res://assets/sprites/mountains.png" id="3_tt7v5"]
+[ext_resource type="Texture2D" uid="uid://cjnewy6tjeyqn" path="res://assets/sprites/boid_pickup.png" id="4_aus63"]
+[ext_resource type="Texture2D" uid="uid://d2rdwofssf0dj" path="res://assets/sprites/tiles.png" id="4_ddxxn"]
+[ext_resource type="Shader" uid="uid://dusfc4vmsemf" path="res://scripts/vignette.gdshader" id="4_xqowg"]
+[ext_resource type="Script" uid="uid://cmxgg1h6fmr0" path="res://scripts/RespawnZone.cs" id="5_g0ujn"]
+[ext_resource type="PackedScene" uid="uid://dmvr83c5gd7cw" path="res://scenes/pause_screen.tscn" id="5_t5w3m"]
+[ext_resource type="PackedScene" uid="uid://brft0n078bbv6" path="res://scenes/death_screen.tscn" id="6_ddxxn"]
+[ext_resource type="PackedScene" uid="uid://ipd2ftyd4sbl" path="res://scenes/small_bird.tscn" id="6_k6sw2"]
+[ext_resource type="PackedScene" uid="uid://cppw68p6nove4" path="res://scenes/victory_screen.tscn" id="7_g0ujn"]
+[ext_resource type="Texture2D" uid="uid://41h2qgq13nx5" path="res://assets/sprites/infirmary.png" id="8_wfmch"]
+[ext_resource type="Texture2D" uid="uid://dpolqotsi0bjc" path="res://assets/sprites/guides.png" id="8_yfdyn"]
+
+[sub_resource type="Gradient" id="Gradient_k6sw2"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.319328, 0.647059, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aus63"]
+gradient = SubResource("Gradient_k6sw2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xqowg"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(2560, 720, 1)
+angle_min = 180.0
+angle_max = 360.0
+direction = Vector3(1, 0.5, 0)
+spread = 25.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(7, 2, 0)
+scale_max = 2.5
+color_ramp = SubResource("GradientTexture1D_aus63")
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_wfmch"]
+vertices = PackedVector2Array(-3239, -2201, -1738, -2201, -1738, -2198, -3097, -2090, -3239, -2090, -1735, -2198, -1735, -1546, -3097, -1546, -3239, -1738, -3367, -1738, -3367, -1546, -5598, -1546, -5598, -2230, -3239, -2230)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(2, 5, 6, 7, 3), PackedInt32Array(4, 8, 9), PackedInt32Array(9, 10, 11, 12), PackedInt32Array(9, 12, 13, 0), PackedInt32Array(9, 0, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-5608, -1472, -5608, -2240, -1664, -2240, -1664, -1472)])
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_oo54l"]
+polygon = PackedVector2Array(16, -16, 16, 16, -13, 16, -13, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_kpybi"]
+polygon = PackedVector2Array(16, -16, 16, 16, -13, 16, -13, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ctatt"]
+polygon = PackedVector2Array(16, -16, 16, 13, -13, 13, -13, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_luhhm"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rup4s"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xgqkh"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_munwf"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ts3gi"]
+polygon = PackedVector2Array(16, -16, 16, 13.0044, -16, 13.0044, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fh13f"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_4kbfs"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0nbtd"]
+polygon = PackedVector2Array(13, -16, 13, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_37qwj"]
+polygon = PackedVector2Array(13, -16, 13, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_navra"]
+polygon = PackedVector2Array(13, -16, 13, 13, -16, 13, -16, -16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_esv4c"]
+texture = ExtResource("3_t5w3m")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/terrain_set = 1
+0:0/0/terrain = 0
+0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_oo54l")
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13, -16, 16, -16, 16, 16, -13, 16)
+0:0/0/terrains_peering_bit/right_side = 0
+0:0/0/terrains_peering_bit/bottom_right_corner = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 1
+1:0/0/terrain = 0
+1:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_xgqkh")
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/bottom_right_corner = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_corner = 0
+1:0/0/terrains_peering_bit/left_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 1
+2:0/0/terrain = 0
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_0nbtd")
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 13, -16, 13, 16, -16, 16)
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_corner = 0
+2:0/0/terrains_peering_bit/left_side = 0
+0:1/0 = 0
+0:1/0/terrain_set = 1
+0:1/0/terrain = 0
+0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_kpybi")
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13, -16, 16, -16, 16, 16, -13, 16)
+0:1/0/terrains_peering_bit/right_side = 0
+0:1/0/terrains_peering_bit/bottom_right_corner = 0
+0:1/0/terrains_peering_bit/bottom_side = 0
+0:1/0/terrains_peering_bit/top_side = 0
+0:1/0/terrains_peering_bit/top_right_corner = 0
+1:1/0 = 0
+1:1/0/terrain_set = 1
+1:1/0/terrain = 0
+1:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_munwf")
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:1/0/terrains_peering_bit/right_side = 0
+1:1/0/terrains_peering_bit/bottom_right_corner = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/bottom_left_corner = 0
+1:1/0/terrains_peering_bit/left_side = 0
+1:1/0/terrains_peering_bit/top_left_corner = 0
+1:1/0/terrains_peering_bit/top_side = 0
+1:1/0/terrains_peering_bit/top_right_corner = 0
+2:1/0 = 0
+2:1/0/terrain_set = 1
+2:1/0/terrain = 0
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_37qwj")
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 13, -16, 13, 16, -16, 16)
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/bottom_left_corner = 0
+2:1/0/terrains_peering_bit/left_side = 0
+2:1/0/terrains_peering_bit/top_left_corner = 0
+2:1/0/terrains_peering_bit/top_side = 0
+0:2/0 = 0
+0:2/0/terrain_set = 1
+0:2/0/terrain = 0
+0:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_ctatt")
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-13, -16, 16, -16, 16, 13, -13, 13)
+0:2/0/terrains_peering_bit/right_side = 0
+0:2/0/terrains_peering_bit/top_side = 0
+0:2/0/terrains_peering_bit/top_right_corner = 0
+1:2/0 = 0
+1:2/0/terrain_set = 1
+1:2/0/terrain = 0
+1:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_ts3gi")
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 13, -16, 13)
+1:2/0/terrains_peering_bit/right_side = 0
+1:2/0/terrains_peering_bit/left_side = 0
+1:2/0/terrains_peering_bit/top_left_corner = 0
+1:2/0/terrains_peering_bit/top_side = 0
+1:2/0/terrains_peering_bit/top_right_corner = 0
+2:2/0 = 0
+2:2/0/terrain_set = 1
+2:2/0/terrain = 0
+2:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_navra")
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 13, -16, 13, 13, -16, 13)
+2:2/0/terrains_peering_bit/left_side = 0
+2:2/0/terrains_peering_bit/top_left_corner = 0
+2:2/0/terrains_peering_bit/top_side = 0
+0:3/0 = 0
+0:3/0/terrain_set = 1
+0:3/0/terrain = 0
+0:3/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_luhhm")
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+0:3/0/terrains_peering_bit/right_side = 0
+0:3/0/terrains_peering_bit/bottom_side = 0
+0:3/0/terrains_peering_bit/bottom_left_corner = 0
+0:3/0/terrains_peering_bit/left_side = 0
+0:3/0/terrains_peering_bit/top_left_corner = 0
+0:3/0/terrains_peering_bit/top_side = 0
+0:3/0/terrains_peering_bit/top_right_corner = 0
+1:3/0 = 0
+1:3/0/terrain_set = 1
+1:3/0/terrain = 0
+1:3/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_fh13f")
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+1:3/0/terrains_peering_bit/right_side = 0
+1:3/0/terrains_peering_bit/bottom_right_corner = 0
+1:3/0/terrains_peering_bit/bottom_side = 0
+1:3/0/terrains_peering_bit/left_side = 0
+1:3/0/terrains_peering_bit/top_left_corner = 0
+1:3/0/terrains_peering_bit/top_side = 0
+1:3/0/terrains_peering_bit/top_right_corner = 0
+0:4/0 = 0
+0:4/0/terrain_set = 1
+0:4/0/terrain = 0
+0:4/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_rup4s")
+0:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+0:4/0/terrains_peering_bit/right_side = 0
+0:4/0/terrains_peering_bit/bottom_right_corner = 0
+0:4/0/terrains_peering_bit/bottom_side = 0
+0:4/0/terrains_peering_bit/bottom_left_corner = 0
+0:4/0/terrains_peering_bit/left_side = 0
+0:4/0/terrains_peering_bit/top_left_corner = 0
+0:4/0/terrains_peering_bit/top_side = 0
+1:4/0 = 0
+1:4/0/terrain_set = 1
+1:4/0/terrain = 0
+1:4/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_4kbfs")
+1:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+1:4/0/terrains_peering_bit/right_side = 0
+1:4/0/terrains_peering_bit/bottom_right_corner = 0
+1:4/0/terrains_peering_bit/bottom_side = 0
+1:4/0/terrains_peering_bit/bottom_left_corner = 0
+1:4/0/terrains_peering_bit/left_side = 0
+1:4/0/terrains_peering_bit/top_side = 0
+1:4/0/terrains_peering_bit/top_right_corner = 0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_jhx03"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_o8fc1"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xo05s"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dss4m"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7t5mc"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lakw3"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pm21f"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2lf6f"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7iits"]
+polygon = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k6sw2"]
+texture = ExtResource("4_ddxxn")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_jhx03")
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+0:0/0/terrains_peering_bit/right_side = 0
+0:0/0/terrains_peering_bit/bottom_right_corner = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_dss4m")
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/bottom_right_corner = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_corner = 0
+1:0/0/terrains_peering_bit/left_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_pm21f")
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_corner = 0
+2:0/0/terrains_peering_bit/left_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 0
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_2lf6f")
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/bottom_left_corner = 0
+2:1/0/terrains_peering_bit/left_side = 0
+2:1/0/terrains_peering_bit/top_left_corner = 0
+2:1/0/terrains_peering_bit/top_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 0
+1:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_7t5mc")
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+1:1/0/terrains_peering_bit/right_side = 0
+1:1/0/terrains_peering_bit/bottom_right_corner = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/bottom_left_corner = 0
+1:1/0/terrains_peering_bit/left_side = 0
+1:1/0/terrains_peering_bit/top_left_corner = 0
+1:1/0/terrains_peering_bit/top_side = 0
+1:1/0/terrains_peering_bit/top_right_corner = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 0
+0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_o8fc1")
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+0:1/0/terrains_peering_bit/right_side = 0
+0:1/0/terrains_peering_bit/bottom_right_corner = 0
+0:1/0/terrains_peering_bit/bottom_side = 0
+0:1/0/terrains_peering_bit/top_side = 0
+0:1/0/terrains_peering_bit/top_right_corner = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrain = 0
+0:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_xo05s")
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+0:2/0/terrains_peering_bit/right_side = 0
+0:2/0/terrains_peering_bit/top_side = 0
+0:2/0/terrains_peering_bit/top_right_corner = 0
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrain = 0
+1:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_lakw3")
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+1:2/0/terrains_peering_bit/right_side = 0
+1:2/0/terrains_peering_bit/left_side = 0
+1:2/0/terrains_peering_bit/top_left_corner = 0
+1:2/0/terrains_peering_bit/top_side = 0
+1:2/0/terrains_peering_bit/top_right_corner = 0
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrain = 0
+2:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_7iits")
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, -16, 16, 16, -16, 16, -16, -16)
+2:2/0/terrains_peering_bit/left_side = 0
+2:2/0/terrains_peering_bit/top_left_corner = 0
+2:2/0/terrains_peering_bit/top_side = 0
+
+[sub_resource type="TileSet" id="TileSet_aus63"]
+tile_size = Vector2i(32, 32)
+occlusion_layer_0/light_mask = 1
+occlusion_layer_0/sdf_collision = true
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "Terrain 0"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_1/mode = 0
+terrain_set_1/terrain_0/name = "Terrain 0"
+terrain_set_1/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/1 = SubResource("TileSetAtlasSource_k6sw2")
+sources/0 = SubResource("TileSetAtlasSource_esv4c")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_esv4c"]
+radius = 30.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2wcm"]
+atlas = ExtResource("8_yfdyn")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghnat"]
+atlas = ExtResource("8_yfdyn")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_digqh"]
+atlas = ExtResource("8_yfdyn")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2yyo"]
+atlas = ExtResource("8_yfdyn")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mx8hi"]
+atlas = ExtResource("8_yfdyn")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yfdyn"]
+size = Vector2(20000, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esv4c"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(199, 30, 54, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6sw2"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aus63"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfdyn"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oump4"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rq756"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibqns"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0ico"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gab7d"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdm6p"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sljs8"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7rp3"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5iv0h"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0ld7"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obbu4"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ft0ss"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6qfv"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80l5i"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5qtl"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(70, 23, 55, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvhf0"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(130, 13, 57, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcqxp"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdvq6"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(265, 15, 50, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bsey"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(321, 17, 61, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wkub"]
+atlas = ExtResource("2_40kdf")
+region = Rect2(6, 9, 51, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nt0g5"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sl08c"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1t6i"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq1on"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wdu8"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nakp8"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_alq6w"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4k36e"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33cuq"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wrgh"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbv7q"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7hse"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p22kd"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkvrq"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocpkl"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrdts"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl45r"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a21dq"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8sk7d"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fq2p"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cotj"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sohbl"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32f6m"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0x6bu"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d14n4"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wo282"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rl5p"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myls6"]
+atlas = ExtResource("3_tt7v5")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2wcm"]
+shader = ExtResource("4_xqowg")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_nawe8")
+
+[node name="CollectibleWeapon" parent="." instance=ExtResource("2_esv4c")]
+position = Vector2(-7008, -808)
+WeaponScene = ExtResource("3_k6sw2")
+Icon = ExtResource("4_aus63")
+
+[node name="Player" parent="." instance=ExtResource("2_tt7v5")]
+position = Vector2(-8375, 231)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Player"]
+position = Vector2(-640, -720)
+amount = 1500
+lifetime = 20.0
+preprocess = 10.0
+fixed_fps = 0
+interpolate = false
+visibility_rect = Rect2(540, 620, 200, 200)
+process_material = SubResource("ParticleProcessMaterial_xqowg")
+
+[node name="SmallBird" parent="." instance=ExtResource("6_k6sw2")]
+position = Vector2(-4352, -1600)
+
+[node name="SmallBird2" parent="." instance=ExtResource("6_k6sw2")]
+position = Vector2(-2256, -1664)
+
+[node name="SmallBird3" parent="." instance=ExtResource("6_k6sw2")]
+position = Vector2(-2064, -1664)
+
+[node name="SmallBird4" parent="." instance=ExtResource("6_k6sw2")]
+position = Vector2(-1936, -1664)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_wfmch")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="NavigationRegion2D"]
+z_index = -1
+tile_map_data = PackedByteArray("AAAa/wsAAAABAAIAAAAa/woAAAABAAEAAAAa/wkAAAABAAEAAAAa/wgAAAABAAAAAAAZ/wsAAAABAAIAAAAZ/woAAAABAAEAAAAZ/wkAAAABAAEAAAAZ/wgAAAABAAAAAAAY/wsAAAABAAIAAAAY/woAAAABAAEAAAAY/wkAAAABAAEAAAAY/wgAAAABAAAAAAAX/wsAAAABAAIAAAAX/woAAAABAAEAAAAX/wkAAAABAAEAAAAX/wgAAAABAAAAAAAW/wsAAAABAAIAAAAW/woAAAABAAEAAAAW/wkAAAABAAEAAAAW/wgAAAABAAAAAAAV/wsAAAABAAIAAAAV/woAAAABAAEAAAAV/wkAAAABAAEAAAAV/wgAAAABAAAAAAAU/wsAAAABAAIAAAAU/woAAAABAAEAAAAU/wkAAAABAAEAAAAU/wgAAAABAAAAAAAT/wsAAAABAAIAAAAT/woAAAABAAEAAAAT/wkAAAABAAEAAAAT/wgAAAABAAAAAAAS/wsAAAABAAIAAAAS/woAAAABAAEAAAAS/wkAAAABAAEAAAAS/wgAAAABAAAAAAAR/wsAAAABAAIAAAAR/woAAAABAAEAAAAR/wkAAAABAAEAAAAR/wgAAAABAAAAAAAQ/wsAAAABAAIAAAAQ/woAAAABAAEAAAAQ/wkAAAABAAEAAAAQ/wgAAAABAAAAAAAP/wsAAAABAAIAAAAP/woAAAABAAEAAAAP/wkAAAABAAEAAAAP/wgAAAABAAAAAAAO/wsAAAABAAIAAAAO/woAAAABAAEAAAAO/wkAAAABAAEAAAAO/wgAAAABAAAAAAAN/wsAAAABAAIAAAAN/woAAAABAAEAAAAN/wkAAAABAAEAAAAN/wgAAAABAAAAAAAM/wsAAAABAAIAAAAM/woAAAABAAEAAAAM/wkAAAABAAEAAAAM/wgAAAABAAAAAAAL/wsAAAABAAIAAAAL/woAAAABAAEAAAAL/wkAAAABAAEAAAAL/wgAAAABAAAAAAAK/wsAAAABAAIAAAAK/woAAAABAAEAAAAK/wkAAAABAAEAAAAK/wgAAAABAAAAAAAJ/wsAAAABAAIAAAAJ/woAAAABAAEAAAAJ/wkAAAABAAEAAAAJ/wgAAAABAAAAAAAI/wsAAAABAAIAAAAI/woAAAABAAEAAAAI/wkAAAABAAEAAAAI/wgAAAABAAAAAAAH/wsAAAABAAIAAAAH/woAAAABAAEAAAAH/wkAAAABAAEAAAAH/wgAAAABAAAAAAAG/wsAAAABAAIAAAAG/woAAAABAAEAAAAG/wkAAAABAAEAAAAG/wgAAAABAAAAAAAF/wsAAAABAAIAAAAF/woAAAABAAEAAAAF/wkAAAABAAEAAAAF/wgAAAABAAAAAAAE/wsAAAABAAIAAAAE/woAAAABAAEAAAAE/wkAAAABAAEAAAAE/wgAAAABAAAAAAAD/wsAAAABAAIAAAAD/woAAAABAAEAAAAD/wkAAAABAAEAAAAD/wgAAAABAAAAAAAC/wsAAAABAAIAAAAC/woAAAABAAEAAAAC/wkAAAABAAEAAAAC/wgAAAABAAAAAAAB/wsAAAABAAIAAAAB/woAAAABAAEAAAAB/wkAAAABAAEAAAAB/wgAAAABAAAAAAAA/wsAAAABAAIAAAAA/woAAAABAAEAAAAA/wkAAAABAAEAAAAA/wgAAAABAAAAAAD//gsAAAABAAIAAAD//goAAAABAAEAAAD//gkAAAABAAEAAAD//ggAAAABAAAAAAD+/gsAAAABAAIAAAD+/goAAAABAAEAAAD+/gkAAAABAAEAAAD+/ggAAAABAAAAAAD9/gsAAAABAAIAAAD9/goAAAABAAEAAAD9/gkAAAABAAEAAAD9/ggAAAABAAAAAAD8/gsAAAABAAIAAAD8/goAAAABAAEAAAD8/gkAAAABAAEAAAD8/ggAAAABAAAAAAD7/gsAAAABAAIAAAD7/goAAAABAAEAAAD7/gkAAAABAAEAAAD7/ggAAAABAAAAAAD6/gsAAAABAAIAAAD6/goAAAABAAEAAAD6/gkAAAABAAEAAAD6/ggAAAABAAAAAAD5/gsAAAABAAIAAAD5/goAAAABAAEAAAD5/gkAAAABAAEAAAD5/ggAAAABAAAAAAD4/gsAAAABAAIAAAD4/goAAAABAAEAAAD4/gkAAAABAAEAAAD4/ggAAAABAAAAAAD3/gsAAAABAAIAAAD3/goAAAABAAEAAAD3/gkAAAABAAEAAAD3/ggAAAABAAAAAAD2/gsAAAABAAIAAAD2/goAAAABAAEAAAD2/gkAAAABAAEAAAD2/ggAAAABAAAAAAD1/gsAAAABAAIAAAD1/goAAAABAAEAAAD1/gkAAAABAAEAAAD1/ggAAAABAAAAAAD0/gsAAAABAAIAAAD0/goAAAABAAEAAAD0/gkAAAABAAEAAAD0/ggAAAABAAAAAADz/gsAAAAAAAIAAADz/goAAAAAAAEAAADz/gkAAAAAAAEAAADz/ggAAAAAAAAAAAAr/wsAAAABAAIAAAAr/woAAAABAAEAAAAr/wkAAAABAAEAAAAr/wgAAAABAAAAAAAq/wsAAAABAAIAAAAq/woAAAABAAEAAAAq/wkAAAABAAEAAAAq/wgAAAABAAAAAAAp/wsAAAABAAIAAAAp/woAAAABAAEAAAAp/wkAAAABAAEAAAAp/wgAAAABAAAAAAAo/wsAAAABAAIAAAAo/woAAAABAAEAAAAo/wkAAAABAAEAAAAo/wgAAAABAAAAAAAn/wsAAAABAAIAAAAn/woAAAABAAEAAAAn/wkAAAABAAEAAAAn/wgAAAABAAAAAAAm/wsAAAABAAIAAAAm/woAAAABAAEAAAAm/wkAAAABAAEAAAAm/wgAAAABAAAAAAAl/wsAAAABAAIAAAAl/woAAAABAAEAAAAl/wkAAAABAAEAAAAl/wgAAAABAAAAAAAk/wsAAAABAAIAAAAk/woAAAABAAEAAAAk/wkAAAABAAEAAAAk/wgAAAABAAAAAAAj/wsAAAABAAIAAAAj/woAAAABAAEAAAAj/wkAAAABAAEAAAAj/wgAAAABAAAAAAAi/wsAAAABAAIAAAAi/woAAAABAAEAAAAi/wkAAAABAAEAAAAi/wgAAAABAAAAAAAh/wsAAAABAAIAAAAh/woAAAABAAEAAAAh/wkAAAABAAEAAAAh/wgAAAABAAAAAAAg/wsAAAABAAIAAAAg/woAAAABAAEAAAAg/wkAAAABAAEAAAAg/wgAAAABAAAAAAAf/wsAAAABAAIAAAAf/woAAAABAAEAAAAf/wkAAAABAAEAAAAf/wgAAAABAAAAAAAe/wsAAAABAAIAAAAe/woAAAABAAEAAAAe/wkAAAABAAEAAAAe/wgAAAABAAAAAAAd/wsAAAABAAIAAAAd/woAAAABAAEAAAAd/wkAAAABAAEAAAAd/wgAAAABAAAAAAAc/wsAAAABAAIAAAAc/woAAAABAAEAAAAc/wkAAAABAAEAAAAc/wgAAAABAAAAAAAb/wsAAAABAAIAAAAb/woAAAABAAEAAAAb/wkAAAABAAEAAAAb/wgAAAABAAAAAAAv/wsAAAACAAIAAAAv/woAAAACAAEAAAAv/wkAAAACAAEAAAAv/wgAAAACAAEAAAAv/wcAAAAAAAMAAAAv/wYAAAABAAEAAAAu/wsAAAABAAIAAAAu/woAAAABAAEAAAAu/wkAAAABAAEAAAAu/wgAAAABAAEAAAAu/wcAAAABAAEAAAAu/wYAAAABAAEAAAAt/wsAAAABAAIAAAAt/woAAAABAAEAAAAt/wkAAAABAAEAAAAt/wgAAAABAAEAAAAt/wcAAAABAAEAAAAt/wYAAAABAAEAAAAs/wsAAAABAAIAAAAs/woAAAABAAEAAAAs/wkAAAABAAEAAAAs/wgAAAABAAQAAAAs/wcAAAAAAAEAAAAs/wYAAAAAAAEAAAA5/wMAAAABAAEAAAA5/wIAAAABAAAAAAA4/wMAAAABAAEAAAA4/wIAAAABAAAAAAA3/wMAAAABAAEAAAA3/wIAAAABAAAAAAA2/wMAAAABAAEAAAA2/wIAAAABAAAAAAA1/wMAAAABAAEAAAA1/wIAAAABAAAAAAA0/wMAAAABAAEAAAA0/wIAAAABAAAAAAAz/wMAAAABAAEAAAAz/wIAAAABAAAAAAAy/wMAAAABAAEAAAAy/wIAAAABAAAAAAAx/wMAAAABAAEAAAAx/wIAAAABAAAAAAAw/wMAAAAAAAEAAAAw/wIAAAAAAAAAAAA9/wIAAAABAAAAAAA8/wIAAAABAAAAAAA7/wIAAAABAAAAAAA6/wIAAAABAAAAAAA9/wMAAAABAAEAAAA8/wMAAAABAAEAAAA7/wMAAAABAAEAAAA6/wMAAAABAAEAAAA9/wUAAAABAAIAAAA9/wQAAAABAAEAAAA8/wUAAAABAAIAAAA8/wQAAAABAAEAAAA7/wUAAAABAAIAAAA7/wQAAAABAAEAAAA6/wUAAAABAAIAAAA6/wQAAAABAAEAAAA5/wUAAAABAAIAAAA5/wQAAAABAAEAAAA4/wUAAAABAAIAAAA4/wQAAAABAAEAAAA3/wUAAAABAAIAAAA3/wQAAAABAAEAAAA2/wUAAAABAAIAAAA2/wQAAAABAAEAAAA1/wUAAAABAAIAAAA1/wQAAAABAAEAAAA0/wUAAAABAAIAAAA0/wQAAAABAAEAAAAz/wUAAAAAAAMAAAAz/wQAAAABAAEAAAAy/wUAAAABAAEAAAAy/wQAAAABAAEAAAAx/wUAAAABAAEAAAAx/wQAAAABAAEAAAAw/wUAAAABAAQAAAAw/wQAAAAAAAEAAABB/wUAAAABAAIAAABB/wQAAAABAAEAAABB/wMAAAABAAEAAABB/wIAAAAAAAQAAABB/wEAAAACAAEAAABB/wAAAAACAAEAAABB////AAACAAAAAABA/wUAAAABAAIAAABA/wQAAAABAAEAAABA/wMAAAABAAEAAABA/wIAAAABAAEAAABA/wEAAAABAAEAAABA/wAAAAABAAEAAABA////AAABAAAAAAA//wUAAAABAAIAAAA//wQAAAABAAEAAAA//wMAAAABAAEAAAA//wIAAAABAAEAAAA//wEAAAABAAEAAAA//wAAAAABAAEAAAA/////AAABAAAAAAA+/wUAAAABAAIAAAA+/wQAAAABAAEAAAA+/wMAAAABAAEAAAA+/wIAAAABAAQAAAA+/wEAAAAAAAEAAAA+/wAAAAAAAAEAAAA+////AAAAAAAAAABQ/wUAAAABAAEAAABQ/wQAAAAAAAQAAABQ/wMAAAACAAEAAABQ/wIAAAACAAAAAABP/wUAAAABAAEAAABP/wQAAAABAAEAAABP/wMAAAABAAEAAABP/wIAAAABAAAAAABO/wUAAAABAAEAAABO/wQAAAABAAEAAABO/wMAAAABAAEAAABO/wIAAAABAAAAAABN/wUAAAABAAMAAABN/wQAAAABAAEAAABN/wMAAAABAAEAAABN/wIAAAABAAAAAABM/wUAAAABAAIAAABM/wQAAAABAAEAAABM/wMAAAABAAEAAABM/wIAAAABAAAAAABL/wUAAAABAAIAAABL/wQAAAABAAEAAABL/wMAAAABAAEAAABL/wIAAAABAAAAAABK/wUAAAABAAIAAABK/wQAAAABAAEAAABK/wMAAAABAAEAAABK/wIAAAABAAAAAABJ/wUAAAABAAIAAABJ/wQAAAABAAEAAABJ/wMAAAABAAEAAABJ/wIAAAABAAAAAABI/wUAAAABAAIAAABI/wQAAAABAAEAAABI/wMAAAABAAEAAABI/wIAAAABAAAAAABH/wUAAAABAAIAAABH/wQAAAABAAEAAABH/wMAAAABAAEAAABH/wIAAAABAAAAAABG/wUAAAABAAIAAABG/wQAAAABAAEAAABG/wMAAAABAAEAAABG/wIAAAABAAAAAABF/wUAAAABAAIAAABF/wQAAAABAAEAAABF/wMAAAABAAEAAABF/wIAAAABAAAAAABE/wUAAAABAAIAAABE/wQAAAABAAEAAABE/wMAAAABAAEAAABE/wIAAAABAAAAAABD/wUAAAABAAIAAABD/wQAAAABAAEAAABD/wMAAAABAAEAAABD/wIAAAABAAAAAABC/wUAAAABAAIAAABC/wQAAAABAAEAAABC/wMAAAABAAEAAABC/wIAAAABAAAAAABl/wkAAAABAAIAAABl/wgAAAABAAEAAABl/wcAAAABAAEAAABl/wYAAAABAAEAAABk/wkAAAABAAIAAABk/wgAAAABAAEAAABk/wcAAAABAAEAAABk/wYAAAABAAQAAABj/wkAAAABAAIAAABj/wgAAAABAAEAAABj/wcAAAABAAEAAABj/wYAAAABAAAAAABi/wkAAAABAAIAAABi/wgAAAABAAEAAABi/wcAAAABAAEAAABi/wYAAAABAAAAAABh/wkAAAABAAIAAABh/wgAAAABAAEAAABh/wcAAAABAAEAAABh/wYAAAABAAAAAABg/wkAAAABAAIAAABg/wgAAAABAAEAAABg/wcAAAABAAEAAABg/wYAAAABAAAAAABf/wkAAAABAAIAAABf/wgAAAABAAEAAABf/wcAAAABAAEAAABf/wYAAAABAAAAAABe/wkAAAABAAIAAABe/wgAAAABAAEAAABe/wcAAAABAAEAAABe/wYAAAABAAAAAABd/wkAAAABAAIAAABd/wgAAAABAAEAAABd/wcAAAABAAEAAABd/wYAAAABAAAAAABc/wkAAAABAAIAAABc/wgAAAABAAEAAABc/wcAAAABAAEAAABc/wYAAAABAAAAAABb/wkAAAABAAIAAABb/wgAAAABAAEAAABb/wcAAAABAAEAAABb/wYAAAABAAAAAABa/wkAAAABAAIAAABa/wgAAAABAAEAAABa/wcAAAABAAEAAABa/wYAAAABAAAAAABZ/wkAAAABAAIAAABZ/wgAAAABAAEAAABZ/wcAAAABAAEAAABZ/wYAAAABAAAAAABY/wkAAAABAAIAAABY/wgAAAABAAEAAABY/wcAAAABAAEAAABY/wYAAAABAAAAAABX/wkAAAABAAIAAABX/wgAAAABAAEAAABX/wcAAAABAAEAAABX/wYAAAAAAAQAAABW/wkAAAABAAIAAABW/wgAAAABAAEAAABW/wcAAAABAAEAAABW/wYAAAABAAEAAABV/wkAAAABAAIAAABV/wgAAAABAAEAAABV/wcAAAABAAEAAABV/wYAAAABAAEAAABU/wkAAAABAAIAAABU/wgAAAABAAEAAABU/wcAAAABAAEAAABU/wYAAAABAAEAAABT/wkAAAABAAIAAABT/wgAAAABAAEAAABT/wcAAAABAAEAAABT/wYAAAABAAEAAABS/wkAAAABAAIAAABS/wgAAAABAAEAAABS/wcAAAABAAEAAABS/wYAAAABAAEAAABR/wkAAAABAAIAAABR/wgAAAABAAEAAABR/wcAAAABAAEAAABR/wYAAAABAAEAAABQ/wkAAAABAAIAAABQ/wgAAAABAAEAAABQ/wcAAAABAAEAAABQ/wYAAAABAAEAAABP/wkAAAABAAIAAABP/wgAAAABAAEAAABP/wcAAAABAAEAAABP/wYAAAABAAEAAABO/wkAAAABAAIAAABO/wgAAAABAAEAAABO/wcAAAABAAEAAABO/wYAAAABAAEAAABN/wkAAAAAAAIAAABN/wgAAAAAAAEAAABN/wcAAAAAAAEAAABN/wYAAAAAAAEAAABI//3/AAACAAEAAABI//z/AAACAAAAAABH//3/AAABAAEAAABH//z/AAABAAAAAABG//3/AAABAAEAAABG//z/AAABAAAAAABF//3/AAAAAAEAAABF//z/AAAAAAAAAABR//v/AAABAAIAAABR//r/AAABAAEAAABR//n/AAABAAAAAABQ//v/AAABAAIAAABQ//r/AAABAAEAAABQ//n/AAABAAAAAABP//v/AAABAAIAAABP//r/AAABAAEAAABP//n/AAABAAAAAAB4/wkAAAABAAIAAAB4/wgAAAABAAEAAAB4/wcAAAABAAEAAAB4/wYAAAABAAEAAAB3/wkAAAABAAIAAAB3/wgAAAABAAEAAAB3/wcAAAABAAEAAAB3/wYAAAABAAEAAAB2/wkAAAABAAIAAAB2/wgAAAABAAEAAAB2/wcAAAABAAEAAAB2/wYAAAABAAEAAAB1/wkAAAABAAIAAAB1/wgAAAABAAEAAAB1/wcAAAABAAEAAAB1/wYAAAABAAEAAAB0/wkAAAABAAIAAAB0/wgAAAABAAEAAAB0/wcAAAABAAEAAAB0/wYAAAABAAEAAABz/wkAAAABAAIAAABz/wgAAAABAAEAAABz/wcAAAABAAEAAABz/wYAAAABAAEAAABy/wkAAAABAAIAAABy/wgAAAABAAEAAABy/wcAAAABAAEAAABy/wYAAAABAAEAAABx/wkAAAABAAIAAABx/wgAAAABAAEAAABx/wcAAAABAAEAAABx/wYAAAABAAEAAABw/wkAAAABAAIAAABw/wgAAAABAAEAAABw/wcAAAABAAEAAABw/wYAAAABAAEAAABv/wkAAAABAAIAAABv/wgAAAABAAEAAABv/wcAAAABAAEAAABv/wYAAAABAAEAAABu/wkAAAABAAIAAABu/wgAAAABAAEAAABu/wcAAAABAAEAAABu/wYAAAABAAEAAABt/wkAAAABAAIAAABt/wgAAAABAAEAAABt/wcAAAABAAEAAABt/wYAAAABAAEAAABs/wkAAAABAAIAAABs/wgAAAABAAEAAABs/wcAAAABAAEAAABs/wYAAAABAAEAAABr/wkAAAABAAIAAABr/wgAAAABAAEAAABr/wcAAAABAAEAAABr/wYAAAABAAEAAABq/wkAAAABAAIAAABq/wgAAAABAAEAAABq/wcAAAABAAEAAABq/wYAAAABAAEAAABp/wkAAAABAAIAAABp/wgAAAABAAEAAABp/wcAAAABAAEAAABp/wYAAAABAAEAAABo/wkAAAABAAIAAABo/wgAAAABAAEAAABo/wcAAAABAAEAAABo/wYAAAABAAEAAABn/wkAAAABAAIAAABn/wgAAAABAAEAAABn/wcAAAABAAEAAABn/wYAAAABAAEAAABm/wkAAAABAAIAAABm/wgAAAABAAEAAABm/wcAAAABAAEAAABm/wYAAAABAAEAAABr/wUAAAABAAEAAABr/wQAAAABAAEAAABr/wMAAAABAAEAAABq/wUAAAABAAEAAABq/wQAAAABAAEAAABq/wMAAAABAAEAAABq/wIAAAABAAEAAABp/wUAAAABAAEAAABp/wQAAAABAAEAAABp/wMAAAABAAEAAABp/wIAAAABAAEAAABo/wUAAAABAAEAAABo/wQAAAABAAEAAABo/wMAAAABAAEAAABo/wIAAAABAAEAAABn/wUAAAABAAEAAABn/wQAAAABAAEAAABn/wMAAAABAAEAAABn/wIAAAABAAEAAABq/wEAAAAAAAQAAABq/wAAAAACAAEAAABp/wEAAAABAAEAAABp/wAAAAABAAEAAABo/wEAAAABAAEAAABo/wAAAAABAAEAAABn/wEAAAABAAEAAABn/wAAAAABAAEAAABu/wUAAAABAAEAAABu/wQAAAAAAAQAAABu/wMAAAACAAEAAABt/wUAAAABAAEAAABt/wQAAAABAAEAAABt/wMAAAABAAEAAABs/wUAAAABAAEAAABs/wQAAAABAAEAAABs/wMAAAABAAEAAABh//3/AAABAAIAAABg//3/AAAAAAIAAABh//z/AAABAAEAAABg//z/AAAAAAEAAABh//v/AAABAAAAAABg//v/AAAAAAAAAAB1//3/AAABAAIAAAB1//z/AAABAAEAAAB1//v/AAABAAAAAAB0//3/AAABAAIAAAB0//z/AAABAAEAAAB0//v/AAABAAAAAABz//3/AAABAAIAAABz//z/AAABAAEAAABz//v/AAAAAAQAAABy//3/AAABAAIAAABy//z/AAABAAEAAABy//v/AAABAAQAAABx//3/AAABAAIAAABx//z/AAABAAEAAABx//v/AAABAAAAAABw//3/AAAAAAIAAABw//z/AAAAAAEAAABw//v/AAAAAAAAAAB5//3/AAACAAIAAAB5//z/AAACAAEAAAB5//v/AAACAAEAAAB5//r/AAACAAEAAAB5//n/AAACAAEAAAB5//j/AAAAAAMAAAB5//f/AAAAAAQAAAB5//b/AAACAAEAAAB5//X/AAACAAAAAAB4//3/AAABAAIAAAB4//z/AAABAAEAAAB4//v/AAABAAEAAAB4//r/AAABAAEAAAB4//n/AAABAAEAAAB4//j/AAABAAEAAAB4//f/AAABAAEAAAB4//b/AAABAAEAAAB4//X/AAABAAAAAAB3//3/AAABAAIAAAB3//z/AAABAAEAAAB3//v/AAABAAEAAAB3//r/AAABAAEAAAB3//n/AAABAAEAAAB3//j/AAABAAEAAAB3//f/AAABAAEAAAB3//b/AAABAAEAAAB3//X/AAABAAAAAAB2//3/AAABAAIAAAB2//z/AAABAAEAAAB2//v/AAABAAQAAAB2//r/AAAAAAEAAAB2//n/AAAAAAEAAAB2//j/AAAAAAEAAAB2//f/AAAAAAEAAAB2//b/AAAAAAEAAAB2//X/AAAAAAAAAABE/+v/AAABAAIAAABD/+v/AAABAAIAAABC/+v/AAABAAIAAABB/+v/AAABAAIAAABA/+v/AAABAAIAAAA//+v/AAABAAIAAAA+/+v/AAABAAIAAAA9/+v/AAABAAIAAAA8/+v/AAABAAIAAAA7/+v/AAABAAIAAAA6/+v/AAABAAIAAAA5/+v/AAABAAIAAAA4/+v/AAABAAIAAAA3/+v/AAABAAIAAAA2/+v/AAABAAIAAAA1/+v/AAABAAIAAAA0/+v/AAABAAIAAAAz/+v/AAABAAIAAAAy/+v/AAABAAIAAAAx/+v/AAABAAIAAAAw/+v/AAABAAIAAAAv/+v/AAABAAIAAAAu/+v/AAABAAIAAAAt/+v/AAABAAIAAAAs/+v/AAABAAIAAAAr/+v/AAABAAIAAAAq/+v/AAABAAIAAAAp/+v/AAABAAIAAAAo/+v/AAABAAIAAAAn/+v/AAABAAIAAAAm/+v/AAABAAIAAAAl/+v/AAABAAIAAAAk/+v/AAABAAIAAAAj/+v/AAAAAAIAAABJ/+v/AAABAAIAAABI/+v/AAABAAIAAABH/+v/AAABAAIAAABG/+v/AAABAAIAAABF/+v/AAABAAIAAABm//3/AAACAAEAAABm//z/AAACAAEAAABm//v/AAACAAAAAABl//3/AAABAAEAAABl//z/AAABAAEAAABl//v/AAABAAAAAABk//3/AAABAAMAAABk//z/AAABAAEAAABk//v/AAABAAAAAABj//3/AAABAAIAAABj//z/AAABAAEAAABj//v/AAABAAAAAABi//3/AAABAAIAAABi//z/AAABAAEAAABi//v/AAABAAAAAACL/wkAAAACAAIAAACL/wgAAAACAAEAAACL/wcAAAACAAEAAACL/wYAAAACAAEAAACK/wkAAAABAAIAAACK/wgAAAABAAEAAACK/wcAAAABAAEAAACK/wYAAAABAAEAAACJ/wkAAAABAAIAAACJ/wgAAAABAAEAAACJ/wcAAAABAAEAAACJ/wYAAAABAAEAAACI/wkAAAABAAIAAACI/wgAAAABAAEAAACI/wcAAAABAAEAAACI/wYAAAABAAQAAACH/wkAAAABAAIAAACH/wgAAAABAAEAAACH/wcAAAABAAEAAACH/wYAAAABAAAAAACG/wkAAAABAAIAAACG/wgAAAABAAEAAACG/wcAAAABAAEAAACG/wYAAAABAAAAAACF/wkAAAABAAIAAACF/wgAAAABAAEAAACF/wcAAAABAAEAAACF/wYAAAABAAAAAACE/wkAAAABAAIAAACE/wgAAAABAAEAAACE/wcAAAABAAEAAACE/wYAAAABAAAAAACD/wkAAAABAAIAAACD/wgAAAABAAEAAACD/wcAAAABAAEAAACD/wYAAAABAAAAAACC/wkAAAABAAIAAACC/wgAAAABAAEAAACC/wcAAAABAAEAAACC/wYAAAABAAAAAACB/wkAAAABAAIAAACB/wgAAAABAAEAAACB/wcAAAABAAEAAACB/wYAAAABAAAAAACA/wkAAAABAAIAAACA/wgAAAABAAEAAACA/wcAAAABAAEAAACA/wYAAAABAAAAAAB//wkAAAABAAIAAAB//wgAAAABAAEAAAB//wcAAAABAAEAAAB//wYAAAABAAAAAAB+/wkAAAABAAIAAAB+/wgAAAABAAEAAAB+/wcAAAABAAEAAAB+/wYAAAABAAAAAAB9/wkAAAABAAIAAAB9/wgAAAABAAEAAAB9/wcAAAABAAEAAAB9/wYAAAABAAAAAAB8/wkAAAABAAIAAAB8/wgAAAABAAEAAAB8/wcAAAABAAEAAAB8/wYAAAABAAAAAAB7/wkAAAABAAIAAAB7/wgAAAABAAEAAAB7/wcAAAABAAEAAAB7/wYAAAABAAAAAAB6/wkAAAABAAIAAAB6/wgAAAABAAEAAAB6/wcAAAABAAEAAAB6/wYAAAABAAAAAAB5/wkAAAABAAIAAAB5/wgAAAABAAEAAAB5/wcAAAABAAEAAAB5/wYAAAAAAAQAAACL/wUAAAACAAEAAACL/wQAAAACAAEAAACL/wMAAAACAAEAAACL/wIAAAACAAEAAACL/wEAAAACAAEAAACL/wAAAAACAAEAAACL////AAACAAEAAACL//7/AAACAAEAAACL//3/AAACAAEAAACL//z/AAACAAEAAACL//v/AAACAAEAAACL//r/AAACAAEAAACL//n/AAACAAEAAACL//j/AAACAAEAAACL//f/AAACAAEAAACL//b/AAACAAEAAACL//X/AAAAAAMAAACL//T/AAABAAEAAACL//P/AAABAAAAAACK/wUAAAABAAEAAACK/wQAAAABAAEAAACK/wMAAAABAAEAAACK/wIAAAABAAEAAACK/wEAAAABAAEAAACK/wAAAAABAAEAAACK////AAABAAEAAACK//7/AAABAAEAAACK//3/AAABAAEAAACK//z/AAABAAEAAACK//v/AAABAAEAAACK//r/AAABAAEAAACK//n/AAABAAEAAACK//j/AAABAAEAAACK//f/AAABAAEAAACK//b/AAABAAEAAACK//X/AAABAAEAAACK//T/AAABAAEAAACK//P/AAABAAAAAACJ/wUAAAABAAEAAACJ/wQAAAABAAEAAACJ/wMAAAABAAEAAACJ/wIAAAABAAEAAACJ/wEAAAABAAEAAACJ/wAAAAABAAEAAACJ////AAABAAEAAACJ//7/AAABAAEAAACJ//3/AAABAAEAAACJ//z/AAABAAEAAACJ//v/AAABAAEAAACJ//r/AAABAAEAAACJ//n/AAABAAEAAACJ//j/AAABAAEAAACJ//f/AAABAAEAAACJ//b/AAABAAEAAACJ//X/AAABAAEAAACJ//T/AAABAAEAAACJ//P/AAABAAAAAACI/wUAAAAAAAEAAACI/wQAAAAAAAEAAACI/wMAAAAAAAEAAACI/wIAAAAAAAEAAACI/wEAAAAAAAEAAACI/wAAAAAAAAEAAACI////AAAAAAEAAACI//7/AAAAAAEAAACI//3/AAAAAAEAAACI//z/AAAAAAEAAACI//v/AAAAAAEAAACI//r/AAAAAAEAAACI//n/AAABAAMAAACI//j/AAABAAQAAACI//f/AAAAAAEAAACI//b/AAAAAAEAAACI//X/AAAAAAEAAACI//T/AAABAAMAAACI//P/AAABAAAAAACH//T/AAABAAIAAACH//P/AAABAAAAAACG//T/AAABAAIAAACG//P/AAABAAAAAACF//T/AAABAAIAAACF//P/AAAAAAQAAACF//L/AAACAAAAAACE//T/AAABAAIAAACE//P/AAABAAEAAACE//L/AAABAAAAAACW//D/AAABAAEAAACW/+//AAABAAEAAACW/+7/AAABAAEAAACW/+3/AAABAAEAAACV//D/AAABAAEAAACV/+//AAABAAEAAACV/+7/AAABAAEAAACV/+3/AAABAAEAAACU//D/AAABAAQAAACU/+//AAAAAAEAAACU/+7/AAAAAAEAAACU/+3/AAAAAAEAAACT//D/AAABAAAAAACS//D/AAABAAAAAACa//D/AAACAAEAAACa/+//AAACAAEAAACa/+7/AAACAAEAAACa/+3/AAACAAEAAACa/+z/AAACAAEAAACa/+v/AAACAAEAAACa/+r/AAACAAEAAACa/+n/AAAAAAMAAACa/+j/AAABAAEAAACa/+f/AAABAAEAAACZ//D/AAABAAEAAACZ/+//AAABAAEAAACZ/+7/AAABAAEAAACZ/+3/AAABAAEAAACZ/+z/AAABAAEAAACZ/+v/AAABAAEAAACZ/+r/AAABAAEAAACZ/+n/AAABAAEAAACZ/+j/AAABAAEAAACZ/+f/AAABAAEAAACY//D/AAABAAEAAACY/+//AAABAAEAAACY/+7/AAABAAEAAACY/+3/AAABAAEAAACY/+z/AAABAAEAAACY/+v/AAABAAEAAACY/+r/AAABAAEAAACY/+n/AAABAAEAAACY/+j/AAABAAEAAACY/+f/AAABAAEAAACX//D/AAABAAEAAACX/+//AAABAAEAAACX/+7/AAABAAEAAACX/+3/AAABAAEAAACX/+z/AAABAAEAAACX/+v/AAABAAEAAACX/+r/AAABAAEAAACX/+n/AAABAAEAAACX/+j/AAABAAEAAACX/+f/AAABAAQAAACK/+P/AAABAAEAAACJ/+P/AAABAAEAAACI/+P/AAABAAEAAACH/+P/AAABAAEAAACG/+P/AAABAAEAAACL/+P/AAABAAEAAAB7/+j/AAACAAIAAAB7/+f/AAACAAEAAAB7/+b/AAACAAEAAAB7/+X/AAACAAAAAAB6/+j/AAABAAIAAAB6/+f/AAABAAEAAAB6/+b/AAABAAEAAAB6/+X/AAABAAAAAAB5/+j/AAABAAIAAAB5/+f/AAABAAEAAAB5/+b/AAABAAEAAAB5/+X/AAABAAAAAAB4/+j/AAABAAIAAAB4/+f/AAABAAEAAAB4/+b/AAABAAEAAAB4/+X/AAABAAAAAAB3/+j/AAABAAIAAAB3/+f/AAABAAEAAAB3/+b/AAABAAEAAAB3/+X/AAABAAAAAAB2/+j/AAABAAIAAAB2/+f/AAABAAEAAAB2/+b/AAABAAEAAAB2/+X/AAABAAAAAAB1/+j/AAABAAIAAAB1/+f/AAABAAEAAAB1/+b/AAABAAEAAAB1/+X/AAABAAAAAAB0/+j/AAABAAIAAAB0/+f/AAABAAEAAAB0/+b/AAABAAEAAAB0/+X/AAABAAAAAABz/+j/AAABAAIAAABz/+f/AAABAAEAAABz/+b/AAABAAEAAABz/+X/AAABAAAAAABy/+j/AAABAAIAAABy/+f/AAABAAEAAABy/+b/AAABAAQAAABy/+X/AAAAAAAAAABx/+f/AAABAAEAAABx/+b/AAABAAAAAABw/+f/AAABAAEAAABw/+b/AAABAAAAAABv/+j/AAABAAIAAABv/+f/AAABAAQAAABu/+j/AAAAAAMAAABu/+f/AAABAAAAAABt/+n/AAABAAIAAABt/+j/AAABAAEAAABs/+n/AAABAAIAAABs/+j/AAABAAEAAABt/+f/AAABAAAAAABr/+n/AAABAAIAAABr/+j/AAABAAQAAABv/+b/AAAAAAAAAABs/+f/AAABAAAAAABx/+j/AAABAAIAAABw/+j/AAABAAIAAABu/+n/AAACAAIAAABq/+r/AAACAAIAAABq/+n/AAAAAAMAAABq/+j/AAABAAAAAABp/+r/AAABAAIAAABp/+n/AAABAAEAAABp/+j/AAABAAAAAABo/+r/AAABAAIAAABo/+n/AAABAAEAAABn/+r/AAABAAIAAABn/+n/AAABAAQAAABr/+f/AAAAAAAAAABo/+j/AAABAAAAAABn/+j/AAAAAAAAAABm/+v/AAACAAIAAABm/+r/AAAAAAMAAABm/+n/AAABAAAAAABl/+v/AAABAAIAAABl/+r/AAABAAEAAABl/+n/AAABAAAAAABk/+v/AAABAAIAAABk/+r/AAABAAEAAABk/+n/AAABAAAAAABj/+v/AAABAAIAAABj/+r/AAABAAEAAABj/+n/AAABAAAAAABi/+v/AAABAAIAAABi/+r/AAABAAEAAABi/+n/AAABAAAAAABh/+v/AAABAAIAAABh/+r/AAABAAEAAABh/+n/AAABAAAAAABg/+v/AAAAAAIAAABg/+r/AAABAAMAAABg/+n/AAABAAAAAABf/+r/AAABAAIAAABf/+n/AAABAAAAAABe/+r/AAABAAIAAABe/+n/AAABAAAAAABd/+n/AAAAAAAAAABL/+v/AAABAAIAAABL/+r/AAABAAEAAABL/+n/AAABAAAAAABK/+v/AAABAAIAAABK/+r/AAABAAEAAABK/+n/AAABAAAAAABJ/+r/AAABAAEAAABJ/+n/AAABAAAAAABI/+r/AAABAAEAAABI/+n/AAABAAAAAABH/+r/AAABAAEAAABH/+n/AAABAAAAAABG/+r/AAABAAEAAABG/+n/AAABAAAAAABF/+r/AAABAAEAAABF/+n/AAABAAAAAABE/+r/AAABAAEAAABE/+n/AAABAAAAAABD/+r/AAABAAEAAABD/+n/AAABAAAAAABC/+r/AAABAAEAAABC/+n/AAABAAAAAABB/+r/AAABAAEAAABB/+n/AAABAAAAAABA/+r/AAABAAEAAABA/+n/AAABAAAAAAA//+r/AAABAAEAAAA//+n/AAABAAAAAAA+/+r/AAABAAEAAAA+/+n/AAABAAAAAAA9/+r/AAABAAEAAAA9/+n/AAABAAAAAAA8/+r/AAABAAEAAAA8/+n/AAABAAAAAAA7/+r/AAABAAEAAAA7/+n/AAABAAAAAAA6/+r/AAABAAEAAAA6/+n/AAABAAAAAAA5/+r/AAABAAEAAAA5/+n/AAABAAAAAAA4/+r/AAABAAEAAAA4/+n/AAABAAAAAAA3/+r/AAABAAEAAAA3/+n/AAABAAAAAAA2/+r/AAABAAEAAAA2/+n/AAABAAAAAAA1/+r/AAABAAEAAAA1/+n/AAABAAAAAAA0/+r/AAABAAEAAAA0/+n/AAABAAAAAAAz/+r/AAABAAEAAAAz/+n/AAABAAAAAAAy/+r/AAABAAEAAAAy/+n/AAABAAAAAAAx/+r/AAABAAEAAAAx/+n/AAABAAAAAAAw/+r/AAABAAEAAAAw/+n/AAABAAAAAAAv/+r/AAABAAEAAAAv/+n/AAABAAAAAAAu/+r/AAABAAEAAAAu/+n/AAABAAAAAAAt/+r/AAABAAEAAAAt/+n/AAABAAAAAAAs/+r/AAABAAEAAAAs/+n/AAABAAAAAAAr/+r/AAABAAEAAAAr/+n/AAABAAAAAAAq/+r/AAABAAEAAAAq/+n/AAABAAAAAAAp/+r/AAABAAEAAAAp/+n/AAABAAAAAAAo/+r/AAABAAEAAAAo/+n/AAABAAAAAAAn/+r/AAABAAEAAAAn/+n/AAABAAAAAAAm/+r/AAABAAEAAAAm/+n/AAABAAAAAAAl/+r/AAABAAEAAAAl/+n/AAABAAAAAAAk/+r/AAABAAEAAAAk/+n/AAABAAAAAAAj/+r/AAAAAAEAAAAj/+n/AAAAAAAAAAA3/9f/AAABAAIAAAA3/9b/AAABAAEAAAA3/9X/AAABAAEAAAA3/9T/AAABAAAAAAA2/9f/AAAAAAMAAAA2/9b/AAABAAEAAAA2/9X/AAABAAEAAAA2/9T/AAABAAAAAAA1/9f/AAABAAEAAAA1/9b/AAABAAEAAAA1/9X/AAABAAEAAAA1/9T/AAABAAAAAAA0/9f/AAABAAEAAAA0/9b/AAABAAQAAAA0/9X/AAAAAAEAAAA0/9T/AAAAAAAAAAA0/9n/AAABAAEAAAA1/9r/AAACAAIAAAA1/9n/AAAAAAMAAAA1/9j/AAABAAEAAAA0/9r/AAABAAIAAAA0/9j/AAABAAEAAAA2/9n/AAACAAIAAAA2/9j/AAACAAEAAAA8/9f/AAACAAIAAAA8/9b/AAACAAEAAAA8/9X/AAACAAEAAAA8/9T/AAACAAAAAAA7/9f/AAABAAIAAAA7/9b/AAABAAEAAAA7/9X/AAABAAEAAAA7/9T/AAABAAAAAAA6/9f/AAABAAIAAAA6/9b/AAABAAEAAAA6/9X/AAABAAEAAAA6/9T/AAABAAAAAAA5/9f/AAABAAIAAAA5/9b/AAABAAEAAAA5/9X/AAABAAEAAAA5/9T/AAABAAAAAAA4/9f/AAABAAIAAAA4/9b/AAABAAEAAAA4/9X/AAABAAEAAAA4/9T/AAABAAAAAABY/9f/AAABAAIAAABY/9b/AAABAAEAAABY/9X/AAABAAEAAABY/9T/AAABAAEAAABX/9f/AAABAAIAAABX/9b/AAABAAEAAABX/9X/AAABAAEAAABX/9T/AAABAAEAAABW/9f/AAABAAIAAABW/9b/AAABAAEAAABW/9X/AAABAAEAAABW/9T/AAABAAEAAABV/9f/AAABAAIAAABV/9b/AAABAAEAAABV/9X/AAABAAEAAABV/9T/AAABAAEAAABU/9f/AAABAAIAAABU/9b/AAABAAEAAABU/9X/AAABAAEAAABU/9T/AAABAAEAAABT/9f/AAABAAIAAABT/9b/AAABAAEAAABT/9X/AAABAAEAAABT/9T/AAABAAEAAABS/9f/AAABAAIAAABS/9b/AAABAAEAAABS/9X/AAABAAEAAABS/9T/AAABAAEAAABR/9f/AAABAAIAAABR/9b/AAABAAEAAABR/9X/AAABAAEAAABR/9T/AAABAAEAAABO/+v/AAABAAIAAABO/+r/AAABAAEAAABO/+n/AAABAAAAAABN/+v/AAABAAIAAABN/+r/AAABAAEAAABN/+n/AAABAAAAAABM/+v/AAABAAIAAABM/+r/AAABAAEAAABM/+n/AAABAAAAAABa/9f/AAACAAIAAABa/9b/AAACAAEAAABa/9X/AAACAAEAAABa/9T/AAACAAEAAABZ/9f/AAABAAIAAABZ/9b/AAABAAEAAABZ/9X/AAABAAEAAABZ/9T/AAABAAEAAABQ/9f/AAABAAIAAABQ/9b/AAABAAEAAABQ/9X/AAABAAEAAABQ/9T/AAABAAEAAABa/9P/AAAAAAMAAABa/9L/AAABAAEAAABa/9H/AAABAAEAAABa/9D/AAABAAAAAABZ/9P/AAABAAEAAABZ/9L/AAABAAEAAABZ/9H/AAABAAEAAABZ/9D/AAABAAAAAABY/9P/AAABAAEAAABY/9L/AAABAAEAAABY/9H/AAABAAEAAABY/9D/AAABAAAAAABX/9P/AAABAAEAAABX/9L/AAABAAEAAABX/9H/AAABAAEAAABX/9D/AAABAAAAAABW/9P/AAABAAEAAABW/9L/AAABAAEAAABW/9H/AAABAAEAAABW/9D/AAABAAAAAABV/9P/AAABAAEAAABV/9L/AAABAAEAAABV/9H/AAABAAEAAABV/9D/AAABAAAAAABU/9P/AAABAAEAAABU/9L/AAABAAEAAABU/9H/AAABAAEAAABU/9D/AAABAAAAAABT/9P/AAABAAEAAABT/9L/AAABAAEAAABT/9H/AAABAAEAAABT/9D/AAABAAAAAABS/9P/AAABAAEAAABS/9L/AAABAAEAAABS/9H/AAABAAEAAABS/9D/AAABAAAAAABR/9P/AAABAAEAAABR/9L/AAABAAEAAABR/9H/AAABAAEAAABR/9D/AAABAAAAAABQ/9P/AAABAAEAAABQ/9L/AAABAAEAAABQ/9H/AAABAAEAAABQ/9D/AAABAAAAAABQ/+v/AAACAAEAAABQ/+r/AAACAAEAAABQ/+n/AAACAAAAAABP/+v/AAABAAMAAABP/+r/AAABAAEAAABP/+n/AAABAAAAAABz/9P/AAABAAIAAABz/9L/AAABAAEAAABz/9H/AAABAAEAAABz/9D/AAABAAAAAABy/9P/AAABAAIAAABy/9L/AAABAAEAAABy/9H/AAABAAEAAABy/9D/AAABAAAAAABx/9P/AAABAAIAAABx/9L/AAABAAEAAABx/9H/AAABAAEAAABx/9D/AAABAAAAAABw/9P/AAABAAIAAABw/9L/AAABAAEAAABw/9H/AAABAAEAAABw/9D/AAABAAAAAABv/9P/AAABAAIAAABv/9L/AAABAAEAAABv/9H/AAABAAEAAABv/9D/AAABAAAAAABu/9P/AAABAAIAAABu/9L/AAABAAEAAABu/9H/AAABAAEAAABu/9D/AAABAAAAAABt/9P/AAABAAIAAABt/9L/AAABAAEAAABt/9H/AAABAAEAAABt/9D/AAABAAAAAABs/9P/AAABAAIAAABs/9L/AAABAAEAAABs/9H/AAABAAEAAABs/9D/AAABAAAAAABr/9P/AAABAAIAAABr/9L/AAABAAEAAABr/9H/AAABAAEAAABr/9D/AAABAAAAAABq/9P/AAABAAIAAABq/9L/AAABAAEAAABq/9H/AAABAAEAAABq/9D/AAABAAAAAABp/9P/AAABAAIAAABp/9L/AAABAAEAAABp/9H/AAABAAEAAABp/9D/AAABAAAAAABo/9P/AAABAAIAAABo/9L/AAABAAEAAABo/9H/AAABAAEAAABo/9D/AAABAAAAAABn/9P/AAABAAIAAABn/9L/AAABAAEAAABn/9H/AAABAAEAAABn/9D/AAABAAAAAABm/9P/AAABAAIAAABm/9L/AAABAAEAAABm/9H/AAABAAEAAABm/9D/AAABAAAAAABl/9P/AAABAAIAAABl/9L/AAABAAEAAABl/9H/AAABAAEAAABl/9D/AAABAAAAAABk/9P/AAABAAIAAABk/9L/AAABAAEAAABk/9H/AAABAAEAAABk/9D/AAABAAAAAABj/9P/AAABAAIAAABj/9L/AAABAAEAAABj/9H/AAABAAEAAABj/9D/AAABAAAAAABi/9P/AAABAAIAAABi/9L/AAABAAEAAABi/9H/AAABAAEAAABi/9D/AAABAAAAAABh/9P/AAABAAIAAABh/9L/AAABAAEAAABh/9H/AAABAAEAAABh/9D/AAABAAAAAABg/9P/AAABAAIAAABg/9L/AAABAAEAAABg/9H/AAABAAEAAABg/9D/AAABAAAAAABf/9P/AAABAAIAAABf/9L/AAABAAEAAABf/9H/AAABAAEAAABf/9D/AAABAAAAAABe/9P/AAABAAIAAABe/9L/AAABAAEAAABe/9H/AAABAAEAAABe/9D/AAABAAAAAABd/9P/AAABAAIAAABd/9L/AAABAAEAAABd/9H/AAABAAEAAABd/9D/AAABAAAAAABc/9P/AAABAAIAAABc/9L/AAABAAEAAABc/9H/AAABAAEAAABc/9D/AAABAAAAAABb/9P/AAABAAIAAABb/9L/AAABAAEAAABb/9H/AAABAAEAAABb/9D/AAABAAAAAAB9/9P/AAABAAIAAAB9/9L/AAABAAEAAAB9/9H/AAABAAEAAAB9/9D/AAABAAAAAAB8/9P/AAABAAIAAAB8/9L/AAABAAEAAAB8/9H/AAABAAEAAAB8/9D/AAABAAAAAAB7/9P/AAABAAIAAAB7/9L/AAABAAEAAAB7/9H/AAABAAEAAAB7/9D/AAABAAAAAAB6/9P/AAABAAIAAAB6/9L/AAABAAEAAAB6/9H/AAABAAEAAAB6/9D/AAABAAAAAAB5/9P/AAABAAIAAAB5/9L/AAABAAEAAAB5/9H/AAABAAEAAAB5/9D/AAABAAAAAAB4/9P/AAABAAIAAAB4/9L/AAABAAEAAAB4/9H/AAABAAEAAAB4/9D/AAABAAAAAAB3/9P/AAABAAIAAAB3/9L/AAABAAEAAAB3/9H/AAABAAEAAAB3/9D/AAABAAAAAAB2/9P/AAABAAIAAAB2/9L/AAABAAEAAAB2/9H/AAABAAEAAAB2/9D/AAABAAAAAAB1/9P/AAABAAIAAAB1/9L/AAABAAEAAAB1/9H/AAABAAEAAAB1/9D/AAABAAAAAAB0/9P/AAABAAIAAAB0/9L/AAABAAEAAAB0/9H/AAABAAEAAAB0/9D/AAABAAAAAACe/+n/AAACAAIAAACe/+j/AAACAAEAAACe/+f/AAACAAEAAACe/+b/AAACAAEAAACe/+X/AAACAAEAAACe/+T/AAACAAEAAACe/+P/AAACAAEAAACe/+L/AAACAAEAAACe/+H/AAACAAEAAACe/+D/AAACAAEAAACe/9//AAACAAEAAACe/97/AAACAAEAAACe/93/AAACAAEAAACe/9z/AAACAAEAAACe/9v/AAACAAEAAACe/9r/AAACAAEAAACe/9n/AAACAAEAAACe/9j/AAACAAEAAACe/9f/AAACAAEAAACe/9b/AAACAAEAAACe/9X/AAACAAEAAACe/9T/AAACAAEAAACe/9P/AAAAAAMAAACe/9L/AAABAAEAAACe/9H/AAABAAEAAACe/9D/AAAAAAQAAACe/8//AAACAAEAAACd/+n/AAABAAIAAACd/+j/AAABAAEAAACd/+f/AAABAAEAAACd/+b/AAABAAEAAACd/+X/AAABAAEAAACd/+T/AAABAAEAAACd/+P/AAABAAEAAACd/+L/AAABAAEAAACd/+H/AAABAAEAAACd/+D/AAABAAEAAACd/9//AAABAAEAAACd/97/AAABAAEAAACd/93/AAABAAEAAACd/9z/AAABAAEAAACd/9v/AAABAAEAAACd/9r/AAABAAEAAACd/9n/AAABAAEAAACd/9j/AAABAAEAAACd/9f/AAABAAEAAACd/9b/AAABAAEAAACd/9X/AAABAAEAAACd/9T/AAABAAEAAACd/9P/AAABAAEAAACd/9L/AAABAAEAAACd/9H/AAABAAEAAACd/9D/AAABAAEAAACd/8//AAABAAEAAACc/+n/AAABAAIAAACc/+j/AAABAAEAAACc/+f/AAABAAEAAACc/+b/AAABAAEAAACc/+X/AAABAAEAAACc/+T/AAABAAEAAACc/+P/AAABAAEAAACc/+L/AAABAAEAAACc/+H/AAABAAEAAACc/+D/AAABAAEAAACc/9//AAABAAEAAACc/97/AAABAAEAAACc/93/AAABAAEAAACc/9z/AAABAAEAAACc/9v/AAABAAEAAACc/9r/AAABAAEAAACc/9n/AAABAAEAAACc/9j/AAABAAEAAACc/9f/AAABAAEAAACc/9b/AAABAAEAAACc/9X/AAABAAEAAACc/9T/AAABAAEAAACc/9P/AAABAAEAAACc/9L/AAABAAEAAACc/9H/AAABAAEAAACc/9D/AAABAAEAAACc/8//AAABAAEAAACb/+n/AAABAAIAAACb/+j/AAABAAEAAACb/+f/AAABAAEAAACb/+b/AAABAAEAAACb/+X/AAABAAEAAACb/+T/AAABAAQAAACb/+P/AAAAAAEAAACb/+L/AAAAAAEAAACb/+H/AAAAAAEAAACb/+D/AAAAAAEAAACb/9//AAAAAAEAAACb/97/AAAAAAEAAACb/93/AAAAAAEAAACb/9z/AAAAAAEAAACb/9v/AAAAAAEAAACb/9r/AAAAAAEAAACb/9n/AAAAAAEAAACb/9j/AAAAAAEAAACb/9f/AAAAAAEAAACb/9b/AAAAAAEAAACb/9X/AAAAAAEAAACb/9T/AAAAAAEAAACb/9P/AAABAAMAAACb/9L/AAABAAEAAACb/9H/AAABAAEAAACb/9D/AAABAAEAAACb/8//AAABAAEAAACa/9P/AAABAAIAAACa/9L/AAABAAEAAACa/9H/AAABAAEAAACa/9D/AAABAAEAAACZ/9P/AAABAAIAAACZ/9L/AAABAAEAAACZ/9H/AAABAAEAAACZ/9D/AAABAAEAAACY/9P/AAABAAIAAACY/9L/AAABAAEAAACY/9H/AAABAAEAAACY/9D/AAABAAEAAACX/9P/AAABAAIAAACX/9L/AAABAAEAAACX/9H/AAABAAEAAACX/9D/AAABAAQAAACW/9P/AAABAAIAAACW/9L/AAABAAEAAACW/9H/AAABAAEAAACW/9D/AAABAAAAAACV/9P/AAABAAIAAACV/9L/AAABAAEAAACV/9H/AAABAAEAAACV/9D/AAABAAAAAACU/9P/AAABAAIAAACU/9L/AAABAAEAAACU/9H/AAABAAEAAACU/9D/AAABAAAAAACT/9P/AAABAAIAAACT/9L/AAABAAEAAACT/9H/AAABAAEAAACT/9D/AAABAAAAAACS/9P/AAABAAIAAACS/9L/AAABAAEAAACS/9H/AAABAAEAAACS/9D/AAABAAAAAACR/9P/AAABAAIAAACR/9L/AAABAAEAAACR/9H/AAABAAEAAACR/9D/AAABAAAAAACQ/9P/AAABAAIAAACQ/9L/AAABAAEAAACQ/9H/AAABAAEAAACQ/9D/AAABAAAAAACP/9P/AAABAAIAAACP/9L/AAABAAEAAACP/9H/AAABAAEAAACP/9D/AAABAAAAAACO/9P/AAABAAIAAACO/9L/AAABAAEAAACO/9H/AAABAAEAAACO/9D/AAABAAAAAACN/9P/AAABAAIAAACN/9L/AAABAAEAAACN/9H/AAABAAEAAACN/9D/AAABAAAAAACM/9P/AAABAAIAAACM/9L/AAABAAEAAACM/9H/AAABAAEAAACM/9D/AAABAAAAAACL/9P/AAABAAIAAACL/9L/AAABAAEAAACL/9H/AAABAAEAAACL/9D/AAABAAAAAACK/9P/AAABAAIAAACK/9L/AAABAAEAAACK/9H/AAABAAEAAACK/9D/AAABAAAAAACJ/9P/AAABAAIAAACJ/9L/AAABAAEAAACJ/9H/AAABAAEAAACJ/9D/AAABAAAAAACI/9P/AAABAAIAAACI/9L/AAABAAEAAACI/9H/AAABAAEAAACI/9D/AAABAAAAAACH/9P/AAABAAIAAACH/9L/AAABAAEAAACH/9H/AAABAAEAAACH/9D/AAABAAAAAACG/9P/AAABAAIAAACG/9L/AAABAAEAAACG/9H/AAABAAEAAACG/9D/AAABAAAAAACF/9P/AAABAAIAAACF/9L/AAABAAEAAACF/9H/AAABAAEAAACF/9D/AAABAAAAAACE/9P/AAABAAIAAACE/9L/AAABAAEAAACE/9H/AAABAAEAAACE/9D/AAABAAAAAACD/9P/AAABAAIAAACD/9L/AAABAAEAAACD/9H/AAABAAEAAACD/9D/AAABAAAAAACC/9P/AAABAAIAAACC/9L/AAABAAEAAACC/9H/AAABAAEAAACC/9D/AAABAAAAAACB/9P/AAABAAIAAACB/9L/AAABAAEAAACB/9H/AAABAAEAAACB/9D/AAABAAAAAACA/9P/AAABAAIAAACA/9L/AAABAAEAAACA/9H/AAABAAEAAACA/9D/AAABAAAAAAB//9P/AAABAAIAAAB//9L/AAABAAEAAAB//9H/AAABAAEAAAB//9D/AAABAAAAAAB+/9P/AAABAAIAAAB+/9L/AAABAAEAAAB+/9H/AAABAAEAAAB+/9D/AAABAAAAAAC4/9P/AAABAAIAAAC4/9L/AAABAAEAAAC4/9H/AAABAAEAAAC4/9D/AAABAAAAAAC3/9P/AAABAAIAAAC3/9L/AAABAAEAAAC3/9H/AAABAAEAAAC3/9D/AAABAAAAAAC2/9P/AAABAAIAAAC2/9L/AAABAAEAAAC2/9H/AAABAAEAAAC2/9D/AAABAAAAAAC1/9P/AAABAAIAAAC1/9L/AAABAAEAAAC1/9H/AAABAAEAAAC1/9D/AAABAAAAAAC0/9P/AAABAAIAAAC0/9L/AAABAAEAAAC0/9H/AAABAAEAAAC0/9D/AAABAAAAAACz/9P/AAABAAIAAACz/9L/AAABAAEAAACz/9H/AAABAAEAAACz/9D/AAABAAAAAACy/9P/AAABAAIAAACy/9L/AAABAAEAAACy/9H/AAABAAEAAACy/9D/AAABAAAAAACx/9P/AAABAAIAAACx/9L/AAABAAEAAACx/9H/AAABAAEAAACx/9D/AAABAAAAAACw/9P/AAABAAIAAACw/9L/AAABAAEAAACw/9H/AAABAAEAAACw/9D/AAABAAAAAACv/9P/AAABAAIAAACv/9L/AAABAAEAAACv/9H/AAABAAEAAACv/9D/AAABAAAAAACu/9P/AAABAAIAAACu/9L/AAABAAEAAACu/9H/AAABAAEAAACu/9D/AAABAAAAAACt/9P/AAABAAIAAACt/9L/AAABAAEAAACt/9H/AAABAAEAAACt/9D/AAABAAAAAACs/9P/AAABAAIAAACs/9L/AAABAAEAAACs/9H/AAABAAEAAACs/9D/AAABAAAAAACr/9P/AAABAAIAAACr/9L/AAABAAEAAACr/9H/AAABAAEAAACr/9D/AAABAAAAAACq/9P/AAABAAIAAACq/9L/AAABAAEAAACq/9H/AAABAAEAAACq/9D/AAABAAAAAACp/9P/AAABAAIAAACp/9L/AAABAAEAAACp/9H/AAABAAEAAACp/9D/AAABAAAAAACo/9P/AAABAAIAAACo/9L/AAABAAEAAACo/9H/AAABAAEAAACo/9D/AAABAAAAAACn/9P/AAABAAIAAACn/9L/AAABAAEAAACn/9H/AAABAAEAAACn/9D/AAABAAAAAACm/9P/AAABAAIAAACm/9L/AAABAAEAAACm/9H/AAABAAEAAACm/9D/AAABAAAAAACl/9P/AAABAAIAAACl/9L/AAABAAEAAACl/9H/AAABAAEAAACl/9D/AAABAAAAAACk/9P/AAABAAIAAACk/9L/AAABAAEAAACk/9H/AAABAAEAAACk/9D/AAABAAAAAACj/9P/AAABAAIAAACj/9L/AAABAAEAAACj/9H/AAABAAEAAACj/9D/AAABAAAAAACi/9P/AAABAAIAAACi/9L/AAABAAEAAACi/9H/AAABAAEAAACi/9D/AAABAAAAAACh/9P/AAABAAIAAACh/9L/AAABAAEAAACh/9H/AAABAAEAAACh/9D/AAABAAAAAACg/9P/AAABAAIAAACg/9L/AAABAAEAAACg/9H/AAABAAEAAACg/9D/AAABAAAAAACf/9P/AAABAAIAAACf/9L/AAABAAEAAACf/9H/AAABAAEAAACf/9D/AAABAAAAAADK/9P/AAABAAIAAADK/9L/AAABAAEAAADK/9H/AAABAAEAAADK/9D/AAABAAQAAADJ/9P/AAABAAIAAADJ/9L/AAABAAEAAADJ/9H/AAABAAEAAADJ/9D/AAABAAAAAADI/9P/AAABAAIAAADI/9L/AAABAAEAAADI/9H/AAABAAEAAADI/9D/AAABAAAAAADH/9P/AAABAAIAAADH/9L/AAABAAEAAADH/9H/AAABAAEAAADH/9D/AAABAAAAAADG/9P/AAABAAIAAADG/9L/AAABAAEAAADG/9H/AAABAAEAAADG/9D/AAABAAAAAADF/9P/AAABAAIAAADF/9L/AAABAAEAAADF/9H/AAABAAEAAADF/9D/AAABAAAAAADE/9P/AAABAAIAAADE/9L/AAABAAEAAADE/9H/AAABAAEAAADE/9D/AAABAAAAAADD/9P/AAABAAIAAADD/9L/AAABAAEAAADD/9H/AAABAAEAAADD/9D/AAABAAAAAADC/9P/AAABAAIAAADC/9L/AAABAAEAAADC/9H/AAABAAEAAADC/9D/AAABAAAAAADB/9P/AAABAAIAAADB/9L/AAABAAEAAADB/9H/AAABAAEAAADB/9D/AAABAAAAAADA/9P/AAABAAIAAADA/9L/AAABAAEAAADA/9H/AAABAAEAAADA/9D/AAABAAAAAAC//9P/AAABAAIAAAC//9L/AAABAAEAAAC//9H/AAABAAEAAAC//9D/AAABAAAAAAC+/9P/AAABAAIAAAC+/9L/AAABAAEAAAC+/9H/AAABAAEAAAC+/9D/AAABAAAAAAC9/9P/AAABAAIAAAC9/9L/AAABAAEAAAC9/9H/AAABAAEAAAC9/9D/AAABAAAAAAC8/9P/AAABAAIAAAC8/9L/AAABAAEAAAC8/9H/AAABAAEAAAC8/9D/AAABAAAAAAC7/9P/AAABAAIAAAC7/9L/AAABAAEAAAC7/9H/AAABAAEAAAC7/9D/AAABAAAAAAC6/9P/AAABAAIAAAC6/9L/AAABAAEAAAC6/9H/AAABAAEAAAC6/9D/AAABAAAAAAC5/9P/AAABAAIAAAC5/9L/AAABAAEAAAC5/9H/AAABAAEAAAC5/9D/AAABAAAAAADO/9P/AAACAAIAAADO/9L/AAACAAEAAADO/9H/AAACAAEAAADO/9D/AAACAAEAAADO/8//AAACAAEAAADO/87/AAACAAEAAADO/83/AAACAAEAAADO/8z/AAACAAEAAADO/8v/AAACAAEAAADO/8r/AAACAAEAAADO/8n/AAACAAEAAADO/8j/AAACAAEAAADO/8f/AAACAAEAAADO/8b/AAACAAEAAADO/8X/AAACAAEAAADO/8T/AAACAAEAAADO/8P/AAACAAEAAADO/8L/AAACAAEAAADO/8H/AAACAAEAAADN/9P/AAABAAIAAADN/9L/AAABAAEAAADN/9H/AAABAAEAAADN/9D/AAABAAEAAADN/8//AAABAAEAAADN/87/AAABAAEAAADN/83/AAABAAEAAADN/8z/AAABAAEAAADN/8v/AAABAAEAAADN/8r/AAABAAEAAADN/8n/AAABAAEAAADN/8j/AAABAAEAAADN/8f/AAABAAEAAADN/8b/AAABAAEAAADN/8X/AAABAAEAAADN/8T/AAABAAEAAADN/8P/AAABAAEAAADN/8L/AAABAAEAAADN/8H/AAABAAEAAADM/9P/AAABAAIAAADM/9L/AAABAAEAAADM/9H/AAABAAEAAADM/9D/AAABAAEAAADM/8//AAABAAEAAADM/87/AAABAAEAAADM/83/AAABAAEAAADM/8z/AAABAAEAAADM/8v/AAABAAEAAADM/8r/AAABAAEAAADM/8n/AAABAAEAAADM/8j/AAABAAEAAADM/8f/AAABAAEAAADM/8b/AAABAAEAAADM/8X/AAABAAEAAADM/8T/AAABAAEAAADM/8P/AAABAAEAAADM/8L/AAABAAEAAADM/8H/AAABAAEAAADL/9P/AAABAAIAAADL/9L/AAABAAEAAADL/9H/AAABAAEAAADL/9D/AAABAAEAAADL/8//AAABAAEAAADL/87/AAABAAEAAADL/83/AAABAAEAAADL/8z/AAABAAEAAADL/8v/AAABAAEAAADL/8r/AAABAAEAAADL/8n/AAABAAEAAADL/8j/AAABAAEAAADL/8f/AAABAAEAAADL/8b/AAABAAEAAADL/8X/AAABAAEAAADL/8T/AAABAAEAAADL/8P/AAABAAEAAADL/8L/AAABAAEAAADL/8H/AAABAAEAAADK/8//AAAAAAEAAADK/87/AAAAAAEAAADK/83/AAAAAAEAAADK/8z/AAAAAAEAAADK/8v/AAAAAAEAAADK/8r/AAAAAAEAAADK/8n/AAAAAAEAAADK/8j/AAAAAAEAAADK/8f/AAAAAAEAAADK/8b/AAAAAAEAAADK/8X/AAAAAAEAAADK/8T/AAAAAAEAAADK/8P/AAAAAAEAAADK/8L/AAAAAAEAAADK/8H/AAAAAAEAAADO/8D/AAACAAEAAADO/7//AAACAAEAAADO/77/AAACAAEAAADO/73/AAACAAEAAADO/7z/AAACAAEAAADO/7v/AAACAAEAAADN/8D/AAABAAEAAADN/7//AAABAAEAAADN/77/AAABAAEAAADN/73/AAABAAEAAADN/7z/AAABAAEAAADN/7v/AAABAAEAAADM/8D/AAABAAEAAADM/7//AAABAAEAAADM/77/AAABAAEAAADM/73/AAABAAEAAADM/7z/AAABAAEAAADM/7v/AAABAAEAAADL/8D/AAABAAEAAADL/7//AAABAAEAAADL/77/AAABAAEAAADL/73/AAABAAEAAADL/7z/AAABAAEAAADL/7v/AAABAAEAAADK/8D/AAAAAAEAAADK/7//AAAAAAEAAADK/77/AAAAAAEAAADK/73/AAAAAAEAAADK/7z/AAAAAAEAAADK/7v/AAAAAAEAAADO/7r/AAACAAEAAADO/7n/AAACAAEAAADO/7j/AAACAAEAAADO/7f/AAACAAAAAADN/7r/AAABAAEAAADN/7n/AAABAAEAAADN/7j/AAABAAEAAADN/7f/AAABAAAAAADM/7r/AAABAAEAAADM/7n/AAABAAEAAADM/7j/AAABAAEAAADM/7f/AAABAAAAAADL/7r/AAABAAEAAADL/7n/AAABAAEAAADL/7j/AAABAAEAAADL/7f/AAABAAAAAADK/7r/AAABAAMAAADK/7n/AAABAAEAAADK/7j/AAABAAEAAADK/7f/AAABAAAAAADJ/7r/AAABAAIAAADJ/7n/AAABAAEAAADJ/7j/AAABAAEAAADJ/7f/AAABAAAAAADI/7r/AAABAAIAAADI/7n/AAABAAEAAADI/7j/AAABAAEAAADI/7f/AAABAAAAAADH/7r/AAABAAIAAADH/7n/AAABAAEAAADH/7j/AAABAAEAAADH/7f/AAABAAAAAADG/7r/AAABAAIAAADG/7n/AAABAAEAAADG/7j/AAABAAEAAADG/7f/AAABAAAAAADF/7r/AAABAAIAAADF/7n/AAABAAEAAADF/7j/AAABAAEAAADF/7f/AAABAAAAAADE/7r/AAABAAIAAADE/7n/AAABAAEAAADE/7j/AAABAAEAAADE/7f/AAABAAAAAADD/7r/AAABAAIAAADD/7n/AAABAAEAAADD/7j/AAABAAEAAADD/7f/AAABAAAAAADC/7r/AAABAAIAAADC/7n/AAABAAEAAADC/7j/AAABAAEAAADC/7f/AAABAAAAAADB/7r/AAABAAIAAADB/7n/AAABAAEAAADB/7j/AAABAAEAAADB/7f/AAABAAAAAADA/7r/AAABAAIAAADA/7n/AAABAAEAAADA/7j/AAABAAEAAADA/7f/AAABAAAAAAC//7r/AAABAAIAAAC//7n/AAABAAEAAAC//7j/AAABAAEAAAC//7f/AAABAAAAAAC+/7r/AAABAAIAAAC+/7n/AAABAAEAAAC+/7j/AAABAAEAAAC+/7f/AAABAAAAAAC9/7r/AAABAAIAAAC9/7n/AAABAAEAAAC9/7j/AAABAAEAAAC9/7f/AAABAAAAAAC8/7r/AAABAAIAAAC8/7n/AAABAAEAAAC8/7j/AAABAAEAAAC8/7f/AAABAAAAAAC7/7r/AAABAAIAAAC7/7n/AAABAAEAAAC7/7j/AAABAAEAAAC7/7f/AAABAAAAAAC6/7r/AAABAAIAAAC6/7n/AAABAAEAAAC6/7j/AAABAAEAAAC6/7f/AAABAAAAAAC5/7r/AAABAAIAAAC5/7n/AAABAAEAAAC5/7j/AAABAAEAAAC5/7f/AAABAAAAAAC4/7r/AAABAAIAAAC4/7n/AAABAAEAAAC4/7j/AAABAAEAAAC4/7f/AAABAAAAAAC3/7r/AAABAAIAAAC3/7n/AAABAAEAAAC3/7j/AAABAAEAAAC3/7f/AAABAAAAAAC2/7r/AAABAAIAAAC2/7n/AAABAAEAAAC2/7j/AAABAAEAAAC2/7f/AAABAAAAAAC1/7r/AAABAAIAAAC1/7n/AAABAAEAAAC1/7j/AAABAAEAAAC1/7f/AAABAAAAAAC0/7r/AAABAAIAAAC0/7n/AAABAAEAAAC0/7j/AAABAAEAAAC0/7f/AAABAAAAAACz/7r/AAABAAIAAACz/7n/AAABAAEAAACz/7j/AAABAAEAAACz/7f/AAABAAAAAACy/7r/AAABAAIAAACy/7n/AAABAAEAAACy/7j/AAABAAEAAACy/7f/AAABAAAAAACx/7r/AAABAAIAAACx/7n/AAABAAEAAACx/7j/AAABAAEAAACx/7f/AAABAAAAAACw/7r/AAABAAIAAACw/7n/AAABAAEAAACw/7j/AAABAAEAAACw/7f/AAABAAAAAACv/7r/AAABAAIAAACv/7n/AAABAAEAAACv/7j/AAABAAEAAACv/7f/AAABAAAAAACu/7r/AAABAAIAAACu/7n/AAABAAEAAACu/7j/AAABAAEAAACu/7f/AAABAAAAAACt/7r/AAABAAIAAACt/7n/AAABAAEAAACt/7j/AAABAAEAAACt/7f/AAABAAAAAACs/7r/AAABAAIAAACs/7n/AAABAAEAAACs/7j/AAABAAEAAACs/7f/AAABAAAAAACr/7r/AAABAAIAAACr/7n/AAABAAEAAACr/7j/AAABAAEAAACr/7f/AAABAAAAAACq/7r/AAABAAIAAACq/7n/AAABAAEAAACq/7j/AAABAAEAAACq/7f/AAABAAAAAACp/7r/AAABAAIAAACp/7n/AAABAAEAAACp/7j/AAABAAEAAACp/7f/AAABAAAAAACo/7r/AAABAAIAAACo/7n/AAABAAEAAACo/7j/AAABAAEAAACo/7f/AAABAAAAAACn/7r/AAABAAIAAACn/7n/AAABAAEAAACn/7j/AAABAAEAAACn/7f/AAABAAAAAACm/7r/AAABAAIAAACm/7n/AAABAAEAAACm/7j/AAABAAEAAACm/7f/AAABAAAAAACl/7r/AAABAAIAAACl/7n/AAABAAEAAACl/7j/AAABAAEAAACl/7f/AAABAAAAAACk/7r/AAABAAIAAACk/7n/AAABAAEAAACk/7j/AAABAAEAAACk/7f/AAABAAAAAACj/7r/AAABAAIAAACj/7n/AAABAAEAAACj/7j/AAABAAEAAACj/7f/AAABAAAAAACi/7r/AAABAAIAAACi/7n/AAABAAEAAACi/7j/AAABAAEAAACi/7f/AAABAAAAAACh/7r/AAABAAIAAACh/7n/AAABAAEAAACh/7j/AAABAAEAAACh/7f/AAABAAAAAACg/7r/AAABAAIAAACg/7n/AAABAAEAAACg/7j/AAABAAEAAACg/7f/AAABAAAAAACf/7r/AAABAAIAAACf/7n/AAABAAEAAACf/7j/AAABAAEAAACf/7f/AAABAAAAAACe/7r/AAABAAIAAACe/7n/AAABAAEAAACe/7j/AAABAAEAAACe/7f/AAABAAAAAACd/7r/AAABAAIAAACd/7n/AAABAAEAAACd/7j/AAABAAEAAACd/7f/AAABAAAAAACc/7r/AAABAAIAAACc/7n/AAABAAEAAACc/7j/AAABAAEAAACc/7f/AAABAAAAAACb/7r/AAAAAAIAAACb/7n/AAAAAAEAAACb/7j/AAAAAAEAAACb/7f/AAAAAAAAAACe/87/AAACAAEAAACd/87/AAABAAEAAACc/87/AAABAAEAAACb/87/AAABAAEAAACe/83/AAACAAEAAACe/8z/AAACAAEAAACe/8v/AAACAAEAAACe/8r/AAACAAEAAACe/8n/AAACAAEAAACe/8j/AAACAAEAAACe/8f/AAACAAEAAACe/8b/AAACAAEAAACe/8X/AAACAAEAAACe/8T/AAACAAEAAACe/8P/AAACAAEAAACe/8L/AAACAAEAAACe/8H/AAACAAEAAACe/8D/AAACAAEAAACe/7//AAACAAAAAACd/83/AAABAAEAAACd/8z/AAABAAEAAACd/8v/AAABAAEAAACd/8r/AAABAAEAAACd/8n/AAABAAEAAACd/8j/AAABAAEAAACd/8f/AAABAAEAAACd/8b/AAABAAEAAACd/8X/AAABAAEAAACd/8T/AAABAAEAAACd/8P/AAABAAEAAACd/8L/AAABAAEAAACd/8H/AAABAAEAAACd/8D/AAABAAEAAACd/7//AAABAAAAAACc/83/AAABAAEAAACc/8z/AAABAAEAAACc/8v/AAABAAEAAACc/8r/AAABAAEAAACc/8n/AAABAAEAAACc/8j/AAABAAEAAACc/8f/AAABAAEAAACc/8b/AAABAAEAAACc/8X/AAABAAEAAACc/8T/AAABAAEAAACc/8P/AAABAAEAAACc/8L/AAABAAEAAACc/8H/AAABAAEAAACc/8D/AAABAAEAAACc/7//AAABAAAAAACb/83/AAABAAEAAACb/8z/AAABAAEAAACb/8v/AAABAAEAAACb/8r/AAABAAQAAACb/8n/AAAAAAEAAACb/8j/AAAAAAEAAACb/8f/AAAAAAEAAACb/8b/AAAAAAEAAACb/8X/AAAAAAEAAACb/8T/AAAAAAEAAACb/8P/AAAAAAEAAACb/8L/AAAAAAEAAACb/8H/AAAAAAEAAACb/8D/AAAAAAEAAACb/7//AAAAAAAAAACa/8//AAABAAEAAACa/87/AAABAAEAAACa/83/AAABAAEAAACa/8z/AAABAAEAAACa/8v/AAABAAEAAACa/8r/AAABAAAAAACZ/8//AAABAAEAAACZ/87/AAABAAEAAACZ/83/AAABAAEAAACZ/8z/AAABAAEAAACZ/8v/AAABAAEAAACZ/8r/AAABAAAAAACY/8//AAABAAEAAACY/87/AAABAAEAAACY/83/AAABAAEAAACY/8z/AAABAAEAAACY/8v/AAABAAEAAACY/8r/AAABAAAAAACX/8//AAAAAAEAAACX/87/AAAAAAEAAACX/83/AAAAAAEAAACX/8z/AAAAAAEAAACX/8v/AAAAAAEAAACX/8r/AAAAAAAAAAAz/wcAAAACAAIAAAAz/wYAAAACAAEAAAAy/wcAAAABAAIAAAAy/wYAAAABAAEAAAAx/wcAAAABAAIAAAAx/wYAAAABAAEAAAAw/wcAAAABAAIAAAAw/wYAAAABAAEAAAAv/wUAAAABAAAAAAAu/wUAAAABAAAAAAAt/wUAAAABAAAAAAAs/wUAAAAAAAAAAABI//7/AAACAAIAAABH//7/AAABAAIAAABG//7/AAABAAIAAABF//7/AAAAAAIAAABO//v/AAABAAIAAABO//r/AAABAAEAAABO//n/AAABAAAAAABN//v/AAABAAIAAABN//r/AAABAAEAAABN//n/AAABAAAAAABM//v/AAAAAAIAAABM//r/AAAAAAEAAABM//n/AAAAAAAAAABT/wUAAAABAAEAAABT/wQAAAABAAAAAABS/wUAAAABAAEAAABS/wQAAAABAAAAAABR/wUAAAABAAEAAABR/wQAAAABAAAAAABX/wUAAAACAAEAAABX/wQAAAACAAAAAABW/wUAAAABAAEAAABW/wQAAAABAAAAAABV/wUAAAABAAEAAABV/wQAAAABAAAAAABU/wUAAAABAAEAAABU/wQAAAABAAAAAABT//v/AAABAAIAAABT//r/AAABAAEAAABT//n/AAABAAAAAABS//v/AAABAAIAAABS//r/AAABAAEAAABS//n/AAABAAAAAABU//v/AAACAAIAAABU//r/AAACAAEAAABU//n/AAACAAAAAABm/wUAAAABAAEAAABm/wQAAAABAAEAAABm/wMAAAABAAEAAABm/wIAAAABAAEAAABm/wEAAAABAAEAAABm/wAAAAABAAEAAABm////AAABAAEAAABm//7/AAAAAAQAAABl/wUAAAABAAEAAABl/wQAAAABAAEAAABl/wMAAAABAAEAAABl/wIAAAABAAEAAABl/wEAAAABAAEAAABl/wAAAAABAAEAAABl////AAABAAEAAABl//7/AAABAAEAAABk/wUAAAAAAAEAAABk/wQAAAAAAAEAAABk/wMAAAAAAAEAAABk/wIAAAAAAAEAAABk/wEAAAAAAAEAAABk/wAAAAAAAAEAAABk////AAAAAAEAAABk//7/AAAAAAEAAABq////AAACAAEAAABq//7/AAACAAAAAABp////AAABAAEAAABp//7/AAABAAAAAABo////AAABAAEAAABo//7/AAABAAAAAABn////AAABAAEAAABn//7/AAABAAAAAABu/wIAAAACAAEAAABu/wEAAAACAAAAAABt/wIAAAABAAEAAABt/wEAAAABAAAAAABs/wIAAAABAAEAAABs/wEAAAABAAAAAABr/wIAAAABAAEAAABr/wEAAAABAAAAAAB5/wUAAAACAAEAAAB5/wQAAAACAAAAAAB4/wUAAAABAAEAAAB4/wQAAAABAAAAAAB3/wUAAAABAAEAAAB3/wQAAAABAAAAAAB2/wUAAAABAAEAAAB2/wQAAAABAAAAAAB1/wUAAAABAAEAAAB1/wQAAAABAAAAAAB0/wUAAAABAAEAAAB0/wQAAAABAAAAAABz/wUAAAABAAEAAABz/wQAAAABAAAAAABy/wUAAAABAAEAAABy/wQAAAABAAAAAABx/wUAAAABAAEAAABx/wQAAAABAAAAAABw/wUAAAABAAEAAABw/wQAAAABAAAAAABv/wUAAAABAAEAAABv/wQAAAABAAAAAAB7//j/AAACAAIAAAB7//f/AAACAAAAAAB6//j/AAABAAIAAAB6//f/AAABAAAAAACH//n/AAABAAIAAACH//j/AAABAAAAAACG//n/AAABAAIAAACG//j/AAABAAAAAACF//n/AAABAAIAAACF//j/AAABAAAAAACE//n/AAABAAIAAACE//j/AAABAAAAAACD//n/AAABAAIAAACD//j/AAABAAAAAACC//n/AAABAAIAAACC//j/AAABAAAAAACB//n/AAAAAAIAAACB//j/AAAAAAAAAACD//T/AAABAAIAAACD//P/AAABAAEAAACD//L/AAABAAAAAACT//X/AAACAAIAAACT//T/AAACAAEAAACT//P/AAACAAEAAACS//X/AAABAAIAAACS//T/AAABAAEAAACS//P/AAABAAEAAACR//X/AAABAAIAAACR//T/AAABAAEAAACR//P/AAABAAEAAACQ//X/AAABAAIAAACQ//T/AAABAAEAAACQ//P/AAABAAEAAACP//X/AAABAAIAAACP//T/AAABAAEAAACP//P/AAABAAEAAACO//X/AAABAAIAAACO//T/AAABAAEAAACO//P/AAABAAEAAACN//X/AAABAAIAAACN//T/AAABAAEAAACN//P/AAABAAQAAACM//X/AAABAAIAAACM//T/AAABAAEAAACM//P/AAABAAAAAACa//L/AAACAAIAAACa//H/AAACAAEAAACZ//L/AAABAAIAAACZ//H/AAABAAEAAACY//L/AAABAAIAAACY//H/AAABAAEAAACX//L/AAABAAIAAACX//H/AAABAAEAAACW//L/AAABAAIAAACW//H/AAABAAEAAACV//L/AAABAAIAAACV//H/AAABAAEAAACU//L/AAABAAIAAACU//H/AAABAAEAAACT//L/AAAAAAMAAACT//H/AAABAAEAAACS//L/AAABAAEAAACS//H/AAABAAEAAACR//L/AAABAAEAAACR//H/AAABAAEAAACR//D/AAABAAAAAACW/+z/AAABAAEAAACW/+v/AAABAAEAAACV/+z/AAABAAEAAACV/+v/AAABAAEAAACU/+z/AAAAAAEAAACU/+v/AAABAAMAAACW/+r/AAABAAEAAACV/+r/AAABAAEAAACU/+r/AAABAAQAAACT/+v/AAABAAIAAACT/+r/AAABAAAAAACS/+v/AAABAAIAAACS/+r/AAABAAAAAACR/+v/AAABAAIAAACR/+r/AAABAAAAAACQ/+v/AAABAAIAAACQ/+r/AAABAAAAAACP/+v/AAAAAAIAAACP/+r/AAAAAAAAAACQ//L/AAABAAEAAACQ//H/AAABAAEAAACQ//D/AAABAAAAAACP//L/AAABAAEAAACP//H/AAABAAEAAACP//D/AAABAAAAAACO//L/AAABAAEAAACO//H/AAABAAEAAACO//D/AAABAAAAAACA/+7/AAABAAIAAACA/+3/AAABAAQAAAB//+7/AAABAAIAAAB//+3/AAABAAAAAAB+/+7/AAAAAAIAAAB+/+3/AAAAAAAAAACE/+7/AAACAAIAAACE/+3/AAACAAAAAACD/+7/AAABAAIAAACD/+3/AAABAAAAAACC/+7/AAABAAIAAACC/+3/AAAAAAQAAACB/+7/AAABAAIAAACB/+3/AAABAAEAAACC//T/AAABAAIAAACC//P/AAABAAEAAACC//L/AAABAAAAAACB//T/AAABAAIAAACB//P/AAABAAEAAACB//L/AAABAAAAAACA//T/AAAAAAIAAACA//P/AAAAAAEAAACA//L/AAAAAAAAAACN//L/AAAAAAEAAACN//H/AAAAAAEAAACN//D/AAAAAAAAAACC/+z/AAACAAEAAACB/+z/AAABAAEAAACA/+z/AAAAAAEAAACC/+v/AAACAAAAAACB/+v/AAABAAAAAACA/+v/AAAAAAAAAACK/+n/AAACAAIAAACJ/+n/AAABAAIAAACI/+n/AAABAAIAAABz//r/AAACAAEAAABz//n/AAACAAEAAABz//j/AAACAAAAAABy//r/AAAAAAEAAABy//n/AAAAAAEAAABy//j/AAAAAAAAAACW/+n/AAABAAEAAACW/+j/AAABAAEAAACW/+f/AAABAAAAAACV/+n/AAABAAEAAACV/+j/AAABAAEAAACV/+f/AAABAAAAAACU/+n/AAAAAAEAAACU/+j/AAAAAAEAAACU/+f/AAAAAAAAAACa/+b/AAABAAEAAACa/+X/AAABAAEAAACa/+T/AAABAAAAAACZ/+b/AAABAAEAAACZ/+X/AAABAAEAAACZ/+T/AAABAAAAAACY/+b/AAABAAEAAACY/+X/AAABAAEAAACY/+T/AAABAAAAAACX/+b/AAAAAAEAAACX/+X/AAAAAAEAAACX/+T/AAAAAAAAAACL/+L/AAABAAAAAACK/+L/AAABAAAAAACJ/+L/AAABAAAAAACI/+L/AAABAAAAAACH/+L/AAABAAAAAACG/+L/AAABAAAAAACO/+P/AAACAAEAAACO/+L/AAACAAAAAACN/+P/AAABAAEAAACN/+L/AAABAAAAAACM/+P/AAABAAEAAACM/+L/AAABAAAAAACO/+T/AAACAAIAAACN/+T/AAABAAIAAACM/+T/AAABAAIAAACL/+T/AAABAAIAAACK/+T/AAABAAIAAACJ/+T/AAABAAIAAACI/+T/AAABAAIAAACH/+T/AAABAAIAAACG/+T/AAABAAIAAACK/+j/AAACAAEAAACJ/+j/AAABAAEAAACI/+j/AAABAAEAAACH/+n/AAAAAAIAAACH/+j/AAAAAAEAAACH/+f/AAAAAAAAAACI/+f/AAABAAAAAACK/+f/AAACAAAAAACJ/+f/AAABAAAAAACF/+T/AAABAAIAAACF/+P/AAABAAEAAACF/+L/AAABAAAAAACE/+T/AAABAAIAAACE/+P/AAABAAEAAACE/+L/AAABAAAAAACD/+T/AAABAAIAAACD/+P/AAABAAEAAACD/+L/AAABAAAAAACC/+T/AAAAAAIAAACC/+P/AAAAAAEAAACC/+L/AAAAAAAAAAB3/+7/AAACAAEAAAB3/+3/AAACAAAAAAB2/+7/AAABAAEAAAB2/+3/AAABAAAAAAB1/+7/AAABAAEAAAB1/+3/AAABAAAAAAB0/+7/AAABAAEAAAB0/+3/AAABAAAAAABz/+7/AAABAAEAAABz/+3/AAABAAAAAABy/+7/AAABAAEAAABy/+3/AAABAAAAAABx/+7/AAABAAQAAABx/+3/AAAAAAAAAABw//D/AAACAAIAAABw/+//AAAAAAMAAABw/+7/AAABAAAAAABv//D/AAABAAIAAABv/+//AAABAAEAAABv/+7/AAABAAAAAABu//D/AAABAAIAAABu/+//AAABAAEAAABu/+7/AAABAAAAAABt//D/AAABAAIAAABt/+//AAABAAEAAABt/+7/AAABAAAAAABs//D/AAABAAIAAABs/+//AAABAAEAAABs/+7/AAABAAAAAABr//D/AAABAAIAAABr/+//AAABAAEAAABr/+7/AAABAAAAAABq//D/AAABAAIAAABq/+//AAABAAQAAABq/+7/AAAAAAAAAAB3/+//AAACAAIAAAB2/+//AAABAAIAAAB1/+//AAABAAIAAAB0/+//AAABAAIAAABz/+//AAABAAIAAABy/+//AAABAAIAAABx/+//AAABAAIAAABp//L/AAACAAIAAABp//H/AAACAAEAAABp//D/AAAAAAMAAABo//L/AAABAAIAAABo//H/AAABAAEAAABo//D/AAABAAEAAABn//L/AAABAAIAAABn//H/AAABAAEAAABn//D/AAABAAEAAABm//L/AAABAAIAAABm//H/AAABAAEAAABm//D/AAABAAEAAABl//L/AAABAAIAAABl//H/AAABAAEAAABl//D/AAABAAQAAABk//L/AAABAAIAAABk//H/AAABAAEAAABk//D/AAABAAAAAABj//L/AAABAAIAAABj//H/AAABAAEAAABj//D/AAABAAAAAABi//L/AAABAAIAAABi//H/AAABAAEAAABi//D/AAABAAAAAABh//L/AAAAAAIAAABh//H/AAAAAAEAAABh//D/AAAAAAAAAABp/+//AAABAAAAAABo/+//AAABAAAAAABn/+//AAABAAAAAABm/+//AAABAAAAAABl/+//AAAAAAAAAABU/+//AAACAAAAAABT/+//AAABAAAAAABS/+//AAABAAAAAABR/+//AAAAAAQAAABU//D/AAACAAEAAABT//D/AAABAAEAAABS//D/AAABAAEAAABR//D/AAABAAMAAABU//H/AAACAAIAAABT//H/AAABAAIAAABS//H/AAABAAIAAABR//H/AAAAAAIAAABd/+r/AAAAAAIAAABR/+3/AAACAAEAAABR/+z/AAACAAAAAABQ/+3/AAABAAEAAABQ/+z/AAAAAAQAAABP/+3/AAAAAAEAAABP/+z/AAAAAAEAAABR/+7/AAACAAEAAABQ/+7/AAABAAEAAABP/+7/AAAAAAEAAABQ//D/AAABAAIAAABQ/+//AAABAAEAAABP//D/AAAAAAIAAABP/+//AAAAAAEAAAAv/+T/AAACAAIAAAAv/+P/AAACAAEAAAAv/+L/AAACAAEAAAAu/+T/AAABAAIAAAAu/+P/AAABAAEAAAAu/+L/AAABAAQAAAAt/+T/AAABAAIAAAAt/+P/AAABAAEAAAAt/+L/AAABAAAAAAAs/+T/AAABAAIAAAAs/+P/AAABAAEAAAAs/+L/AAABAAAAAAAr/+T/AAABAAIAAAAr/+P/AAABAAEAAAAr/+L/AAABAAAAAAAq/+T/AAAAAAIAAAAq/+P/AAAAAAEAAAAq/+L/AAAAAAAAAAAx/+H/AAACAAIAAAAx/+D/AAACAAEAAAAx/9//AAACAAEAAAAx/97/AAACAAEAAAAx/93/AAACAAEAAAAx/9z/AAAAAAMAAAAx/9v/AAABAAQAAAAw/+H/AAABAAIAAAAw/+D/AAABAAEAAAAw/9//AAABAAEAAAAw/97/AAABAAEAAAAw/93/AAABAAEAAAAw/9z/AAABAAEAAAAw/9v/AAABAAAAAAAv/+H/AAAAAAMAAAAv/+D/AAABAAEAAAAv/9//AAABAAEAAAAv/97/AAABAAEAAAAv/93/AAABAAEAAAAv/9z/AAABAAEAAAAv/9v/AAABAAAAAAAu/+H/AAAAAAEAAAAu/+D/AAAAAAEAAAAu/9//AAAAAAEAAAAu/97/AAAAAAEAAAAu/93/AAAAAAEAAAAu/9z/AAAAAAEAAAAu/9v/AAAAAAAAAAAz/9z/AAACAAIAAAAz/9v/AAACAAEAAAAz/9r/AAAAAAMAAAAz/9n/AAABAAEAAAAz/9j/AAABAAEAAAAz/9f/AAABAAEAAAAy/9z/AAABAAIAAAAy/9v/AAABAAEAAAAy/9r/AAABAAEAAAAy/9n/AAABAAEAAAAy/9j/AAABAAEAAAAy/9f/AAABAAEAAAAx/9r/AAAAAAEAAAAx/9n/AAAAAAEAAAAx/9j/AAAAAAEAAAAx/9f/AAAAAAEAAAAz/9b/AAABAAAAAAAy/9b/AAABAAAAAAAx/9b/AAAAAAAAAABP/9f/AAABAAIAAABP/9b/AAABAAEAAABP/9X/AAABAAEAAABP/9T/AAABAAEAAABP/9P/AAABAAEAAABP/9L/AAABAAEAAABP/9H/AAABAAEAAABP/9D/AAABAAAAAABO/9f/AAABAAIAAABO/9b/AAABAAEAAABO/9X/AAABAAEAAABO/9T/AAABAAEAAABO/9P/AAABAAEAAABO/9L/AAABAAEAAABO/9H/AAABAAEAAABO/9D/AAABAAAAAABN/9f/AAABAAIAAABN/9b/AAABAAEAAABN/9X/AAABAAEAAABN/9T/AAABAAEAAABN/9P/AAABAAEAAABN/9L/AAABAAEAAABN/9H/AAABAAEAAABN/9D/AAABAAAAAABM/9f/AAAAAAIAAABM/9b/AAAAAAEAAABM/9X/AAAAAAEAAABM/9T/AAAAAAEAAABM/9P/AAAAAAEAAABM/9L/AAAAAAEAAABM/9H/AAAAAAEAAABM/9D/AAAAAAAAAAA=")
+tile_set = SubResource("TileSet_aus63")
+
+[node name="BoidGuideZone" type="Area2D" parent="."]
+position = Vector2(-7008, -808)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoidGuideZone"]
+shape = SubResource("CircleShape2D_esv4c")
+
+[node name="Guides" type="Node2D" parent="."]
+z_index = -2
+
+[node name="MoveGuide" type="Sprite2D" parent="Guides"]
+position = Vector2(-8384, 64)
+texture = SubResource("AtlasTexture_k2wcm")
+
+[node name="JumpGuide" type="Sprite2D" parent="Guides"]
+position = Vector2(-6888, 168)
+texture = SubResource("AtlasTexture_ghnat")
+
+[node name="DashGuide" type="Sprite2D" parent="Guides"]
+position = Vector2(-5624, -280)
+texture = SubResource("AtlasTexture_digqh")
+
+[node name="AttackGuide" type="Sprite2D" parent="Guides"]
+position = Vector2(-7152, -824)
+texture = SubResource("AtlasTexture_i2yyo")
+
+[node name="BoostDashGuide" type="Sprite2D" parent="Guides"]
+position = Vector2(-6328, -1472)
+texture = SubResource("AtlasTexture_mx8hi")
+
+[node name="RespawnZone" type="Area2D" parent="."]
+script = ExtResource("5_g0ujn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnZone"]
+position = Vector2(0, 419)
+shape = SubResource("RectangleShape2D_yfdyn")
+
+[node name="Scenery" type="Node2D" parent="."]
+position = Vector2(-8425, 147)
+
+[node name="Background" type="CanvasLayer" parent="Scenery"]
+layer = -128
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/Background"]
+z_as_relative = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 1)
+metadata/_edit_lock_ = true
+
+[node name="Clouds" type="ParallaxBackground" parent="Scenery"]
+layer = -102
+
+[node name="Back" type="ParallaxLayer" parent="Scenery/Clouds"]
+position = Vector2(0, 14)
+motion_scale = Vector2(0.07, 0.07)
+
+[node name="Cloud" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1849, 162.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud2" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1769, 197.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud3" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-383.5, 102.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud4" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-377.5, 163.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud5" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-155.5, 126.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud6" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-26.5, 106.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud7" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(102.5, 105.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud8" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1692, 137.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud9" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-72.5, 156.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud10" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1607, 132.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud11" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1672, 191.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud12" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1600, 193.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud13" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(189.5, 107.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud14" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(237.5, 193.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud15" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(144.5, 162.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud16" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(263.5, 141.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud17" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(352, 108)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud18" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(31.5, 144.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud19" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-268.5, 158.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud20" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1840, 215.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud21" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-234.5, 109.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud22" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-317.5, 102.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud23" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1777, 141.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud24" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1538, 168.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud25" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(670, 151.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud26" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(590, 186.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud27" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(731, 128.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud28" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(737, 189.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud29" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(347, 183)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud30" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(513, 126.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud31" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(428, 121.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud32" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(493, 180.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud33" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(421, 182.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud34" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(846, 184.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud35" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(661, 204.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud36" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(924, 144)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud37" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(797, 128.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud38" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(598, 130.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud39" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(996.5, 165)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud40" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1057.5, 142)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud41" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1063.5, 203)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud42" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1285.5, 166)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud43" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1414.5, 146)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud44" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1368.5, 196)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud45" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1472.5, 184)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud46" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1172.5, 198)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud47" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(987.5, 218)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud48" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1206.5, 149)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud49" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(1123.5, 142)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud50" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-471, 162.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud51" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-551, 197.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud52" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2703.5, 102.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud53" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2697.5, 163.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud54" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2475.5, 126.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud55" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2346.5, 106.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud56" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2217.5, 105.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud57" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-628, 137.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud58" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2392.5, 156.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud59" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-713, 132.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud60" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-648, 191.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud61" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-720, 193.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud62" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2130.5, 107.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud63" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2082.5, 193.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud64" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2175.5, 162.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud65" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2056.5, 141.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud66" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1968, 108)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud67" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2288.5, 144.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud68" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2588.5, 158.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud69" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-480, 215.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud70" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2554.5, 109.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud71" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2637.5, 102.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud72" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-543, 141.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud73" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-782, 168.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud74" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1650, 151.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud75" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1730, 186.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud76" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1589, 128.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud77" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1583, 189.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud78" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1973, 183)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud79" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1807, 126.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud80" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1892, 121.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud81" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1827, 180.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud82" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1899, 182.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud83" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1474, 184.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud84" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1659, 204.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud85" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1396, 144)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud86" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1523, 128.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud87" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1722, 130.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud88" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1323.5, 165)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud89" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1262.5, 142)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud90" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1256.5, 203)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud91" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1034.5, 166)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud92" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-905.5, 146)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud93" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-951.5, 196)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud94" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-847.5, 184)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud95" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1147.5, 198)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud96" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1332.5, 218)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud97" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1113.5, 149)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud98" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-1196.5, 142)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud99" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2769, 116.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud100" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2849, 151.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud101" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5001.5, 56.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud102" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4995.5, 117.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud103" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4773.5, 80.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud104" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4644.5, 60.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud105" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4515.5, 59.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud106" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2926, 91.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud107" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4690.5, 110.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud108" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3011, 86.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud109" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2946, 145.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud110" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3018, 147.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud111" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4428.5, 61.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud112" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4380.5, 147.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud113" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4473.5, 116.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud114" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4354.5, 95.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud115" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4266, 62)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud116" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4586.5, 98.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud117" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4886.5, 112.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud118" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2778, 169.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud119" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4852.5, 63.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud120" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4935.5, 56.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud121" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-2841, 95.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud122" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3080, 122.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud123" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3948, 105.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud124" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4028, 140.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud125" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3887, 82.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud126" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3881, 143.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud127" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4271, 137)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud128" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4105, 80.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud129" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4190, 75.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud130" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4125, 134.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud131" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4197, 136.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud132" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3772, 138.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud133" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3957, 158.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud134" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3694, 98)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud135" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3821, 82.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud136" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-4020, 84.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud137" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3621.5, 119)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud138" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3560.5, 96)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud139" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3554.5, 157)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud140" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3332.5, 120)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud141" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3203.5, 100)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud142" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3249.5, 150)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud143" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3145.5, 138)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud144" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3445.5, 152)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud145" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3630.5, 172)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud146" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3411.5, 103)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud147" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-3494.5, 96)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud148" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5060, 75.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud149" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5140, 110.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud150" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7292.5, 15.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud151" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7286.5, 76.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud152" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7064.5, 39.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud153" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6935.5, 19.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud154" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6806.5, 18.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud155" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5217, 50.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud156" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6981.5, 69.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud157" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5302, 45.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud158" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5237, 104.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud159" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5309, 106.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud160" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6719.5, 20.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud161" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6671.5, 106.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud162" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6764.5, 75.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud163" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6645.5, 54.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud164" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6557, 21)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud165" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6877.5, 57.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud166" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7177.5, 71.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud167" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5069, 128.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud168" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7143.5, 22.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud169" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7226.5, 15.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud170" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5132, 54.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud171" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5371, 81.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud172" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6239, 64.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud173" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6319, 99.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud174" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6178, 41.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud175" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6172, 102.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud176" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6562, 96)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud177" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6396, 39.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud178" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6481, 34.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud179" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6416, 93.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud180" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6488, 95.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud181" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6063, 97.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud182" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6248, 117.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud183" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5985, 57)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud184" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6112, 41.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud185" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-6311, 43.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud186" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5912.5, 78)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud187" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5851.5, 55)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud188" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5845.5, 116)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud189" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5623.5, 79)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud190" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5494.5, 59)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud191" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5540.5, 109)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud192" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5436.5, 97)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud193" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5736.5, 111)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud194" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5921.5, 131)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud195" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5702.5, 62)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud196" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-5785.5, 55)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud197" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7368, 56.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud198" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7448, 91.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud199" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9600.5, -3.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud200" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9594.5, 57.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud201" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9372.5, 20.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud202" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9243.5, 0.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud203" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9114.5, -0.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud204" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7525, 31.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud205" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9289.5, 50.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud206" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7610, 26.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud207" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7545, 85.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud208" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7617, 87.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud209" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9027.5, 1.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud210" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8979.5, 87.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud211" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9072.5, 56.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud212" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8953.5, 35.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud213" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8865, 2)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud214" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9185.5, 38.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud215" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9485.5, 52.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud216" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7377, 109.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud217" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9451.5, 3.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud218" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-9534.5, -3.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud219" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7440, 35.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud220" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7679, 62.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud221" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8547, 45.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud222" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8627, 80.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud223" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8486, 22.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud224" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8480, 83.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud225" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8870, 77)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud226" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8704, 20.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud227" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8789, 15.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud228" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8724, 74.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud229" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8796, 76.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud230" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8371, 78.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud231" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8556, 98.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud232" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8293, 38)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud233" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8420, 22.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud234" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8619, 24.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud235" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8220.5, 59)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud236" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8159.5, 36)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud237" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8153.5, 97)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud238" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7931.5, 60)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud239" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7802.5, 40)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud240" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7848.5, 90)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud241" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-7744.5, 78)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud242" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8044.5, 92)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud243" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8229.5, 112)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud244" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8010.5, 43)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud245" type="Sprite2D" parent="Scenery/Clouds/Back"]
+position = Vector2(-8093.5, 36)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Front" type="ParallaxLayer" parent="Scenery/Clouds"]
+position = Vector2(0, -148)
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="Cloud" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(352, 177)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud2" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(272, 212)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud3" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(413, 154)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud4" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(419, 215)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud5" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(641, 178)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud6" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(770, 158)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud7" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(899, 157)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud8" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(195, 152)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud9" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(724, 208)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud10" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(110, 147)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud11" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(175, 206)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud12" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(103, 208)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud13" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(986, 159)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud14" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1034, 245)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud15" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(941, 214)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud16" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1060, 193)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud17" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1136, 161)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud18" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(828, 196)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud19" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(528, 210)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud20" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(343, 230)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud21" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(562, 161)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud22" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(479, 154)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud23" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(280, 156)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud24" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(41, 183)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud25" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1454, 204.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud26" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1374, 239.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud27" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1515, 181.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud28" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1521, 242.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud29" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1131, 236)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud30" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1297, 179.5)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud31" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1212, 174.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud32" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1277, 233.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud33" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1205, 235.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud34" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1630, 237.5)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud35" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1445, 257.5)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud36" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1708, 197)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud37" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1581, 181.5)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud38" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(1382, 183.5)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud39" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-500.5, 179.5)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud40" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-439.5, 156.5)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud41" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-433.5, 217.5)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud42" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-211.5, 180.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud43" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-82.5, 160.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud44" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-128.5, 210.5)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud45" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-24.5, 198.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud46" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-324.5, 212.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud47" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-509.5, 232.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud48" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-290.5, 163.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud49" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-373.5, 156.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud50" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1875, 147.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud51" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1955, 182.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud52" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1814, 124.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud53" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1808, 185.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud54" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1586, 148.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud55" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1457, 128.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud56" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1328, 127.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud57" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2032, 122.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud58" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1503, 178.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud59" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2117, 117.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud60" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2052, 176.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud61" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2124, 178.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud62" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1241, 129.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud63" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1193, 215.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud64" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1286, 184.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud65" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1167, 163.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud66" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1091, 131.5)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud67" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1399, 166.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud68" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1699, 180.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud69" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1884, 200.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud70" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1665, 131.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud71" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1748, 124.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud72" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1947, 126.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud73" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2186, 153.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud74" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-773, 175)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud75" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-853, 210)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud76" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-712, 152)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud77" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-706, 213)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud78" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1096, 206.5)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud79" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-930, 150)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud80" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1015, 145)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud81" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-950, 204)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud82" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-1022, 206)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud83" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-597, 208)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud84" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-782, 228)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud85" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-519, 167.5)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud86" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-646, 152)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud87" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-845, 154)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud88" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2727.5, 150)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud89" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2666.5, 127)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud90" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2660.5, 188)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud91" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2438.5, 151)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud92" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2309.5, 131)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud93" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2355.5, 181)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud94" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2251.5, 169)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud95" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2551.5, 183)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud96" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2736.5, 203)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud97" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2517.5, 134)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud98" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2600.5, 127)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud99" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4125, 117.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud100" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4205, 152.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud101" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4064, 94.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud102" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4058, 155.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud103" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3836, 118.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud104" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3707, 98.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud105" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3578, 97.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud106" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4282, 92.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud107" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3753, 148.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud108" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4367, 87.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud109" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4302, 146.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud110" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4374, 148.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud111" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3491, 99.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud112" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3443, 185.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud113" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3536, 154.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud114" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3417, 133.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud115" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3341, 101.5)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud116" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3649, 136.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud117" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3949, 150.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud118" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4134, 170.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud119" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3915, 101.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud120" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3998, 94.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud121" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4197, 96.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud122" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4436, 123.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud123" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3023, 145)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud124" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3103, 180)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud125" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2962, 122)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud126" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2956, 183)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud127" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3346, 176.5)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud128" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3180, 120)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud129" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3265, 115)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud130" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3200, 174)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud131" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3272, 176)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud132" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2847, 178)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud133" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3032, 198)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud134" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2769, 137.5)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud135" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-2896, 122)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud136" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-3095, 124)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud137" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4977.5, 120)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud138" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4916.5, 97)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud139" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4910.5, 158)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud140" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4688.5, 121)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud141" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4559.5, 101)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud142" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4605.5, 151)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud143" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4501.5, 139)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud144" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4801.5, 153)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud145" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4986.5, 173)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud146" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4767.5, 104)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud147" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-4850.5, 97)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud148" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6382, 73.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud149" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6462, 108.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud150" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6321, 50.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud151" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6315, 111.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud152" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6093, 74.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud153" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5964, 54.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud154" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5835, 53.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud155" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6539, 48.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud156" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6010, 104.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud157" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6624, 43.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud158" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6559, 102.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud159" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6631, 104.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud160" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5748, 55.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud161" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5700, 141.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud162" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5793, 110.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud163" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5674, 89.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud164" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5598, 57.5)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud165" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5906, 92.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud166" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6206, 106.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud167" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6391, 126.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud168" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6172, 57.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud169" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6255, 50.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud170" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6454, 52.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud171" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6693, 79.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud172" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5280, 101)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud173" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5360, 136)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud174" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5219, 78)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud175" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5213, 139)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud176" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5603, 132.5)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud177" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5437, 76)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud178" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5522, 71)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud179" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5457, 130)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud180" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5529, 132)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud181" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5104, 134)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud182" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5289, 154)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud183" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5026, 93.5)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud184" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5153, 78)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud185" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-5352, 80)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud186" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7234.5, 76)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud187" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7173.5, 53)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud188" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7167.5, 114)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud189" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6945.5, 77)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud190" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6816.5, 57)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud191" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6862.5, 107)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud192" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-6758.5, 95)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud193" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7058.5, 109)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud194" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7243.5, 129)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud195" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7024.5, 60)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud196" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7107.5, 53)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud197" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8674, 60.5)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud198" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8754, 95.5)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud199" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8613, 37.5)
+texture = SubResource("AtlasTexture_aus63")
+flip_h = true
+
+[node name="Cloud200" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8607, 98.5)
+texture = SubResource("AtlasTexture_yfdyn")
+flip_h = true
+
+[node name="Cloud201" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8385, 61.5)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud202" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8256, 41.5)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud203" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8127, 40.5)
+texture = SubResource("AtlasTexture_ibqns")
+flip_h = true
+
+[node name="Cloud204" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8831, 35.5)
+texture = SubResource("AtlasTexture_s0ico")
+flip_h = true
+
+[node name="Cloud205" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8302, 91.5)
+texture = SubResource("AtlasTexture_gab7d")
+
+[node name="Cloud206" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8916, 30.5)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud207" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8851, 89.5)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud208" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8923, 91.5)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud209" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8040, 42.5)
+texture = SubResource("AtlasTexture_5iv0h")
+
+[node name="Cloud210" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7992, 128.5)
+texture = SubResource("AtlasTexture_g0ld7")
+
+[node name="Cloud211" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8085, 97.5)
+texture = SubResource("AtlasTexture_obbu4")
+
+[node name="Cloud212" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7966, 76.5)
+texture = SubResource("AtlasTexture_ft0ss")
+
+[node name="Cloud213" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7890, 44.5)
+texture = SubResource("AtlasTexture_q6qfv")
+flip_h = true
+
+[node name="Cloud214" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8198, 79.5)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud215" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8498, 93.5)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud216" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8683, 113.5)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud217" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8464, 44.5)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud218" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8547, 37.5)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="Cloud219" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8746, 39.5)
+texture = SubResource("AtlasTexture_3bsey")
+flip_h = true
+
+[node name="Cloud220" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-8985, 66.5)
+texture = SubResource("AtlasTexture_1wkub")
+flip_h = true
+
+[node name="Cloud221" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7572, 88)
+texture = SubResource("AtlasTexture_esv4c")
+flip_h = true
+
+[node name="Cloud222" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7652, 123)
+texture = SubResource("AtlasTexture_k6sw2")
+flip_h = true
+
+[node name="Cloud223" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7511, 65)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud224" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7505, 126)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud225" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7895, 119.5)
+texture = SubResource("AtlasTexture_oump4")
+
+[node name="Cloud226" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7729, 63)
+texture = SubResource("AtlasTexture_s0ico")
+
+[node name="Cloud227" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7814, 58)
+texture = SubResource("AtlasTexture_sdm6p")
+
+[node name="Cloud228" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7749, 117)
+texture = SubResource("AtlasTexture_sljs8")
+
+[node name="Cloud229" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7821, 119)
+texture = SubResource("AtlasTexture_h7rp3")
+
+[node name="Cloud230" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7396, 121)
+texture = SubResource("AtlasTexture_e5qtl")
+
+[node name="Cloud231" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7581, 141)
+texture = SubResource("AtlasTexture_qvhf0")
+
+[node name="Cloud232" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7318, 80.5)
+texture = SubResource("AtlasTexture_lcqxp")
+
+[node name="Cloud233" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7445, 65)
+texture = SubResource("AtlasTexture_pdvq6")
+
+[node name="Cloud234" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-7644, 67)
+texture = SubResource("AtlasTexture_3bsey")
+
+[node name="Cloud235" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9526.5, 63)
+texture = SubResource("AtlasTexture_esv4c")
+
+[node name="Cloud236" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9465.5, 40)
+texture = SubResource("AtlasTexture_aus63")
+
+[node name="Cloud237" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9459.5, 101)
+texture = SubResource("AtlasTexture_yfdyn")
+
+[node name="Cloud238" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9237.5, 64)
+texture = SubResource("AtlasTexture_oump4")
+flip_h = true
+
+[node name="Cloud239" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9108.5, 44)
+texture = SubResource("AtlasTexture_rq756")
+flip_h = true
+
+[node name="Cloud240" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9154.5, 94)
+texture = SubResource("AtlasTexture_gab7d")
+flip_h = true
+
+[node name="Cloud241" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9050.5, 82)
+texture = SubResource("AtlasTexture_80l5i")
+flip_h = true
+
+[node name="Cloud242" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9350.5, 96)
+texture = SubResource("AtlasTexture_e5qtl")
+flip_h = true
+
+[node name="Cloud243" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9535.5, 116)
+texture = SubResource("AtlasTexture_qvhf0")
+flip_h = true
+
+[node name="Cloud244" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9316.5, 47)
+texture = SubResource("AtlasTexture_lcqxp")
+flip_h = true
+
+[node name="Cloud245" type="Sprite2D" parent="Scenery/Clouds/Front"]
+position = Vector2(-9399.5, 40)
+texture = SubResource("AtlasTexture_pdvq6")
+flip_h = true
+
+[node name="FogLayer1" type="CanvasLayer" parent="Scenery"]
+layer = -101
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/FogLayer1"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+
+[node name="FarMountainRange" type="ParallaxBackground" parent="Scenery"]
+
+[node name="MountainBack" type="ParallaxLayer" parent="Scenery/FarMountainRange"]
+position = Vector2(-81, -3)
+motion_scale = Vector2(0.2, 0.2)
+
+[node name="MountainBack1" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-14, 358)
+texture = SubResource("AtlasTexture_nt0g5")
+
+[node name="MountainBack2" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(389, 364)
+texture = SubResource("AtlasTexture_sl08c")
+flip_h = true
+
+[node name="MountainBack3" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(800, 391)
+texture = SubResource("AtlasTexture_d1t6i")
+
+[node name="MountainBack4" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-429, 402)
+texture = SubResource("AtlasTexture_mq1on")
+
+[node name="MountainBack5" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-735, 416)
+texture = SubResource("AtlasTexture_1wdu8")
+flip_h = true
+
+[node name="MountainBack6" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-1128, 389)
+texture = SubResource("AtlasTexture_nakp8")
+
+[node name="MountainBack7" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(1232, 340)
+texture = SubResource("AtlasTexture_alq6w")
+
+[node name="MountainBack8" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(1704, 344)
+texture = SubResource("AtlasTexture_4k36e")
+flip_h = true
+
+[node name="MountainBack9" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-3359, 429)
+texture = SubResource("AtlasTexture_nt0g5")
+
+[node name="MountainBack10" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-2956, 435)
+texture = SubResource("AtlasTexture_sl08c")
+flip_h = true
+
+[node name="MountainBack11" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-2545, 462)
+texture = SubResource("AtlasTexture_d1t6i")
+
+[node name="MountainBack12" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-3774, 473)
+texture = SubResource("AtlasTexture_mq1on")
+
+[node name="MountainBack13" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-4080, 487)
+texture = SubResource("AtlasTexture_1wdu8")
+flip_h = true
+
+[node name="MountainBack14" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-4473, 460)
+texture = SubResource("AtlasTexture_nakp8")
+
+[node name="MountainBack15" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-2113, 411)
+texture = SubResource("AtlasTexture_alq6w")
+
+[node name="MountainBack16" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-1599, 411)
+texture = SubResource("AtlasTexture_4k36e")
+flip_h = true
+
+[node name="MountainBack17" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-6604, 501)
+texture = SubResource("AtlasTexture_nt0g5")
+
+[node name="MountainBack18" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-6201, 507)
+texture = SubResource("AtlasTexture_sl08c")
+flip_h = true
+
+[node name="MountainBack19" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-5790, 534)
+texture = SubResource("AtlasTexture_d1t6i")
+
+[node name="MountainBack20" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-7019, 545)
+texture = SubResource("AtlasTexture_mq1on")
+
+[node name="MountainBack21" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-7325, 559)
+texture = SubResource("AtlasTexture_1wdu8")
+flip_h = true
+
+[node name="MountainBack22" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-7718, 532)
+texture = SubResource("AtlasTexture_nakp8")
+
+[node name="MountainBack23" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-5358, 483)
+texture = SubResource("AtlasTexture_alq6w")
+
+[node name="MountainBack24" type="Sprite2D" parent="Scenery/FarMountainRange/MountainBack"]
+position = Vector2(-4886, 486)
+texture = SubResource("AtlasTexture_4k36e")
+flip_h = true
+
+[node name="FogLayer2" type="CanvasLayer" parent="Scenery"]
+layer = -99
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/FogLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+
+[node name="ModerateMountainRange" type="ParallaxBackground" parent="Scenery"]
+layer = -98
+
+[node name="MountainMiddle" type="ParallaxLayer" parent="Scenery/ModerateMountainRange"]
+position = Vector2(-250, 103)
+motion_scale = Vector2(0.25, 0.25)
+
+[node name="MountainMiddle1" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(23, 335)
+texture = SubResource("AtlasTexture_33cuq")
+
+[node name="MountainMiddle2" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(501, 342)
+texture = SubResource("AtlasTexture_3wrgh")
+
+[node name="MountainMiddle3" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(827, 355)
+texture = SubResource("AtlasTexture_nbv7q")
+flip_h = true
+
+[node name="MountainMiddle4" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(1131, 373)
+texture = SubResource("AtlasTexture_e7hse")
+
+[node name="MountainMiddle5" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(1551, 335)
+texture = SubResource("AtlasTexture_p22kd")
+
+[node name="MountainMiddle6" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(1999, 330)
+texture = SubResource("AtlasTexture_qkvrq")
+
+[node name="MountainMiddle7" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-305, 326)
+texture = SubResource("AtlasTexture_ocpkl")
+flip_h = true
+
+[node name="MountainMiddle8" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-637, 326)
+texture = SubResource("AtlasTexture_qrdts")
+
+[node name="MountainMiddle9" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-1022, 339)
+texture = SubResource("AtlasTexture_gl45r")
+
+[node name="MountainMiddle10" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-3437, 400)
+texture = SubResource("AtlasTexture_33cuq")
+
+[node name="MountainMiddle11" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-2959, 407)
+texture = SubResource("AtlasTexture_3wrgh")
+
+[node name="MountainMiddle12" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-2633, 420)
+texture = SubResource("AtlasTexture_nbv7q")
+flip_h = true
+
+[node name="MountainMiddle13" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-2329, 438)
+texture = SubResource("AtlasTexture_e7hse")
+
+[node name="MountainMiddle14" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-1909, 400)
+texture = SubResource("AtlasTexture_p22kd")
+
+[node name="MountainMiddle15" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-1461, 395)
+texture = SubResource("AtlasTexture_qkvrq")
+
+[node name="MountainMiddle16" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-3790, 449)
+texture = SubResource("AtlasTexture_ocpkl")
+flip_h = true
+
+[node name="MountainMiddle17" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-4232, 483)
+texture = SubResource("AtlasTexture_qrdts")
+
+[node name="MountainMiddle18" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-4618, 506)
+texture = SubResource("AtlasTexture_gl45r")
+
+[node name="MountainMiddle19" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-6934, 574)
+texture = SubResource("AtlasTexture_33cuq")
+
+[node name="MountainMiddle20" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-6456, 581)
+texture = SubResource("AtlasTexture_3wrgh")
+
+[node name="MountainMiddle21" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-6130, 594)
+texture = SubResource("AtlasTexture_nbv7q")
+flip_h = true
+
+[node name="MountainMiddle22" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-5826, 612)
+texture = SubResource("AtlasTexture_e7hse")
+
+[node name="MountainMiddle23" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-5406, 574)
+texture = SubResource("AtlasTexture_p22kd")
+
+[node name="MountainMiddle24" type="Sprite2D" parent="Scenery/ModerateMountainRange/MountainMiddle"]
+position = Vector2(-4966, 534)
+texture = SubResource("AtlasTexture_qkvrq")
+
+[node name="FogLayer3" type="CanvasLayer" parent="Scenery"]
+layer = -97
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/FogLayer3"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.156863)
+
+[node name="CloseMountainRange" type="ParallaxBackground" parent="Scenery"]
+layer = -96
+
+[node name="MountainFront" type="ParallaxLayer" parent="Scenery/CloseMountainRange"]
+position = Vector2(7, 243)
+motion_scale = Vector2(0.3, 0.3)
+
+[node name="MountainFront1" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-1468, 260)
+texture = SubResource("AtlasTexture_a21dq")
+
+[node name="MountainFront2" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(2379, 292)
+texture = SubResource("AtlasTexture_8sk7d")
+flip_h = true
+
+[node name="MountainFront3" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(1886, 294)
+texture = SubResource("AtlasTexture_2fq2p")
+
+[node name="MountainFront4" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(1537, 284)
+texture = SubResource("AtlasTexture_3cotj")
+flip_h = true
+
+[node name="MountainFront5" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(1155, 299)
+texture = SubResource("AtlasTexture_sohbl")
+flip_h = true
+
+[node name="MountainFront6" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(838, 322)
+texture = SubResource("AtlasTexture_32f6m")
+
+[node name="MountainFront7" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(656, 317)
+texture = SubResource("AtlasTexture_0x6bu")
+flip_h = true
+
+[node name="MountainFront8" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(310, 330)
+texture = SubResource("AtlasTexture_d14n4")
+
+[node name="MountainFront9" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-2, 316)
+texture = SubResource("AtlasTexture_wo282")
+
+[node name="MountainFront10" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-511, 307)
+texture = SubResource("AtlasTexture_2rl5p")
+flip_h = true
+
+[node name="MountainFront11" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-990, 286)
+texture = SubResource("AtlasTexture_myls6")
+
+[node name="MountainFront12" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-6047, 466)
+texture = SubResource("AtlasTexture_a21dq")
+
+[node name="MountainFront13" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-1966, 275)
+texture = SubResource("AtlasTexture_8sk7d")
+flip_h = true
+
+[node name="MountainFront14" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-2467, 298)
+texture = SubResource("AtlasTexture_2fq2p")
+
+[node name="MountainFront15" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-2833, 301)
+texture = SubResource("AtlasTexture_3cotj")
+flip_h = true
+
+[node name="MountainFront16" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-3290, 335)
+texture = SubResource("AtlasTexture_sohbl")
+flip_h = true
+
+[node name="MountainFront17" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-3606, 367)
+texture = SubResource("AtlasTexture_32f6m")
+
+[node name="MountainFront18" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-3769, 370)
+texture = SubResource("AtlasTexture_0x6bu")
+flip_h = true
+
+[node name="MountainFront19" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-4273, 399)
+texture = SubResource("AtlasTexture_d14n4")
+
+[node name="MountainFront20" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-4599, 402)
+texture = SubResource("AtlasTexture_wo282")
+
+[node name="MountainFront21" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-5049, 434)
+texture = SubResource("AtlasTexture_2rl5p")
+flip_h = true
+
+[node name="MountainFront22" type="Sprite2D" parent="Scenery/CloseMountainRange/MountainFront"]
+position = Vector2(-5544, 450)
+texture = SubResource("AtlasTexture_myls6")
+
+[node name="FogLayer4" type="CanvasLayer" parent="Scenery"]
+layer = -95
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/FogLayer4"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.537255, 0.639216, 0.760784, 0.235294)
+
+[node name="Vignette" type="CanvasLayer" parent="Scenery"]
+layer = 0
+
+[node name="ColorRect" type="ColorRect" parent="Scenery/Vignette"]
+material = SubResource("ShaderMaterial_k2wcm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PauseScreen" parent="." instance=ExtResource("5_t5w3m")]
+layer = 3
+visible = false
+
+[node name="DeathScreen" parent="." instance=ExtResource("6_ddxxn")]
+visible = false
+
+[node name="VictoryScreen" parent="." instance=ExtResource("7_g0ujn")]
+visible = false
+
+[node name="Infirmary" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-8352, 166)
+texture = ExtResource("8_wfmch")
+
+[connection signal="Death" from="." to="." method="OnDeath"]
+[connection signal="RemoveEnemy" from="." to="." method="OnRemoveEnemy"]
+[connection signal="body_entered" from="BoidGuideZone" to="." method="OnGuideZoneEntered"]
+[connection signal="body_entered" from="RespawnZone" to="RespawnZone" method="OnEnter"]
